@@ -188,6 +188,9 @@ body{font-size:16px;line-height:1.7}
 .project-summary{font-size:14.5px;line-height:1.7}
 .project-sector{font-size:11px}
 
+/* Krem zeminli bölümlerde teknoloji çipleri okunur kalsın */
+.process .deliverables span{color:#4c5258;border-color:#adb3ba}
+
 /* SSS */
 .faq-list summary{font-size:16.5px;padding:26px 0}
 .faq-list details p,.faq-list p{font-size:15px;line-height:1.85;color:var(--paper);max-width:720px}
@@ -236,6 +239,26 @@ body{font-size:16px;line-height:1.7}
 
   /* Sahne görselleri mobilde kırpılınca ana pencereyi ortala */
   .hero-media img{object-position:60% center}
+
+  /* Hizmet/proje hero'su: alt şerit tek satır kalır, içerik üstünde durur */
+  .hero-caption{font-size:9px;letter-spacing:1.5px}
+  .page-hero .hero-content{bottom:135px}
+  .page-hero .hero-bottom{bottom:25px;flex-direction:row;align-items:end;justify-content:space-between;gap:20px}
+  .page-hero .hero-bottom .arrow-round{flex-shrink:0}
+
+  /* Hero arka plan kolajları dar ekranda metnin tam altına düşer — karart */
+  .hero-media:after{background:linear-gradient(90deg,#07090cd9,#07090c73),linear-gradient(0deg,#07090cdd,transparent 60%,#07090c55)}
+  .page-hero .hero-media:after{background:linear-gradient(90deg,#07090ddd,#080a0e99),linear-gradient(0deg,#0b0f15,transparent 62%,#0b0f1599)}
+
+  /* Showcase/proje görselleri: kenarlardan kırpmak yerine tam kompozisyon */
+  .full-image{height:auto;aspect-ratio:3/2}
+  .project-card .project-image,.works-grid .project-card .project-image,.works-grid .project-card:nth-child(3n) .project-image{height:auto;aspect-ratio:6/5}
+
+  /* Bölüm etiket satırı sağda kesilmesin */
+  .section-label{flex-wrap:wrap;row-gap:8px}
+
+  /* WhatsApp balonu form CTA'sının üstüne binmesin */
+  .form-actions{padding-right:64px}
 }
 @media (max-width: 400px) {
   .hero{min-height:760px}
