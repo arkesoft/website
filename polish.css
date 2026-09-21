@@ -205,3 +205,40 @@ body{font-size:16px;line-height:1.7}
 .footer-nav a{font-size:13px}
 .footer-side p{font-size:13px;line-height:1.8}
 .footer-bottom{font-size:10.5px;letter-spacing:1.2px}
+
+/* ===================== MOBİL DÜZELTME KATMANI ===================== */
+@media (max-width: 760px) {
+  /* Hero: içerik ve alt şerit çakışmasın — alt şerit dikey istiflenir */
+  .hero{min-height:820px}
+  .hero-content{top:auto;bottom:190px}
+  .hero-description{font-size:15px;max-width:100%}
+  .hero-bottom{bottom:20px;flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-controls{width:100%;justify-content:space-between}
+  .hero-caption{max-width:100%}
+  .outline-link{width:100%;justify-content:space-between;margin-top:24px}
+
+  /* Disiplin şeridi: sıkışık 3 sütun yerine dokunmatik dostu liste */
+  .discipline-strip{display:grid;grid-template-columns:1fr;gap:0;margin-top:34px}
+  .discipline-strip a{display:flex;justify-content:space-between;align-items:center;padding:15px 2px;border-bottom:1px solid var(--line);font-size:15px}
+  .discipline-strip a:first-child{border-top:1px solid var(--line)}
+
+  /* Kartlar ve listeler nefes alsın */
+  .project-grid{gap:40px}
+  .expertise-list a{padding:18px 0}
+  .faq-list summary{font-size:15.5px;padding:22px 0;line-height:1.5}
+
+  /* Form: tek sütun seçim kutuları */
+  .choice-grid{grid-template-columns:1fr}
+
+  /* Footer düzeni */
+  .footer-nav{gap:14px 24px}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:10px}
+
+  /* Sahne görselleri mobilde kırpılınca ana pencereyi ortala */
+  .hero-media img{object-position:60% center}
+}
+@media (max-width: 400px) {
+  .hero{min-height:760px}
+  .hero-content{bottom:180px}
+  h1{letter-spacing:-.04em}
+}
