@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+<defs>
+<radialGradient id="bg" cx="30%" cy="18%" r="120%">
+  <stop offset="0" stop-color="#182337"/>
+  <stop offset="45%" stop-color="#101827"/>
+  <stop offset="100%" stop-color="#0b111c"/>
+</radialGradient>
+<linearGradient id="steelline" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0" stop-color="#6f8faf" stop-opacity="0"/>
+  <stop offset="0.5" stop-color="#9cc0e6"/>
+  <stop offset="1" stop-color="#6f8faf" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="chartfill" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#6f8faf" stop-opacity="0.35"/>
+  <stop offset="1" stop-color="#6f8faf" stop-opacity="0"/>
+</linearGradient>
+<filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur stdDeviation="14"/>
+</filter>
+<filter id="soft28" x="-80%" y="-80%" width="260%" height="260%">
+  <feGaussianBlur stdDeviation="28"/>
+</filter>
+<filter id="grain">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+  <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.02 0"/>
+  <feComposite operator="over" in2="SourceGraphic"/>
+</filter>
+<pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+  <path d="M64 0H0V64" fill="none" stroke="#2a3852" stroke-opacity="0.35" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="1536" height="1024" fill="url(#bg)"/>
+<rect width="1536" height="1024" fill="url(#grid)" opacity="0.5"/>
+<radialGradient id="orb4"><stop offset="0" stop-color="#6f8faf" stop-opacity="0.1"/><stop offset="1" stop-color="#6f8faf" stop-opacity="0"/></radialGradient><circle cx="500" cy="380" r="384" fill="url(#orb4)"/><g transform="translate(430 200)"><rect width="294.40000000000003" height="607.2" rx="44.160000000000004" fill="#0d1522" stroke="#26334a" stroke-width="2"/><rect x="9.200000000000001" y="9.200000000000001" width="276.00000000000006" height="588.8000000000001" rx="36.800000000000004" fill="#131c2b"/><rect x="110.4" y="20.240000000000002" width="73.60000000000001" height="9.200000000000001" rx="4.6000000000000005" fill="#0d1522"/><rect x="27.6" y="82.8" width="239.20000000000005" height="73.60000000000001" rx="11.040000000000001" fill="#0f1725" stroke="#26334a" stroke-opacity="0.6"/><rect x="27.6" y="174.8" width="239.20000000000005" height="73.60000000000001" rx="11.040000000000001" fill="#0f1725" stroke="#26334a" stroke-opacity="0.6"/><rect x="27.6" y="266.8" width="239.20000000000005" height="73.60000000000001" rx="11.040000000000001" fill="#0f1725" stroke="#26334a" stroke-opacity="0.6"/><rect x="27.6" y="358.8" width="239.20000000000005" height="73.60000000000001" rx="11.040000000000001" fill="#0f1725" stroke="#26334a" stroke-opacity="0.6"/><rect x="27.6" y="450.8" width="239.20000000000005" height="73.60000000000001" rx="11.040000000000001" fill="#0f1725" stroke="#26334a" stroke-opacity="0.6"/></g><g transform="translate(640 150)"><rect width="339.20000000000005" height="699.6" rx="50.88" fill="#0d1522" stroke="#26334a" stroke-width="2"/><rect x="10.600000000000001" y="10.600000000000001" width="318.00000000000006" height="678.4" rx="42.400000000000006" fill="#131c2b"/><rect x="127.20000000000002" y="23.32" width="84.80000000000001" height="10.600000000000001" rx="5.300000000000001" fill="#0d1522"/><text x="36.04" y="97.52000000000001" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="15.9" fill="#4d5d75">Merhaba,</text><text x="36.04" y="131.44" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="23.32" fill="#f5f3ee">Bugünün özeti</text><rect x="36.04" y="159.0" width="267.12000000000006" height="127.2" rx="14.84" fill="#6f8faf" fill-opacity="0.16" stroke="#6f8faf" stroke-opacity="0.45"/><text x="55.120000000000005" y="197.16" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="12.72" letter-spacing="2" fill="#4d5d75">AKTİF SİPARİŞ</text><text x="55.120000000000005" y="248.04000000000002" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="36.04" fill="#f5f3ee">247</text><rect x="195.04" y="245.92" width="10.600000000000001" height="17" rx="3.18" fill="#9cc0e6" fill-opacity="0.8"/><rect x="214.12" y="233.2" width="10.600000000000001" height="30" rx="3.18" fill="#9cc0e6" fill-opacity="0.8"/><rect x="233.2" y="241.68" width="10.600000000000001" height="21" rx="3.18" fill="#9cc0e6" fill-opacity="0.8"/><rect x="252.28" y="226.83999999999997" width="10.600000000000001" height="36" rx="3.18" fill="#9cc0e6" fill-opacity="0.8"/><rect x="271.36" y="235.32" width="10.600000000000001" height="28" rx="3.18" fill="#9cc0e6" fill-opacity="0.8"/><rect x="290.44" y="222.6" width="10.600000000000001" height="40" rx="3.18" fill="#9cc0e6" fill-opacity="0.8"/><rect x="36.04" y="313.76" width="267.12000000000006" height="61.480000000000004" rx="12.72" fill="#0f1725" stroke="#26334a"/><circle cx="66.78" cy="344.5" r="14.84" fill="#33415a"/><rect x="95.4" y="332.84" width="127.2" height="8.48" rx="4.24" fill="#33415a"/><rect x="95.4" y="349.8" width="84.80000000000001" height="7.42" rx="3.71" fill="#22304a"/><circle cx="260.76000000000005" cy="344.5" r="4.24" fill="#7fc7d9"/><rect x="36.04" y="392.20000000000005" width="267.12000000000006" height="61.480000000000004" rx="12.72" fill="#0f1725" stroke="#26334a"/><circle cx="66.78" cy="422.94000000000005" r="14.84" fill="#33415a"/><rect x="95.4" y="411.28000000000003" width="127.2" height="8.48" rx="4.24" fill="#33415a"/><rect x="95.4" y="428.24000000000007" width="84.80000000000001" height="7.42" rx="3.71" fill="#22304a"/><circle cx="260.76000000000005" cy="422.94000000000005" r="4.24" fill="#7fc7d9"/><rect x="36.04" y="470.64000000000004" width="267.12000000000006" height="61.480000000000004" rx="12.72" fill="#0f1725" stroke="#26334a"/><circle cx="66.78" cy="501.38000000000005" r="14.84" fill="#33415a"/><rect x="95.4" y="489.72" width="127.2" height="8.48" rx="4.24" fill="#33415a"/><rect x="95.4" y="506.68000000000006" width="84.80000000000001" height="7.42" rx="3.71" fill="#22304a"/><circle cx="260.76000000000005" cy="501.38000000000005" r="4.24" fill="#7fc7d9"/><line x1="21.200000000000003" y1="621.16" x2="318.00000000000006" y2="621.16" stroke="#26334a"/><rect x="61.480000000000004" y="638.12" width="23.32" height="23.32" rx="6.36" fill="#9cc0e6"/><rect x="131.44" y="638.12" width="23.32" height="23.32" rx="6.36" fill="#33415a"/><rect x="201.4" y="638.12" width="23.32" height="23.32" rx="6.36" fill="#33415a"/><rect x="271.36" y="638.12" width="23.32" height="23.32" rx="6.36" fill="#33415a"/></g><rect width="1536" height="1024" fill="none"/>
+<radialGradient id="vig" cx="50%" cy="50%" r="75%">
+  <stop offset="60%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#05080f" stop-opacity="0.55"/>
+</radialGradient>
+<rect width="1536" height="1024" fill="url(#vig)"/>
+<rect width="1536" height="1024" fill="#fff" opacity="0.012"/>
+</svg>

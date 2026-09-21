@@ -1,0 +1,11 @@
+{
+  "name": "arkesoft",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static bilingual agency website. No runtime dependencies.",
+  "scripts": {
+    "test": "node tests/check.mjs",
+    "test:browser": "node tests/browser.cjs"
+  },
+  "devDependencies": { "playwright": "1.59.1" }
+}
