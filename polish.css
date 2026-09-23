@@ -12,7 +12,7 @@
 .hero-media:after{background:linear-gradient(90deg,#07090cc9,transparent 80%),linear-gradient(0deg,#080909bd,transparent 30%,#07090d35)}
 .hero-content{max-width:900px}
 .intro-art:before{content:'';position:absolute;width:60vmin;height:60vmin;border:1px solid #809cbb16;border-radius:50%;background:radial-gradient(ellipse,#809cbb08,transparent 70%);animation:halo-in 2.5s ease both;z-index:-1}
-.intro-art:after{content:'';position:absolute;inset:0;background:linear-gradient(112deg,transparent 43%,#f6e6cc06 49%,transparent 54%);background-size:250% 100%;animation:metal-sweep 2.8s ease both;pointer-events:none}
+.intro-art:after{content:'';position:absolute;inset:0;background:linear-gradient(112deg,transparent 43%,#cfe0f006 49%,transparent 54%);background-size:250% 100%;animation:metal-sweep 2.8s ease both;pointer-events:none}
 .intro-montage img{transition:opacity .5s ease,transform 2s cubic-bezier(.2,.65,.3,1);filter:brightness(.75)}
 .intro-montage:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#080908bb,transparent 65%);pointer-events:none}
 .intro-montage-label{z-index:6;color:#f8f6f0}
@@ -147,8 +147,8 @@ body:not(.js) .project-search{display:none}
    yükseltildi. polish.css en son yüklendiği için buradaki kurallar
    önceki eşdeğerlerini geçersiz kılar. */
 
-:root{--muted:#aab4c3}
-html[data-theme=light]{--muted:#4a5462}
+:root{--muted:#b6c0cd}
+html[data-theme=light]{--muted:#46505f}
 body{font-size:16px;line-height:1.7}
 
 /* Etiketler ve navigasyon */
@@ -168,7 +168,7 @@ body{font-size:16px;line-height:1.7}
 .text-link{font-size:12.5px;letter-spacing:1.2px;padding:14px 0}
 
 /* Gövde metinleri — soluk griden parlak kreme */
-.hero-description{font-size:16px;line-height:1.8;color:#e9e6df;max-width:460px}
+.hero-description{font-size:16px;line-height:1.8;color:#e8eef5;max-width:460px}
 .service-intro p{font-size:16.5px;line-height:1.85;color:var(--paper)}
 .digital-intro p{font-size:16.5px;line-height:1.85;color:var(--paper)}
 .statement-copy p{font-size:15.5px;line-height:1.85;color:var(--paper);max-width:430px}
@@ -265,3 +265,35 @@ body{font-size:16px;line-height:1.7}
   .hero-content{bottom:180px}
   h1{letter-spacing:-.04em}
 }
+
+/* ============ MARKA & KOYU TEMA KATMANI ============
+   Marka: logodaki A beyazı (#f5f3ee) + S bebek mavisi (#6f8faf).
+   Koyu temada açık (krem) bölüm kalmaz; krem yüzeyler yalnızca açık temada. */
+[data-theme=dark] .process{background:#111826;color:var(--white)}
+[data-theme=dark] .process .section-label{color:var(--muted)}
+[data-theme=dark] .process-step{border-top-color:#ffffff26}
+[data-theme=dark] .process-step>.eyebrow{color:#9eb8d6}
+[data-theme=dark] .process-step h3{color:var(--white)}
+[data-theme=dark] .process-step p{color:var(--muted)}
+[data-theme=dark] .process .deliverables span{color:#c9d8e6;border-color:#ffffff2e}
+[data-theme=dark] .footer-cta{background:#111826;color:var(--white)}
+[data-theme=dark] .footer-cta .eyebrow{color:#9eb8d6}
+[data-theme=dark] .footer-cta>a{border-color:#ffffff45}
+[data-theme=dark] .footer-cta>a:hover{background:var(--white);color:#0c1017}
+[data-theme=dark] .prototype-section{background:#0e1420;color:var(--white)}
+[data-theme=dark] .prototype-section .section-label{color:var(--muted)}
+[data-theme=dark] .prototype{background:#141c2a;border-color:#ffffff22;box-shadow:0 35px 70px -40px #00000088}
+[data-theme=dark] .prototype-bar{border-bottom-color:#ffffff1f}
+[data-theme=dark] .prototype-bar>span:first-child{color:#8fa3b8}
+[data-theme=dark] .prototype-copy>.eyebrow{color:#9eb8d6}
+[data-theme=dark] .prototype-copy p{color:var(--muted)}
+[data-theme=dark] .prototype-cta{border-bottom-color:#ffffff40}
+[data-theme=dark] .prototype figcaption{color:#97a3b2;border-top-color:#ffffff1f}
+
+/* Okunabilirlik: en küçük etkileşimli/bilgi metinleri için tabanlar */
+.filter{font-size:11.5px}
+.slide-dot{font-size:10px}
+.form-back{font-size:12px}
+.footer-bottom button{font-size:10.5px}
+.portfolio-status{font-size:10.5px}
+.project-search>span{font-size:9.5px}
