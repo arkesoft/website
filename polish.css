@@ -64,9 +64,9 @@
 .portfolio-principles article>span{font-size:8px;letter-spacing:1.5px;color:var(--bronze)}
 .portfolio-principles h3{font-size:25px;letter-spacing:-.9px;line-height:1.2;margin:22px 0 16px}
 .portfolio-principles p{font-size:12px;color:var(--muted);line-height:1.9}
-.prototype-section{background:#d9d9d0;color:#1d2636}
+.prototype-section{background:#e3e8ef;color:#1b2433}
 .prototype-section .section-label{color:#585d65;font-size:9px}
-.prototype{margin:0;border:1px solid #858b9473;background:#f3f1e9;box-shadow:0 35px 70px -40px #18202e66}
+.prototype{margin:0;border:1px solid #1b24332e;background:#faf9f5;box-shadow:0 35px 70px -40px #1b243340}
 .prototype-bar{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:16px 24px;border-bottom:1px solid #1d273725;font-size:8px;letter-spacing:1.5px}
 .prototype-bar>span:first-child{font-size:6px;letter-spacing:4px;color:#8e939b}
 .prototype-layout{display:grid;grid-template-columns:1fr 1fr;min-height:510px}
@@ -88,7 +88,7 @@
 .case-intent>.eyebrow{color:var(--bronze)}
 .case-intent h2{margin:25px 0}
 [data-theme=light] .deliverables span{color:#354663}
-[data-theme=light] .slide-dot[aria-pressed=true]:after{background:#f8f6f0}
+
 [data-theme=light] .intro{color:#f8f6f0}
 body:not(.js) .immersive-scroll{height:auto;--image-inset:0%;--image-scale:1;--caption-opacity:1}
 body:not(.js) .immersive-sticky{position:relative;height:85svh}
@@ -123,9 +123,9 @@ body:not(.js) .project-search{display:none}
 [data-theme=light] .blog-article p{color:#242e3f}
 
 /* WhatsApp sabit butonu */
-.wa-float{position:fixed;right:26px;bottom:26px;z-index:60;width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 32px -10px rgba(0,0,0,.55);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.wa-float{position:fixed;right:26px;bottom:26px;z-index:60;width:56px;height:56px;border-radius:50%;background:#1b2433;color:#f5f3ee;border:1px solid #ffffff2e;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 32px -10px rgba(0,0,0,.55);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .wa-float svg{width:29px;height:29px;display:block}
-.wa-float:hover,.wa-float:focus-visible{transform:translateY(-3px) scale(1.06);box-shadow:0 20px 40px -12px rgba(37,211,102,.45)}
+.wa-float:hover,.wa-float:focus-visible{transform:translateY(-3px) scale(1.06);box-shadow:0 20px 40px -12px rgba(111,143,175,.55)}
 @media (max-width:760px){.wa-float{right:16px;bottom:16px;width:52px;height:52px}.wa-float svg{width:27px;height:27px}}
 
 /* Premium imleç */
@@ -162,8 +162,8 @@ body{font-size:16px;line-height:1.7}
 .header-contact:hover,.header-contact:focus-visible{background:var(--white);color:#0c1017;border-color:var(--white)}
 [data-theme=light] .header-contact:hover{color:#f5f3ee;background:#1b2433}
 [data-theme=light] .header-contact{border-color:#1b243347}
-[data-theme=light] body:has(.hero)>.header .header-contact{border-color:#ffffff55}
-[data-theme=light] body:has(.hero)>.header .header-contact:hover{background:#f5f3ee;color:#1b2433;border-color:#f5f3ee}
+
+
 .outline-link{font-size:12.5px;letter-spacing:1.4px;padding:19px 26px;border-color:#ffffffa6;background:rgba(111,143,175,.10)}
 .text-link{font-size:12.5px;letter-spacing:1.2px;padding:14px 0}
 
@@ -297,3 +297,93 @@ body{font-size:16px;line-height:1.7}
 .footer-bottom button{font-size:10.5px}
 .portfolio-status{font-size:10.5px}
 .project-search>span{font-size:9.5px}
+
+/* ===================== AÇIK TEMA KATMANI =====================
+   Sprint S1-S6/S9/S12: açık tema yüzey token sistemi. Kural: açık temada
+   sayfa başına en fazla BİR bilinçli koyu vitrin (index: immersive-scroll);
+   nötr yüzeylerde mavi esinti (B kanalı >= G), yeşilimsi gri yasak. */
+html[data-theme=light]{--surface-0:#f5f3ee;--surface-1:#efede6;--surface-2:#e8ebf0;--surface-tint:#e3e8ef;--ink:#1b2433;--ink-2:#46505f}
+
+/* — Hero'lar: koyu sahne yerine soluk sanat + krem gradyan — */
+[data-theme=light] .hero,[data-theme=light] .page-hero{background:var(--surface-2);color:var(--ink)}
+[data-theme=light] .hero-slide img,[data-theme=light] .hero-slide video,[data-theme=light] .page-hero .hero-media img{opacity:.15;filter:saturate(.75)}
+[data-theme=light] .hero-media:after,[data-theme=light] .page-hero .hero-media:after{background:linear-gradient(90deg,#f5f3eef2,#f5f3eeb8 55%,#f5f3ee7a)}
+[data-theme=light] .hero-content>.eyebrow{color:#3d5b80}
+[data-theme=light] .hero-description{color:#3a4453}
+[data-theme=light] .hero-caption{color:var(--ink-2)}
+[data-theme=light] .hero-caption:before{background:#3d5b80}
+[data-theme=light] :is(.hero,.page-hero) .outline-link{border-color:#1b243352;color:var(--ink);background:rgba(111,143,175,.12)}
+[data-theme=light] :is(.hero,.page-hero) .outline-link:hover{background:var(--ink);color:#f5f3ee;border-color:var(--ink)}
+[data-theme=light] .slide-dot{color:var(--ink-2)}
+[data-theme=light] .slide-dot:after{background:#1b243330}
+[data-theme=light] .slide-dot[aria-pressed=true]:after{background:var(--ink)}
+[data-theme=light] .video-toggle{border-color:#1b243345;color:var(--ink)}
+[data-theme=light] :is(.hero,.page-hero,.film-section,.footer-cta) .arrow-round{border-color:#1b243345;color:var(--ink)}
+[data-theme=light] .breadcrumbs{color:var(--ink-2)}
+[data-theme=light] .breadcrumbs a{color:#5b6774}
+
+/* — Uzmanlık sahnesi: tamamen açık, kirli gradyan yok — */
+[data-theme=light] .expertise-scene{background:var(--surface-tint);color:var(--ink)}
+[data-theme=light] .expertise-scene:after{background:linear-gradient(0deg,#e3e8ef 0,#e3e8ef00 140px),linear-gradient(180deg,#e3e8ef 0,#e3e8ef00 110px),linear-gradient(90deg,#e3e8eff5,#e3e8efc4 55%,#e3e8ef5c)}
+[data-theme=light] .expertise-bg img{opacity:.14;filter:saturate(.75)}
+[data-theme=light] .expertise-copy>.eyebrow{color:#3d5b80}
+[data-theme=light] .expertise-list a{border-bottom-color:#1b243329}
+[data-theme=light] .expertise-list a>span:first-child{color:var(--ink-2)}
+[data-theme=light] .expertise-list a>span:last-child{opacity:.7}
+
+/* — Bantlar: mavi esintili yüzeyler — */
+[data-theme=light] .digital-journey{background:var(--surface-tint)}
+[data-theme=light] .partnership{background:var(--surface-1)}
+[data-theme=light] .process{background:var(--surface-1);color:var(--ink)}
+[data-theme=light] .process .section-label{color:var(--ink-2)}
+[data-theme=light] .process-step>.eyebrow{color:#3d5b80}
+[data-theme=light] .process-step p{color:#4c5258}
+[data-theme=light] .footer-cta{background:var(--surface-2);color:var(--ink)}
+[data-theme=light] .footer-cta .eyebrow{color:#3d5b80}
+[data-theme=light] .footer-cta>a{border-color:#1b243347}
+[data-theme=light] .case-disclaimer{background:var(--surface-2);color:var(--ink-2)}
+[data-theme=light] .contact-page{background:radial-gradient(ellipse at 0 60%,#dfe7f0,transparent 65%)}
+[data-theme=light] .form-progress span{background:#1b243324}
+
+/* — Film bölümü: soluk sahne, koyu metin — */
+[data-theme=light] .film-section{background:var(--surface-tint);color:var(--ink)}
+[data-theme=light] .film-section>img,[data-theme=light] .film-section>video{opacity:.1;filter:saturate(.8)}
+[data-theme=light] .film-copy{color:var(--ink)}
+[data-theme=light] .film-pause{color:var(--ink);border-color:#1b243345}
+
+/* — Bilinçli gece vitrinleri: keskin kenar, krem paspartu — */
+[data-theme=light] .immersive-sticky{background:var(--surface-0)}
+[data-theme=light] .portfolio-feature{background:var(--surface-tint);color:var(--ink)}
+[data-theme=light] .portfolio-feature:after{background:linear-gradient(90deg,#e3e8eff0,transparent 85%)}
+[data-theme=light] .portfolio-feature>img{opacity:.22;filter:saturate(.75)}
+[data-theme=light] .portfolio-feature .eyebrow{color:#3d5b80}
+[data-theme=light] .portfolio-feature p{color:var(--ink-2)}
+
+/* — Koyu mockuplara premium paspartu — */
+[data-theme=light] .project-card .project-image,[data-theme=light] .gallery-card>img,[data-theme=light] .full-image{box-shadow:inset 0 0 0 1px #1b24331f,0 30px 60px -35px #1b243340}
+[data-theme=light] .project-card .project-image{background:#dfe3ea}
+[data-theme=light] .browser-object{border-color:#1b24332e;box-shadow:0 45px 70px -45px #1b243359}
+[data-theme=light] .project-sector{background:#ffffffd9;color:#1b2433}
+[data-theme=light] .full-image .image-label{background:#ffffffcc;color:#1b2433;backdrop-filter:blur(8px)}
+
+/* — WCAG: form kontrol sınırları ve hata rengi — */
+[data-theme=light] .choice span{border-color:#6e7683}
+[data-theme=light] .form-field input,[data-theme=light] .form-field select,[data-theme=light] .form-field textarea{border-color:#6e7683}
+[data-theme=light] .form-error{color:#b04a3a}
+[data-theme=dark] .choice span{border-color:#55688a}
+[data-theme=dark] .form-field input,[data-theme=dark] .form-field select,[data-theme=dark] .form-field textarea{border-color:#55688a}
+
+/* — Erişilebilirlik yardımcıları (S11 markup'ı için) — */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+fieldset.choice-grid{border:0;padding:0;margin:0;min-width:0}
+
+/* — Mikro tipografi tabanı ve dokunma hedefleri (S12) — */
+.journey-bottom .eyebrow,.gallery-card>div>span,.project-info>span,.immersive-index,.menu-foot,.portfolio-intro>.eyebrow,.portfolio-principles article>span,.case-blueprint .eyebrow{font-size:10.5px}
+.code-signature{font-size:7.5px}
+.footer-bottom button{min-height:24px;padding:4px 0}
+.filter{min-height:40px}
+@media (max-width:760px){.code-signature{font-size:7px}}
+@media (max-width:760px){.contact-heading{position:static}}
+/* İletişim: form biter bitmez bölüm biter — kopuk boşluk ve yüzen buton hissi kalmaz */
+.contact-page{min-height:0}
+[data-theme=light] .contact-image{box-shadow:inset 0 0 0 1px #1b24331f,0 30px 60px -35px #1b243340}

@@ -10,7 +10,9 @@
       button.setAttribute('aria-pressed', String(theme === 'light'));
       button.setAttribute('aria-label', t(theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç'));
     });
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f5f3ee' : '#0c1017');
+    let themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!themeMeta) { themeMeta = document.createElement('meta'); themeMeta.name = 'theme-color'; document.head.append(themeMeta); }
+    themeMeta.setAttribute('content', theme === 'light' ? '#f5f3ee' : '#0c1017');
   }
   themeButtons.forEach(button => button.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark')));
   setTheme(root.dataset.theme);

@@ -724,6 +724,8 @@ window.ARKESOFT_LOCALES.en = {
   "Önce tanışmak isterseniz": "If you would rather meet first",
   "Kurulum ve teklif kontrol listesi arayüzü": "Setup and quote checklist interface",
   "Teklif talebi, adım 1 / 3": "Quote request, step 1 / 3",
+  "Teklif talebi, adım 2 / 3": "Quote request, step 2 / 3",
+  "Teklif talebi, adım 3 / 3": "Quote request, step 3 / 3",
   "01 / KAPSAM": "01 / SCOPE",
   "Neyin teklifini hazırlayalım?": "What should we quote?",
   "Öngördüğünüz bütçe aralığı": "Your anticipated budget range",

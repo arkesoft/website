@@ -724,6 +724,8 @@ window.ARKESOFT_LOCALES.tr = {
   "Önce tanışmak isterseniz": "Önce tanışmak isterseniz",
   "Kurulum ve teklif kontrol listesi arayüzü": "Kurulum ve teklif kontrol listesi arayüzü",
   "Teklif talebi, adım 1 / 3": "Teklif talebi, adım 1 / 3",
+  "Teklif talebi, adım 2 / 3": "Teklif talebi, adım 2 / 3",
+  "Teklif talebi, adım 3 / 3": "Teklif talebi, adım 3 / 3",
   "01 / KAPSAM": "01 / KAPSAM",
   "Neyin teklifini hazırlayalım?": "Neyin teklifini hazırlayalım?",
   "Öngördüğünüz bütçe aralığı": "Öngördüğünüz bütçe aralığı",

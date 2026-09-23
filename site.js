@@ -269,15 +269,34 @@
     let step = 0;
     const steps = $$('[data-step]', form);
     const error = $('#form-error');
+    const progress = $('.form-progress', form);
+    const progressLabel = progress?.dataset.progressLabel || 'Proje briefi';
+    const invalidFields = new Set();
+    function clearInvalid() {
+      invalidFields.forEach(field => { field.removeAttribute('aria-invalid'); field.removeAttribute('aria-describedby'); });
+      invalidFields.clear();
+    }
+    function markInvalid(field) {
+      field.setAttribute('aria-invalid', 'true');
+      field.setAttribute('aria-describedby', 'form-error');
+      invalidFields.add(field);
+    }
     const selectedServices = () => $$('input[name=service]:checked', form).map(input => t(serviceNames[input.value]));
     function validate() {
       error.textContent = '';
-      if (step === 0 && !selectedServices().length) { error.textContent = 'Lütfen en az bir hizmet seçin.'; return false; }
+      clearInvalid();
+      if (step === 0 && !selectedServices().length) {
+        error.textContent = 'Lütfen en az bir hizmet seçin.';
+        const firstChoice = $('input[name=service]', form);
+        if (firstChoice) { markInvalid(firstChoice); firstChoice.focus(); }
+        return false;
+      }
       if (step === 1) {
         for (const name of ['name', 'email', 'message']) {
           const input = form.elements[name];
           if (!input.value.trim() || !input.checkValidity()) {
             error.textContent = name === 'email' ? 'Geçerli bir e-posta adresi yazın.' : 'Lütfen adınızı ve proje fikrinizi tamamlayın.';
+            markInvalid(input);
             input.focus(); return false;
           }
         }
@@ -291,8 +310,10 @@
       step = next;
       steps.forEach((section, i) => { section.hidden = i !== step; });
       $$('.form-progress span', form).forEach((bar, i) => bar.classList.toggle('active', i <= step));
-      $('.form-progress', form).setAttribute('aria-label', `Proje briefi, adım ${step + 1} / 3`);
+      progress?.setAttribute('aria-valuenow', String(step + 1));
+      progress?.setAttribute('aria-label', `${progressLabel}, adım ${step + 1} / 3`);
       error.textContent = '';
+      clearInvalid();
       if (step === 2) {
         const summary = $('#brief-summary'); summary.replaceChildren();
         summaryItems().forEach(([label, value]) => {
