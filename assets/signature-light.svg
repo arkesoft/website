@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+<defs>
+<radialGradient id="bg" cx="30%" cy="18%" r="120%">
+  <stop offset="0" stop-color="#f7f5f0"/>
+  <stop offset="45%" stop-color="#eef1f6"/>
+  <stop offset="100%" stop-color="#e4eaf2"/>
+</radialGradient>
+<linearGradient id="steelline" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0" stop-color="#6f8faf" stop-opacity="0"/>
+  <stop offset="0.5" stop-color="#4a6c94"/>
+  <stop offset="1" stop-color="#6f8faf" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="chartfill" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#6f8faf" stop-opacity="0.35"/>
+  <stop offset="1" stop-color="#6f8faf" stop-opacity="0"/>
+</linearGradient>
+<filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur stdDeviation="14"/>
+</filter>
+<filter id="soft28" x="-80%" y="-80%" width="260%" height="260%">
+  <feGaussianBlur stdDeviation="28"/>
+</filter>
+<filter id="grain">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+  <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.02 0"/>
+  <feComposite operator="over" in2="SourceGraphic"/>
+</filter>
+<pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+  <path d="M64 0H0V64" fill="none" stroke="#c9d5e4" stroke-opacity="0.35" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="1536" height="1024" fill="url(#bg)"/>
+<rect width="1536" height="1024" fill="url(#grid)" opacity="0.5"/>
+<radialGradient id="orb9"><stop offset="0" stop-color="#6f8faf" stop-opacity="0.1"/><stop offset="1" stop-color="#6f8faf" stop-opacity="0"/></radialGradient><circle cx="768" cy="512" r="544" fill="url(#orb9)"/><g><rect x="220" y="300" width="640" height="420" rx="14" fill="#ffffff" stroke="#c9d5e4" stroke-width="1.5"/><rect x="220" y="308" width="640" height="44" rx="14" fill="none"/><line x1="220" y1="344" x2="860" y2="344" stroke="#c9d5e4" stroke-width="1"/><circle cx="246" cy="322.0" r="5.5" fill="#c9d5e4"/><circle cx="266" cy="322.0" r="5.5" fill="#c9d5e4"/><circle cx="286" cy="322.0" r="5.5" fill="#6f8faf"/><text x="312" y="326.5" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13.5" letter-spacing="2" fill="#3d5b80">imza.ts</text></g><g><text x="256" y="410" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="19" xml:space="preserve"><tspan fill="#3d5b80">const </tspan><tspan fill="#1b2433">imza </tspan><tspan fill="#1b2433">= </tspan><tspan fill="#3d5b80">await </tspan><tspan fill="#8a6f3f">arkesoft</tspan><tspan fill="#1b2433">.craft({</tspan></text><rect x="250" y="386" width="580" height="34" fill="#ffffff"><animate attributeName="width" values="580;0" dur="0.9s" begin="0.6s" fill="freeze"/></rect></g><g><text x="256" y="450" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="19" xml:space="preserve"><tspan fill="#1b2433">  fikir: </tspan><tspan fill="#4e7a52">'sizin'</tspan><tspan fill="#1b2433">,</tspan></text><rect x="250" y="426" width="580" height="34" fill="#ffffff"><animate attributeName="width" values="580;0" dur="0.9s" begin="1.4s" fill="freeze"/></rect></g><g><text x="256" y="490" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="19" xml:space="preserve"><tspan fill="#1b2433">  işçilik: </tspan><tspan fill="#4e7a52">'bizim'</tspan><tspan fill="#1b2433">,</tspan></text><rect x="250" y="466" width="580" height="34" fill="#ffffff"><animate attributeName="width" values="580;0" dur="0.9s" begin="2.2s" fill="freeze"/></rect></g><g><text x="256" y="530" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="19" xml:space="preserve"><tspan fill="#1b2433">  sonuç: </tspan><tspan fill="#4e7a52">'kalıcı'</tspan><tspan fill="#1b2433">,</tspan></text><rect x="250" y="506" width="580" height="34" fill="#ffffff"><animate attributeName="width" values="580;0" dur="0.9s" begin="3.0000000000000004s" fill="freeze"/></rect></g><g><text x="256" y="570" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="19" xml:space="preserve"><tspan fill="#1b2433">});</tspan></text><rect x="250" y="546" width="580" height="34" fill="#ffffff"><animate attributeName="width" values="580;0" dur="0.9s" begin="3.8000000000000003s" fill="freeze"/></rect></g><rect x="256" y="612" width="12" height="22" fill="#1b2433"><animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/></rect><circle cx="1120" cy="500" r="70" fill="none" stroke="#6f8faf" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="440" stroke-dashoffset="440"><animate attributeName="stroke-dashoffset" values="440;0" dur="3s" begin="0.0s" fill="freeze"/></circle><circle cx="1120" cy="500" r="110" fill="none" stroke="#6f8faf" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="691" stroke-dashoffset="691"><animate attributeName="stroke-dashoffset" values="691;0" dur="4s" begin="0.5s" fill="freeze"/></circle><circle cx="1120" cy="500" r="150" fill="none" stroke="#6f8faf" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="942" stroke-dashoffset="942"><animate attributeName="stroke-dashoffset" values="942;0" dur="5s" begin="1.0s" fill="freeze"/></circle><circle cx="1120" cy="500" r="190" fill="none" stroke="#6f8faf" stroke-opacity="0.19999999999999996" stroke-width="1.5" stroke-dasharray="1193" stroke-dashoffset="1193"><animate attributeName="stroke-dashoffset" values="1193;0" dur="6s" begin="1.5s" fill="freeze"/></circle><text x="1120" y="514" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="40" letter-spacing="6" fill="#1b2433" text-anchor="middle">AS<animate attributeName="opacity" values="0;0;1" dur="2.5s" fill="freeze"/></text><circle cx="1120" cy="500" r="210" fill="none" stroke="#4a6c94" stroke-opacity="0.4"><animate attributeName="r" values="200;240" dur="4s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values="0.4;0" dur="4s" repeatCount="indefinite"/></circle><rect width="1536" height="1024" fill="none"/>
+<radialGradient id="vig" cx="50%" cy="50%" r="75%">
+  <stop offset="60%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#c9d5e4" stop-opacity="0.55"/>
+</radialGradient>
+<rect width="1536" height="1024" fill="url(#vig)"/>
+<rect width="1536" height="1024" fill="#fff" opacity="0.012"/>
+</svg>

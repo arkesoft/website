@@ -254,8 +254,23 @@
     }
   });
 
+  // Açık temada sahne sanatı *-light.svg varyantına döner (ARK-S2-02).
+  // html[data-theme] MutationObserver ile izlenir; toggle nereden tetiklenirse
+  // tetiklensin takas tek noktadan ve idempotent çalışır.
+  function syncThemeArt() {
+    const suffix = document.documentElement.dataset.theme === 'light' ? '-light' : '';
+    $$('.hero-media img, .expertise-bg img, .film-section > img').forEach(img => {
+      const match = img.getAttribute('src')?.match(/^(assets\/[\w-]+?)(-light)?\.svg$/);
+      if (!match) return;
+      const next = `${match[1]}${suffix}.svg`;
+      if (next !== img.getAttribute('src')) img.setAttribute('src', next);
+    });
+  }
+  syncThemeArt();
+  new MutationObserver(syncThemeArt).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   $$('[data-expertise-image]').forEach(link => {
-    const change = () => { const img = $('#expertise-image'); if (img) img.src = `assets/${link.dataset.expertiseImage}`; };
+    const change = () => { const img = $('#expertise-image'); if (img) { img.src = `assets/${link.dataset.expertiseImage}`; syncThemeArt(); } };
     link.addEventListener('mouseenter', change); link.addEventListener('focus', change);
   });
   // The portfolio's search/filter logic lives in experience.js.

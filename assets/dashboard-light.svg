@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" width="1536" height="1024">
+<defs>
+<radialGradient id="bg" cx="30%" cy="18%" r="120%">
+  <stop offset="0" stop-color="#f7f5f0"/>
+  <stop offset="45%" stop-color="#eef1f6"/>
+  <stop offset="100%" stop-color="#e4eaf2"/>
+</radialGradient>
+<linearGradient id="steelline" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0" stop-color="#6f8faf" stop-opacity="0"/>
+  <stop offset="0.5" stop-color="#4a6c94"/>
+  <stop offset="1" stop-color="#6f8faf" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="chartfill" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#6f8faf" stop-opacity="0.35"/>
+  <stop offset="1" stop-color="#6f8faf" stop-opacity="0"/>
+</linearGradient>
+<filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur stdDeviation="14"/>
+</filter>
+<filter id="soft28" x="-80%" y="-80%" width="260%" height="260%">
+  <feGaussianBlur stdDeviation="28"/>
+</filter>
+<filter id="grain">
+  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+  <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.02 0"/>
+  <feComposite operator="over" in2="SourceGraphic"/>
+</filter>
+<pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+  <path d="M64 0H0V64" fill="none" stroke="#c9d5e4" stroke-opacity="0.35" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="1536" height="1024" fill="url(#bg)"/>
+<rect width="1536" height="1024" fill="url(#grid)" opacity="0.5"/>
+<radialGradient id="orb3"><stop offset="0" stop-color="#6f8faf" stop-opacity="0.08800000000000001"/><stop offset="1" stop-color="#6f8faf" stop-opacity="0"/></radialGradient><circle cx="1150" cy="260" r="384" fill="url(#orb3)"/><g><rect x="176" y="132" width="1184" height="760" rx="14" fill="#ffffff" stroke="#c9d5e4" stroke-width="1.5"/><rect x="176" y="140" width="1184" height="44" rx="14" fill="none"/><line x1="176" y1="176" x2="1360" y2="176" stroke="#c9d5e4" stroke-width="1"/><circle cx="202" cy="154.0" r="5.5" fill="#c9d5e4"/><circle cx="222" cy="154.0" r="5.5" fill="#c9d5e4"/><circle cx="242" cy="154.0" r="5.5" fill="#6f8faf"/><text x="268" y="158.5" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13.5" letter-spacing="2" fill="#3d5b80">ORBIT — KONTROL PANELİ</text></g><line x1="408" y1="176" x2="408" y2="892" stroke="#c9d5e4"/><circle cx="220" cy="234" r="4" fill="#d8e1ec"/><text x="238" y="240" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14.5" fill="#3d5b80">Genel bakış</text><rect x="194" y="267" width="196" height="42" rx="9" fill="#6f8faf" fill-opacity="0.14" stroke="#6f8faf" stroke-opacity="0.4"/><circle cx="220" cy="288" r="4" fill="#4a6c94"/><text x="238" y="294" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14.5" fill="#1b2433">Otomasyonlar</text><circle cx="220" cy="342" r="4" fill="#d8e1ec"/><text x="238" y="348" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14.5" fill="#3d5b80">Veri akışı</text><circle cx="220" cy="396" r="4" fill="#d8e1ec"/><text x="238" y="402" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14.5" fill="#3d5b80">Raporlar</text><circle cx="220" cy="450" r="4" fill="#d8e1ec"/><text x="238" y="456" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14.5" fill="#3d5b80">Ekip</text><circle cx="220" cy="504" r="4" fill="#d8e1ec"/><text x="238" y="510" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14.5" fill="#3d5b80">Ayarlar</text><rect x="440" y="208" width="280" height="128" rx="12" fill="#eef1f6" stroke="#c9d5e4"/><text x="462" y="244" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13" letter-spacing="2" fill="#3d5b80">AKTIF AKIŞ</text><text x="462" y="296" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="38" fill="#1b2433">128</text><text x="650" y="296" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14" fill="#2e6b7a">+%12</text><rect x="744" y="208" width="280" height="128" rx="12" fill="#eef1f6" stroke="#c9d5e4"/><text x="766" y="244" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13" letter-spacing="2" fill="#3d5b80">İŞLENEN GÖREV</text><text x="766" y="296" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="38" fill="#1b2433">4.2M</text><text x="954" y="296" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14" fill="#2e6b7a">+%31</text><rect x="1048" y="208" width="280" height="128" rx="12" fill="#eef1f6" stroke="#c9d5e4"/><text x="1070" y="244" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13" letter-spacing="2" fill="#3d5b80">HATA ORANI</text><text x="1070" y="296" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="38" fill="#1b2433">%0.02</text><text x="1258" y="296" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="14" fill="#2e6b7a">−%40</text><rect x="440" y="376" width="864" height="330" rx="12" fill="#eef1f6" stroke="#c9d5e4"/><text x="462" y="414" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13" letter-spacing="2" fill="#3d5b80">HAFTALIK OTOMASYON HACMİ</text><path d="M480 595 L551 570 L623 582 L694 546 L765 561 L836 523 L908 540 L979 504 L1050 517 L1121 481 L1193 494 L1264 469 L1264 676 L480 676 Z" fill="url(#chartfill)"/><path d="M480 595 L551 570 L623 582 L694 546 L765 561 L836 523 L908 540 L979 504 L1050 517 L1121 481 L1193 494 L1264 469" fill="none" stroke="#4a6c94" stroke-width="2.5" filter="url(#soft)" opacity="0.5"/><path d="M480 595 L551 570 L623 582 L694 546 L765 561 L836 523 L908 540 L979 504 L1050 517 L1121 481 L1193 494 L1264 469" fill="none" stroke="#4a6c94" stroke-width="2"/><circle cx="1264" cy="469" r="5" fill="#1b2433"/><rect x="440" y="730" width="420" height="120" rx="12" fill="#eef1f6" stroke="#c9d5e4"/><rect x="470" y="795.0" width="26" height="35" rx="4" fill="#6f8faf" fill-opacity="0.60"/><rect x="524" y="774.0" width="26" height="56" rx="4" fill="#6f8faf" fill-opacity="0.75"/><rect x="578" y="805.5" width="26" height="24" rx="4" fill="#6f8faf" fill-opacity="0.52"/><rect x="632" y="784.5" width="26" height="46" rx="4" fill="#6f8faf" fill-opacity="0.68"/><rect x="686" y="767.0" width="26" height="63" rx="4" fill="#6f8faf" fill-opacity="0.80"/><rect x="740" y="798.5" width="26" height="32" rx="4" fill="#6f8faf" fill-opacity="0.57"/><rect x="794" y="781.0" width="26" height="49" rx="4" fill="#6f8faf" fill-opacity="0.70"/><rect x="884" y="730" width="420" height="120" rx="12" fill="#eef1f6" stroke="#c9d5e4"/><circle cx="910" cy="764" r="4" fill="#2e6b7a"/><text x="928" y="769" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13.5" fill="#3d5b80">sync.stok → tamam</text><circle cx="910" cy="796" r="4" fill="#4a6c94"/><text x="928" y="801" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13.5" fill="#3d5b80">rapor.haftalık → gönderildi</text><circle cx="910" cy="828" r="4" fill="#3d5b80"/><text x="928" y="833" font-family="'SF Mono',Menlo,Consolas,'Liberation Mono',monospace" font-size="13.5" fill="#3d5b80">yedek.gece → planlandı</text><rect width="1536" height="1024" fill="none"/>
+<radialGradient id="vig" cx="50%" cy="50%" r="75%">
+  <stop offset="60%" stop-color="#000" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#c9d5e4" stop-opacity="0.55"/>
+</radialGradient>
+<rect width="1536" height="1024" fill="url(#vig)"/>
+<rect width="1536" height="1024" fill="#fff" opacity="0.012"/>
+</svg>
