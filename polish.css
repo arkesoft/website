@@ -213,6 +213,26 @@ body{font-size:16px;line-height:1.7}
 .footer-side p{font-size:13px;line-height:1.8}
 .footer-bottom{font-size:10.5px;letter-spacing:1.2px}
 
+/* ===================== HERO/HEADER ÇAKIŞMA KATMANI (ARK-S3-01) =====================
+   Alt-ankrajlı .page-hero .hero-content, kopya uzayınca yukarı büyüyüp header (alt 108px)
+   ve breadcrumbs (üst 140px) bölgesine giriyordu. İki adım:
+   1) .hero-snug (otomasyon, sosyal-medya, mobil-uygulama): h1 iki satırda kalacak şekilde
+      bir tık küçük klamp + 1000px içerik genişliği. EN kopya daha uzun olduğundan :lang(en)
+      için ayrı eşik (ölçülen 2 satır sınırları @1000px: TR 126.6px / EN 93.4px).
+   2) Kısa viewport (yükseklik <=885px): tüm .page-hero'larda içerik ankrajı 72px'e iner ve
+      h1 yüksekliğe (svh) göre de küçülür — 1280x720 / 1366x768'de çakışma kalmaz.
+   Tema bağımsız; mobil (<=760px) düzenine dokunmaz. */
+@media (min-width:761px){
+  .page-hero.hero-snug .hero-content{max-width:1000px}
+  .page-hero.hero-snug h1{font-size:clamp(64px,8.4vw,120px)}
+  :lang(en) .page-hero.hero-snug h1{font-size:clamp(56px,6.2vw,88px)}
+}
+@media (min-width:761px) and (max-height:885px){
+  .hero.page-hero .hero-content{bottom:72px}
+  .hero.page-hero h1{font-size:clamp(56px,min(7vw,11.5svh),100px)}
+  :lang(en) .page-hero.hero-snug h1{font-size:clamp(50px,min(6.2vw,10svh),88px)}
+}
+
 /* ===================== MOBİL DÜZELTME KATMANI ===================== */
 @media (max-width: 760px) {
   /* Hero: içerik ve alt şerit çakışmasın — alt şerit dikey istiflenir */
