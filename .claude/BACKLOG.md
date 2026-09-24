@@ -17,3 +17,13 @@ PO notu (Sprint 3): 390x844'te servis hero'larında eyebrow, arka plandaki soluk
 
 ### PO kararı (Sprint 3): EN başlıklarını kısaltma story'si AÇILMAYACAK — dil başına ayrı klamp doğru tipografik çözüm.
 ### PM süreç notu: kök-neden kaynaklı kapsam genişlemeleri sprint ortasında PM mini-onayına sunulacak.
+
+## Sprint 5 adayları (Sprint 4 kapanışından, PO önceliklendirmesiyle)
+1. ARK-S4-13 → S5: AGOBEE referans çubuğu (P1 BAŞI — PO kararı: gerçek referans, ajans algısına en yüksek katkı): `● ● ● agobee.com.tr — canlı` + `teslimat: kurumsal site · e-posta altyapısı · SEO kurulumu`.
+2. ARK-S4-11 → S5: Proof-strip (index hero metrik satırı).
+3. ARK-S4-10 → S5: Kopya kalanı (studyo, iletisim hero + index seçki başlığı).
+4. ARK-S4-12 → S5: Süreç çıktı satırları (mono `çıktı: ...`).
+5. ARK-S5-01 (P1): Mobil pause (Ⅱ) butonu / WhatsApp balonu örtüşmesi (360/390/430px'te örtüşme 0).
+6. ARK-S5-02 (P1): EN görünümde dekoratif SVG/mockup içi TR etiketler (i18n'e bağla veya EN varyant).
+7. ARK-S5-03 (P2): 9px sans mikro kalıntılar ≥10.5px tabana (TR/EN dil anahtarı, MENÜ, expertise numaraları).
+8. ARK-S4-14 (P2): Durum noktası (footer "sistemler çalışıyor", #6f8faf pulse).

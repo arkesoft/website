@@ -138,6 +138,9 @@
 
   // Timed introduction is decorative, never a fake network loading indicator.
   const intro = $('#intro');
+  const INTRO_SEEN_KEY = 'arkesoft-intro-seen';
+  let introSeen = false;
+  try { introSeen = localStorage.getItem(INTRO_SEEN_KEY) === '1'; } catch { /* Optional storage. */ }
   let introTimers = [];
   let introFrame;
   let introPlaying = false;
@@ -156,11 +159,13 @@
     if (instant || motion.matches) clean();
     else {
       intro.classList.add('is-opening');
-      introTimers.push(setTimeout(clean, 1500));
+      // Sprint 4 (C7): panel açılışı .9s'e indi (polish.css) — temizlik de ona eşlenir.
+      introTimers.push(setTimeout(clean, 1000));
     }
   }
   function startIntro() {
     if (!intro || motion.matches || overlay) return false;
+    try { localStorage.setItem(INTRO_SEEN_KEY, '1'); } catch { /* Optional storage. */ }
     clearIntroTimers();
     lockOverlay(intro);
     intro.className = 'intro';
@@ -176,15 +181,15 @@
     intro.tabIndex = -1;
     intro.focus({ preventScroll: true });
     const start = performance.now();
+    // Sprint 4 (C7): açılış ≤2s — 1.9s zaman çizelgesi (CSS animasyon süreleri polish.css'te eşlendi).
     const tick = now => {
-      $('#intro-progress').textContent = `${String(Math.min(100, Math.round((now - start) / 49))).padStart(2, '0')} — 100`;
+      $('#intro-progress').textContent = `${String(Math.min(100, Math.round((now - start) / 19))).padStart(2, '0')} — 100`;
       if (introPlaying) introFrame = requestAnimationFrame(tick);
     };
     introFrame = requestAnimationFrame(tick);
-    introTimers.push(setTimeout(() => intro.classList.add('is-montage'), 2600));
-    introTimers.push(setTimeout(() => { shots[0].classList.remove('active'); shots[1].classList.add('active'); }, 3350));
-    introTimers.push(setTimeout(() => { shots[1].classList.remove('active'); shots[2].classList.add('active'); }, 4100));
-    introTimers.push(setTimeout(() => finishIntro(), 4900));
+    introTimers.push(setTimeout(() => intro.classList.add('is-montage'), 1000));
+    introTimers.push(setTimeout(() => { shots[0].classList.remove('active'); shots[1].classList.add('active'); }, 1450));
+    introTimers.push(setTimeout(() => finishIntro(), 1900));
     return true;
   }
   $('.intro-skip')?.addEventListener('click', () => finishIntro());
@@ -194,6 +199,8 @@
       button.textContent = 'HAREKET AZALTMA TERCİHİ ETKİN';
       return;
     }
+    // Sprint 4 (C7): "AÇILIŞI TEKRAR İZLE" kayıtlı görüldü bilgisini sıfırlar.
+    try { localStorage.removeItem(INTRO_SEEN_KEY); } catch { /* Optional storage. */ }
     if (intro) { window.scrollTo({ top: 0, behavior: 'instant' }); startIntro(); }
     else window.location.href = 'index.html?intro=1';
   }));
@@ -201,7 +208,8 @@
   let arrivedFromSite = false;
   try { arrivedFromSite = !!document.referrer && new URL(document.referrer).origin === location.origin && new URL(document.referrer).pathname.startsWith(new URL('.', location.href).pathname); } catch { /* Treat a missing referrer as a fresh arrival. */ }
   const forceIntro = new URLSearchParams(location.search).has('intro');
-  if (!intro || motion.matches || (arrivedFromSite && navigationType !== 'reload' && !forceIntro)) scheduleCarousel();
+  // Sprint 4 (C7): açılış yalnız ilk ziyarette oynar; tekrar ziyaret localStorage ile atlanır.
+  if (!intro || motion.matches || (!forceIntro && (introSeen || (arrivedFromSite && navigationType !== 'reload')))) scheduleCarousel();
   else startIntro();
 
   // Play video only in view; native controls are available in the film dialog.
@@ -395,6 +403,16 @@
     addEventListener('mousedown', () => html.classList.add('cursor-press'));
     addEventListener('mouseup', () => html.classList.remove('cursor-press'));
     document.addEventListener('mouseleave', () => html.classList.remove('cursor-on'));
+  }
+
+  // Sprint 4 (C5): build etiketi — footer paylaşımlı olduğundan HTML'e dokunmadan JS ile eklenir.
+  const footerBottom = $('.footer-bottom');
+  if (footerBottom) {
+    const buildTag = document.createElement('span');
+    buildTag.className = 'build-tag';
+    buildTag.setAttribute('data-no-translate', '');
+    buildTag.textContent = 'ARKESOFT · v4 · build 2026.09';
+    footerBottom.insertBefore(buildTag, footerBottom.querySelector('[data-replay]'));
   }
 
   $$('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
