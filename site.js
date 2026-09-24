@@ -380,6 +380,12 @@
       x = event.clientX; y = event.clientY;
       dot.style.transform = `translate(${x}px, ${y}px)`;
       html.classList.add('cursor-on');
+      if (event.target.closest('input, textarea, select')) {
+        html.classList.add('cursor-native'); html.classList.remove('cursor-hot');
+      } else {
+        html.classList.remove('cursor-native');
+        html.classList.toggle('cursor-hot', !!event.target.closest('a, button, summary, label, [role=button]'));
+      }
     }, { passive: true });
     (function follow() {
       ringX += (x - ringX) * 0.16; ringY += (y - ringY) * 0.16;
@@ -389,13 +395,6 @@
     addEventListener('mousedown', () => html.classList.add('cursor-press'));
     addEventListener('mouseup', () => html.classList.remove('cursor-press'));
     document.addEventListener('mouseleave', () => html.classList.remove('cursor-on'));
-    document.addEventListener('mouseover', event => {
-      if (event.target.closest('input, textarea, select')) {
-        html.classList.add('cursor-native'); html.classList.remove('cursor-hot'); return;
-      }
-      html.classList.remove('cursor-native');
-      html.classList.toggle('cursor-hot', !!event.target.closest('a, button, summary, label, [role=button]'));
-    });
   }
 
   $$('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
