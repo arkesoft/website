@@ -3,6 +3,10 @@ Options -Indexes -MultiViews
 DirectorySlash Off
 RewriteEngine On
 ErrorDocument 404 /404.html
+# PHP form endpoint for Apache hosting (Hostinger); Vercel/Cloudflare use api/ and functions/.
+RewriteRule ^api/brief$ php/brief.php [END]
+# Never serve secrets or source-control files.
+RewriteRule (^|/)\.(env|git) - [F,L]
 RewriteCond %{THE_REQUEST} "\s/(?:[?\s])"
 RewriteRule ^$ /anasayfa [R=301,L,NE]
 RewriteCond %{THE_REQUEST} "\s/en(?:[?\s])"

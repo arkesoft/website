@@ -6,7 +6,7 @@ Bu proje klasörü yayın köküdür. Frontend statiktir. Kaynak HTML, çeviri s
 
 - Gerçek alan adı: canonical, Open Graph URL/görseli, yapılandırılmış veri ve sitemap şu anda `https://arkesoft.com` kullanır. Yayın alan adıyla eşleştiğini kontrol edin.
 - Gerçek iletişim kanalı: form `/api/brief` üzerinden Resend ile `arkesoft.info@gmail.com` adresine gönderir; servis yapılandırılmamışsa yerel brief dosyası indirir. API anahtarı ve gönderici adresi kaynak koduna yazılmaz.
-- Formu canlıda etkinleştirmek için hosting ortamına `RESEND_API_KEY`, `BRIEF_TO=arkesoft.info@gmail.com`, `BRIEF_FROM="Arkesoft <form@arkesoft.com>"` ve `PUBLIC_ORIGIN=https://arkesoft.com` ekleyin. Resend panelinde `arkesoft.com` alan adını doğrulamadan `onboarding@resend.dev` veya Gmail adresini gönderici olarak kullanmayın.
+- Formu canlıda etkinleştirmek için hosting ortamına `RESEND_API_KEY`, `BRIEF_TO=arkesoft.info@gmail.com`, `BRIEF_FROM="Arkesoft <info@arkesoft.com>"` ve `PUBLIC_ORIGIN=https://arkesoft.com` ekleyin. Resend panelinde `arkesoft.com` alan adını doğrulamadan `onboarding@resend.dev` veya Gmail adresini gönderici olarak kullanmayın.
 - Spam riskini azaltmak için DNS'te Resend'in verdiği SPF ve DKIM kayıtlarını eksiksiz yayınlayın; alan adı için tek bir birleştirilmiş SPF kaydı kullanın ve DMARC'ı önce `p=none` ile izleyip raporlar temizlendikten sonra `p=quarantine`/`p=reject` seviyesine yükseltin. Gmail'e teslimat yine alıcı hesabının filtrelerine bağlıdır; “spam'e hiç düşmez” garantisi verilemez.
 - Endpoint kaynak başına saatlik beş gönderim sınırı, origin kontrolü, e-posta doğrulaması, uzunluk temizleme ve `Reply-To` olarak formdaki e-posta adresini uygular. Resend'in alan adı doğrulaması ve DNS kayıtları yayında ayrıca test edilmelidir.
 - İletişim/veri toplama eklenirse gerçek süreçle uyumlu gizlilik metni ve veri saklama kararları gerekir.
@@ -51,3 +51,10 @@ Kaydırma ele geçirilmez. Tam ekran görselin maskesi ve ölçeği tek requestA
 2. **Form gönderimi:** [resend.com](https://resend.com) hesabı açın, alan adını doğrulayın ve `RESEND_API_KEY`, `BRIEF_TO`, `BRIEF_FROM`, `PUBLIC_ORIGIN` değişkenlerini barındırma ortamına ekleyin. Anahtar veya doğrulanmış gönderici yoksa formlar otomatik olarak dosya-indirme akışına döner; site bozulmaz.
 3. **Search Console:** Yayın sonrası `sitemap.xml` dosyasını Google Search Console'a gönderin.
 4. **Gizlilik tutarlılığı:** Analitik eklerseniz `gizlilik.html` metnini güncellemeyi unutmayın (şu an "analitik yok" diyor).
+
+## Hostinger / Apache + PHP
+
+- Yükleme paketi: `tests/`, `tools/`, `api/`, `functions/`, `*.md`, `package.json`, `vercel.json`, `_redirects`, `_headers`, `routes*.json` ve `.env*` hariç her şey `public_html` içine. Hostinger'ın "site taşıma" aracı değil, Dosya Yöneticisi veya FTP kullanın.
+- Form: `.htaccess`, `/api/brief` isteğini `php/brief.php` dosyasına yönlendirir. Bütün ayar ve şifreler `.env` dosyasındadır. `.env.example` dosyasını `.env` adıyla kopyalayıp doldurun ve **public_html'in bir üst klasörüne** koyun (ör. `domains/arkesoft.com/.env`). Site kökünde bir `.env` de okunur ama önerilmez; `.htaccess` bu dosyaya web erişimini 403 ile engeller. `.env` git'e ve yükleme paketine girmez.
+- Gönderim, hPanel'de açılan alan adı e-posta hesabıyla `smtp.hostinger.com:465` üzerinden yapılır. SMTP şifresi girilmezse PHP `mail()` kullanılır. Ayar dosyası yoksa uç nokta 503 döner ve form dosya indirme akışına düşer.
+- Ülke uç noktası (`/api/country`) Hostinger'da yoktur; dil tarayıcı diline göre seçilir.
