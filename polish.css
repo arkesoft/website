@@ -389,3 +389,11 @@ fieldset.choice-grid{border:0;padding:0;margin:0;min-width:0}
 /* İletişim: form biter bitmez bölüm biter — kopuk boşluk ve yüzen buton hissi kalmaz */
 .contact-page{min-height:0}
 [data-theme=light] .contact-image{box-shadow:inset 0 0 0 1px #1b24331f,0 30px 60px -35px #1b243340}
+
+/* Referanslar bölümü (projeler) */
+.references .image-frame{background:#0a0b0e}
+.references .image-frame a{display:block;height:100%}
+.references .image-frame img{transition:transform 1.2s var(--ease)}
+.references .image-frame:hover img{transform:scale(1.03)}
+.reference-meta{display:flex;gap:28px;margin:20px 0 4px;font-size:10.5px;letter-spacing:1.5px;color:var(--muted)}
+[data-theme=light] .references .image-frame{box-shadow:inset 0 0 0 1px #1b24331f,0 30px 60px -35px #1b243340}

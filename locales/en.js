@@ -859,4 +859,10 @@ window.ARKESOFT_LOCALES.en = {
   "İhtiyacınız kadar.": "As much as you need.",
   "İyi kurulan sistem,": "A well-built system",
   "İçerikleri kim hazırlıyor?": "Who prepares the content?",
+  "REFERANSLARIMIZ": "OUR REFERENCES",
+  "Birlikte": "What we build",
+  "ürettiklerimiz.": "together.",
+  "AGOBEE — “Saf. Doğal.” felsefesiyle üretilen premium kişisel bakım markası. Kurumsal dijital varlığında çözüm ortağıyız.": "AGOBEE — a premium personal care brand built on the “Pure. Natural.” philosophy. We are its partner for the corporate digital presence.",
+  "KİŞİSEL BAKIM / FMCG": "PERSONAL CARE / FMCG",
+  "AGOBEE logosu — altın arı ambleminde premium kişisel bakım markası": "AGOBEE logo — a premium personal care brand with a golden bee emblem",
 };

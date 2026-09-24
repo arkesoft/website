@@ -859,4 +859,10 @@ window.ARKESOFT_LOCALES.tr = {
   "İhtiyacınız kadar.": "İhtiyacınız kadar.",
   "İyi kurulan sistem,": "İyi kurulan sistem,",
   "İçerikleri kim hazırlıyor?": "İçerikleri kim hazırlıyor?",
+  "REFERANSLARIMIZ": "REFERANSLARIMIZ",
+  "Birlikte": "Birlikte",
+  "ürettiklerimiz.": "ürettiklerimiz.",
+  "AGOBEE — “Saf. Doğal.” felsefesiyle üretilen premium kişisel bakım markası. Kurumsal dijital varlığında çözüm ortağıyız.": "AGOBEE — “Saf. Doğal.” felsefesiyle üretilen premium kişisel bakım markası. Kurumsal dijital varlığında çözüm ortağıyız.",
+  "KİŞİSEL BAKIM / FMCG": "KİŞİSEL BAKIM / FMCG",
+  "AGOBEE logosu — altın arı ambleminde premium kişisel bakım markası": "AGOBEE logosu — altın arı ambleminde premium kişisel bakım markası",
 };
