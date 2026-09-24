@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /tests/
+Disallow: /tools/
+Disallow: /api/
 
 Sitemap: https://arkesoft.com/sitemap.xml

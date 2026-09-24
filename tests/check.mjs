@@ -5,6 +5,11 @@ import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pages = fs.readdirSync(root).filter(file => file.endsWith('.html'));
+const routes = JSON.parse(fs.readFileSync(path.join(root, 'routes.json'), 'utf8'));
+const englishRoutes = JSON.parse(fs.readFileSync(path.join(root, 'routes-en.json'), 'utf8'));
+pages.push(...Object.values(englishRoutes).map(route => route.slice(1) + '/index.html'));
+const routeFiles = Object.fromEntries(Object.entries(routes).map(([file, route]) => [route, file]));
+Object.assign(routeFiles, Object.fromEntries(Object.values(englishRoutes).map(route => [route, route.slice(1) + '/index.html'])));
 const archived = /(?:city-(?:film|loop|poster)|interior\.jpg|fashion\.jpg|laptop\.jpg|studio\.jpg|watch\.jpg)/;
 let links = 0;
 for (const page of pages) {
@@ -18,7 +23,8 @@ for (const page of pages) {
   for (const [, value] of html.matchAll(/\b(?:href|src|data-src|data-fallback|data-film-src)="([^"]+)"/g)) {
     if (/^(?:https?:|mailto:|tel:|data:|blob:)/.test(value)) continue;
     const url = new URL(value, `https://local.test/${page}`);
-    const target = path.join(root, decodeURIComponent(url.pathname));
+    const pathname = decodeURIComponent(url.pathname);
+    const target = path.join(root, routeFiles[pathname] || pathname);
     assert(fs.existsSync(target), `${page}: missing ${value}`);
     if (url.hash && target.endsWith('.html')) {
       const other = fs.readFileSync(target, 'utf8');

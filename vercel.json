@@ -3,14 +3,696 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        }
       ]
     },
-    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }] },
-    { "source": "/(.*).html", "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }] }
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/anasayfa",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/en/home",
+      "permanent": true
+    },
+    {
+      "source": "/en/maintenance/index.html",
+      "destination": "/en/maintenance",
+      "permanent": true
+    },
+    {
+      "source": "/bakim-destek.html",
+      "destination": "/bakim-destek",
+      "permanent": true
+    },
+    {
+      "source": "/bakim-destek/index.html",
+      "destination": "/bakim-destek",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog-ecommerce-setup/index.html",
+      "destination": "/en/blog-ecommerce-setup",
+      "permanent": true
+    },
+    {
+      "source": "/blog-eticaret-kurulumu.html",
+      "destination": "/blog-eticaret-kurulumu",
+      "permanent": true
+    },
+    {
+      "source": "/blog-eticaret-kurulumu/index.html",
+      "destination": "/blog-eticaret-kurulumu",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog-automation-benefits/index.html",
+      "destination": "/en/blog-automation-benefits",
+      "permanent": true
+    },
+    {
+      "source": "/blog-otomasyon-kazanci.html",
+      "destination": "/blog-otomasyon-kazanci",
+      "permanent": true
+    },
+    {
+      "source": "/blog-otomasyon-kazanci/index.html",
+      "destination": "/blog-otomasyon-kazanci",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog-web-performance/index.html",
+      "destination": "/en/blog-web-performance",
+      "permanent": true
+    },
+    {
+      "source": "/blog-web-performansi.html",
+      "destination": "/blog-web-performansi",
+      "permanent": true
+    },
+    {
+      "source": "/blog-web-performansi/index.html",
+      "destination": "/blog-web-performansi",
+      "permanent": true
+    },
+    {
+      "source": "/en/blog/index.html",
+      "destination": "/en/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog/index.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/en/privacy/index.html",
+      "destination": "/en/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/gizlilik.html",
+      "destination": "/gizlilik",
+      "permanent": true
+    },
+    {
+      "source": "/gizlilik/index.html",
+      "destination": "/gizlilik",
+      "permanent": true
+    },
+    {
+      "source": "/en/contact/index.html",
+      "destination": "/en/contact",
+      "permanent": true
+    },
+    {
+      "source": "/iletisim.html",
+      "destination": "/iletisim",
+      "permanent": true
+    },
+    {
+      "source": "/iletisim/index.html",
+      "destination": "/iletisim",
+      "permanent": true
+    },
+    {
+      "source": "/en/home/index.html",
+      "destination": "/en/home",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/anasayfa",
+      "permanent": true
+    },
+    {
+      "source": "/anasayfa/index.html",
+      "destination": "/anasayfa",
+      "permanent": true
+    },
+    {
+      "source": "/index",
+      "destination": "/anasayfa",
+      "permanent": true
+    },
+    {
+      "source": "/en/careers/index.html",
+      "destination": "/en/careers",
+      "permanent": true
+    },
+    {
+      "source": "/kariyer.html",
+      "destination": "/kariyer",
+      "permanent": true
+    },
+    {
+      "source": "/kariyer/index.html",
+      "destination": "/kariyer",
+      "permanent": true
+    },
+    {
+      "source": "/en/terms/index.html",
+      "destination": "/en/terms",
+      "permanent": true
+    },
+    {
+      "source": "/kullanim-sartlari.html",
+      "destination": "/kullanim-sartlari",
+      "permanent": true
+    },
+    {
+      "source": "/kullanim-sartlari/index.html",
+      "destination": "/kullanim-sartlari",
+      "permanent": true
+    },
+    {
+      "source": "/en/mobile-apps/index.html",
+      "destination": "/en/mobile-apps",
+      "permanent": true
+    },
+    {
+      "source": "/mobil-uygulama.html",
+      "destination": "/mobil-uygulama",
+      "permanent": true
+    },
+    {
+      "source": "/mobil-uygulama/index.html",
+      "destination": "/mobil-uygulama",
+      "permanent": true
+    },
+    {
+      "source": "/en/automation/index.html",
+      "destination": "/en/automation",
+      "permanent": true
+    },
+    {
+      "source": "/otomasyon.html",
+      "destination": "/otomasyon",
+      "permanent": true
+    },
+    {
+      "source": "/otomasyon/index.html",
+      "destination": "/otomasyon",
+      "permanent": true
+    },
+    {
+      "source": "/en/project-atelier/index.html",
+      "destination": "/en/project-atelier",
+      "permanent": true
+    },
+    {
+      "source": "/proje-atelier.html",
+      "destination": "/proje-atelier",
+      "permanent": true
+    },
+    {
+      "source": "/proje-atelier/index.html",
+      "destination": "/proje-atelier",
+      "permanent": true
+    },
+    {
+      "source": "/en/project-casa/index.html",
+      "destination": "/en/project-casa",
+      "permanent": true
+    },
+    {
+      "source": "/proje-casa.html",
+      "destination": "/proje-casa",
+      "permanent": true
+    },
+    {
+      "source": "/proje-casa/index.html",
+      "destination": "/proje-casa",
+      "permanent": true
+    },
+    {
+      "source": "/en/project-forma/index.html",
+      "destination": "/en/project-forma",
+      "permanent": true
+    },
+    {
+      "source": "/proje-forma.html",
+      "destination": "/proje-forma",
+      "permanent": true
+    },
+    {
+      "source": "/proje-forma/index.html",
+      "destination": "/proje-forma",
+      "permanent": true
+    },
+    {
+      "source": "/en/project-monolith/index.html",
+      "destination": "/en/project-monolith",
+      "permanent": true
+    },
+    {
+      "source": "/proje-monolith.html",
+      "destination": "/proje-monolith",
+      "permanent": true
+    },
+    {
+      "source": "/proje-monolith/index.html",
+      "destination": "/proje-monolith",
+      "permanent": true
+    },
+    {
+      "source": "/en/project-orbit/index.html",
+      "destination": "/en/project-orbit",
+      "permanent": true
+    },
+    {
+      "source": "/proje-orbit.html",
+      "destination": "/proje-orbit",
+      "permanent": true
+    },
+    {
+      "source": "/proje-orbit/index.html",
+      "destination": "/proje-orbit",
+      "permanent": true
+    },
+    {
+      "source": "/en/project-prism/index.html",
+      "destination": "/en/project-prism",
+      "permanent": true
+    },
+    {
+      "source": "/proje-prism.html",
+      "destination": "/proje-prism",
+      "permanent": true
+    },
+    {
+      "source": "/proje-prism/index.html",
+      "destination": "/proje-prism",
+      "permanent": true
+    },
+    {
+      "source": "/en/projects/index.html",
+      "destination": "/en/projects",
+      "permanent": true
+    },
+    {
+      "source": "/projeler.html",
+      "destination": "/projeler",
+      "permanent": true
+    },
+    {
+      "source": "/projeler/index.html",
+      "destination": "/projeler",
+      "permanent": true
+    },
+    {
+      "source": "/en/seo/index.html",
+      "destination": "/en/seo",
+      "permanent": true
+    },
+    {
+      "source": "/seo.html",
+      "destination": "/seo",
+      "permanent": true
+    },
+    {
+      "source": "/seo/index.html",
+      "destination": "/seo",
+      "permanent": true
+    },
+    {
+      "source": "/en/setup/index.html",
+      "destination": "/en/setup",
+      "permanent": true
+    },
+    {
+      "source": "/setup.html",
+      "destination": "/setup",
+      "permanent": true
+    },
+    {
+      "source": "/setup/index.html",
+      "destination": "/setup",
+      "permanent": true
+    },
+    {
+      "source": "/en/social-media/index.html",
+      "destination": "/en/social-media",
+      "permanent": true
+    },
+    {
+      "source": "/sosyal-medya.html",
+      "destination": "/sosyal-medya",
+      "permanent": true
+    },
+    {
+      "source": "/sosyal-medya/index.html",
+      "destination": "/sosyal-medya",
+      "permanent": true
+    },
+    {
+      "source": "/en/faq/index.html",
+      "destination": "/en/faq",
+      "permanent": true
+    },
+    {
+      "source": "/sss.html",
+      "destination": "/sss",
+      "permanent": true
+    },
+    {
+      "source": "/sss/index.html",
+      "destination": "/sss",
+      "permanent": true
+    },
+    {
+      "source": "/en/about/index.html",
+      "destination": "/en/about",
+      "permanent": true
+    },
+    {
+      "source": "/studyo.html",
+      "destination": "/hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/hakkimizda/index.html",
+      "destination": "/hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/studyo",
+      "destination": "/hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/en/quote/index.html",
+      "destination": "/en/quote",
+      "permanent": true
+    },
+    {
+      "source": "/teklif.html",
+      "destination": "/teklif",
+      "permanent": true
+    },
+    {
+      "source": "/teklif/index.html",
+      "destination": "/teklif",
+      "permanent": true
+    },
+    {
+      "source": "/en/technologies/index.html",
+      "destination": "/en/technologies",
+      "permanent": true
+    },
+    {
+      "source": "/teknolojiler.html",
+      "destination": "/teknolojiler",
+      "permanent": true
+    },
+    {
+      "source": "/teknolojiler/index.html",
+      "destination": "/teknolojiler",
+      "permanent": true
+    },
+    {
+      "source": "/en/expertise/index.html",
+      "destination": "/en/expertise",
+      "permanent": true
+    },
+    {
+      "source": "/web-sitesi.html",
+      "destination": "/uzmanlik",
+      "permanent": true
+    },
+    {
+      "source": "/uzmanlik/index.html",
+      "destination": "/uzmanlik",
+      "permanent": true
+    },
+    {
+      "source": "/web-sitesi",
+      "destination": "/uzmanlik",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/en/maintenance",
+      "destination": "/en/maintenance/index.html"
+    },
+    {
+      "source": "/bakim-destek",
+      "destination": "/bakim-destek.html"
+    },
+    {
+      "source": "/en/blog-ecommerce-setup",
+      "destination": "/en/blog-ecommerce-setup/index.html"
+    },
+    {
+      "source": "/blog-eticaret-kurulumu",
+      "destination": "/blog-eticaret-kurulumu.html"
+    },
+    {
+      "source": "/en/blog-automation-benefits",
+      "destination": "/en/blog-automation-benefits/index.html"
+    },
+    {
+      "source": "/blog-otomasyon-kazanci",
+      "destination": "/blog-otomasyon-kazanci.html"
+    },
+    {
+      "source": "/en/blog-web-performance",
+      "destination": "/en/blog-web-performance/index.html"
+    },
+    {
+      "source": "/blog-web-performansi",
+      "destination": "/blog-web-performansi.html"
+    },
+    {
+      "source": "/en/blog",
+      "destination": "/en/blog/index.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/en/privacy",
+      "destination": "/en/privacy/index.html"
+    },
+    {
+      "source": "/gizlilik",
+      "destination": "/gizlilik.html"
+    },
+    {
+      "source": "/en/contact",
+      "destination": "/en/contact/index.html"
+    },
+    {
+      "source": "/iletisim",
+      "destination": "/iletisim.html"
+    },
+    {
+      "source": "/en/home",
+      "destination": "/en/home/index.html"
+    },
+    {
+      "source": "/anasayfa",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/en/careers",
+      "destination": "/en/careers/index.html"
+    },
+    {
+      "source": "/kariyer",
+      "destination": "/kariyer.html"
+    },
+    {
+      "source": "/en/terms",
+      "destination": "/en/terms/index.html"
+    },
+    {
+      "source": "/kullanim-sartlari",
+      "destination": "/kullanim-sartlari.html"
+    },
+    {
+      "source": "/en/mobile-apps",
+      "destination": "/en/mobile-apps/index.html"
+    },
+    {
+      "source": "/mobil-uygulama",
+      "destination": "/mobil-uygulama.html"
+    },
+    {
+      "source": "/en/automation",
+      "destination": "/en/automation/index.html"
+    },
+    {
+      "source": "/otomasyon",
+      "destination": "/otomasyon.html"
+    },
+    {
+      "source": "/en/project-atelier",
+      "destination": "/en/project-atelier/index.html"
+    },
+    {
+      "source": "/proje-atelier",
+      "destination": "/proje-atelier.html"
+    },
+    {
+      "source": "/en/project-casa",
+      "destination": "/en/project-casa/index.html"
+    },
+    {
+      "source": "/proje-casa",
+      "destination": "/proje-casa.html"
+    },
+    {
+      "source": "/en/project-forma",
+      "destination": "/en/project-forma/index.html"
+    },
+    {
+      "source": "/proje-forma",
+      "destination": "/proje-forma.html"
+    },
+    {
+      "source": "/en/project-monolith",
+      "destination": "/en/project-monolith/index.html"
+    },
+    {
+      "source": "/proje-monolith",
+      "destination": "/proje-monolith.html"
+    },
+    {
+      "source": "/en/project-orbit",
+      "destination": "/en/project-orbit/index.html"
+    },
+    {
+      "source": "/proje-orbit",
+      "destination": "/proje-orbit.html"
+    },
+    {
+      "source": "/en/project-prism",
+      "destination": "/en/project-prism/index.html"
+    },
+    {
+      "source": "/proje-prism",
+      "destination": "/proje-prism.html"
+    },
+    {
+      "source": "/en/projects",
+      "destination": "/en/projects/index.html"
+    },
+    {
+      "source": "/projeler",
+      "destination": "/projeler.html"
+    },
+    {
+      "source": "/en/seo",
+      "destination": "/en/seo/index.html"
+    },
+    {
+      "source": "/seo",
+      "destination": "/seo.html"
+    },
+    {
+      "source": "/en/setup",
+      "destination": "/en/setup/index.html"
+    },
+    {
+      "source": "/setup",
+      "destination": "/setup.html"
+    },
+    {
+      "source": "/en/social-media",
+      "destination": "/en/social-media/index.html"
+    },
+    {
+      "source": "/sosyal-medya",
+      "destination": "/sosyal-medya.html"
+    },
+    {
+      "source": "/en/faq",
+      "destination": "/en/faq/index.html"
+    },
+    {
+      "source": "/sss",
+      "destination": "/sss.html"
+    },
+    {
+      "source": "/en/about",
+      "destination": "/en/about/index.html"
+    },
+    {
+      "source": "/hakkimizda",
+      "destination": "/studyo.html"
+    },
+    {
+      "source": "/en/quote",
+      "destination": "/en/quote/index.html"
+    },
+    {
+      "source": "/teklif",
+      "destination": "/teklif.html"
+    },
+    {
+      "source": "/en/technologies",
+      "destination": "/en/technologies/index.html"
+    },
+    {
+      "source": "/teknolojiler",
+      "destination": "/teknolojiler.html"
+    },
+    {
+      "source": "/en/expertise",
+      "destination": "/en/expertise/index.html"
+    },
+    {
+      "source": "/uzmanlik",
+      "destination": "/web-sitesi.html"
+    }
   ]
 }

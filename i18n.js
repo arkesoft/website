@@ -51,17 +51,47 @@
   const titleSource = document.title;
   const description = document.querySelector('meta[name="description"]');
   const descriptionSource = description?.content;
+  const routePairs = Object.values(window.ARKESOFT_ROUTES || {});
+  function syncLanguageURLs() {
+    const current = new URL(location.href);
+    const routeFor = pathname => routePairs.find(pair => Object.values(pair).includes(pathname))?.[language];
+    const nextPath = routeFor(current.pathname);
+    if (nextPath && /^https?:$/.test(current.protocol)) {
+      current.pathname = nextPath;
+      history.replaceState(history.state, '', current.pathname + current.search + current.hash);
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) { const url = new URL(canonical.href); url.pathname = nextPath; canonical.href = url.href; }
+      const socialURL = document.querySelector('meta[property="og:url"]');
+      if (socialURL && canonical) socialURL.content = canonical.href;
+    }
+    document.querySelectorAll('a[href]').forEach(link => {
+      if (link.getAttribute('href').startsWith('#')) return;
+      const url = new URL(link.href, location.href);
+      if (url.origin !== location.origin) return;
+      const route = routeFor(url.pathname);
+      if (route) link.setAttribute('href', route + url.search + url.hash);
+    });
+    for (const selector of ['meta[property="og:title"]', 'meta[name="twitter:title"]']) {
+      const meta = document.querySelector(selector); if (meta) meta.content = document.title;
+    }
+    for (const selector of ['meta[property="og:description"]', 'meta[name="twitter:description"]']) {
+      const meta = document.querySelector(selector); if (meta && description) meta.content = description.content;
+    }
+    const locale = document.querySelector('meta[property="og:locale"]');
+    if (locale) locale.content = language === 'en' ? 'en_US' : 'tr_TR';
+  }
   function setLanguage(next, manual = false) {
     if (!['tr', 'en'].includes(next)) return;
     language = next;
     if (manual) {
       explicit = true; revision++;
-      try { localStorage.setItem('arkesoft-language', next); } catch { /* Optional storage. */ }
+      window.ARKESOFT_PREFERENCES?.save('language', next);
     }
     document.documentElement.lang = language;
     document.title = t(titleSource);
     if (description) description.content = t(descriptionSource);
     translate();
+    syncLanguageURLs();
     document.querySelectorAll('[data-language]').forEach(button => {
       button.setAttribute('aria-pressed', String(button.dataset.language === language));
     });

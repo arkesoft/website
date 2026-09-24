@@ -7,6 +7,27 @@
   const body = document.body;
   const t = value => window.ARKESOFT_I18N?.t(value) || value;
   body.classList.add('js');
+  const whatsappButton = $('.wa-float');
+  if (whatsappButton && typeof HTMLDialogElement !== 'undefined') {
+    const chooser = document.createElement('dialog');
+    chooser.className = 'whatsapp-chooser';
+    chooser.setAttribute('aria-labelledby', 'whatsapp-chooser-title');
+    chooser.innerHTML = `<div class="whatsapp-chooser-inner"><h2 id="whatsapp-chooser-title">${t('WhatsApp hattı seçin')}</h2><p>${t('Size en uygun hattan yazabilirsiniz.')}</p><div class="whatsapp-options"><a class="whatsapp-option" href="https://wa.me/905061458971?text=Merhaba%20Arkesoft%20ile%20bir%20proje%20hakk%C4%B1nda%20konu%C5%9Fmak%20istiyorum." target="_blank" rel="noopener"><span><strong>${t('Ana hat')}</strong><small>+90 506 145 89 71</small></span><span aria-hidden="true">↗</span></a><a class="whatsapp-option" href="https://wa.me/905386415937?text=Merhaba%20Arkesoft%20destek%20hatt%C4%B1na%20ula%C5%9Fmak%20istiyorum." target="_blank" rel="noopener"><span><strong>${t('Ana hat')}</strong><small>+90 538 641 59 37</small></span><span aria-hidden="true">↗</span></a></div><button class="whatsapp-chooser-close" type="button">${t('Kapat')}</button></div>`;
+    body.append(chooser);
+    const close = $('.whatsapp-chooser-close', chooser);
+    whatsappButton.addEventListener('click', event => { event.preventDefault(); document.documentElement.classList.add('cursor-dialog'); chooser.showModal(); });
+    const restoreCursor = () => document.documentElement.classList.remove('cursor-dialog');
+    close.addEventListener('click', () => chooser.close());
+    chooser.addEventListener('close', restoreCursor);
+    chooser.addEventListener('cancel', restoreCursor);
+    chooser.addEventListener('click', event => { if (event.target === chooser) chooser.close(); });
+    document.addEventListener('arkesoft:language', () => {
+      $('#whatsapp-chooser-title', chooser).textContent = t('WhatsApp hattı seçin');
+      $('p', chooser).textContent = t('Size en uygun hattan yazabilirsiniz.');
+      $$('.whatsapp-option strong', chooser).forEach(label => { label.textContent = t('Ana hat'); });
+      close.textContent = t('Kapat');
+    });
+  }
   let overlay = null;
   let lastFocus = null;
 
@@ -195,7 +216,7 @@
       return;
     }
     if (intro) { window.scrollTo({ top: 0, behavior: 'instant' }); startIntro(); }
-    else window.location.href = 'index.html?intro=1';
+    else window.location.href = (window.ARKESOFT_ROUTES?.['index.html']?.[document.documentElement.lang] || '/anasayfa') + '?intro=1';
   }));
   const navigationType = performance.getEntriesByType('navigation')[0]?.type;
   let arrivedFromSite = false;
@@ -227,7 +248,7 @@
   const filmDialog = $('#film-dialog');
   const filmVideo = $('video', filmDialog);
   $$('[data-film]').forEach(button => button.addEventListener('click', () => {
-    if (typeof filmDialog.showModal !== 'function') { window.open('assets/signature.svg', '_blank', 'noopener'); return; }
+    if (typeof filmDialog.showModal !== 'function') { window.open('/assets/signature.svg', '_blank', 'noopener'); return; }
     filmDialog.showModal();
     $$('video').filter(video => video !== filmVideo).forEach(video => video.pause());
     clearInterval(carouselTimer);
@@ -255,7 +276,7 @@
   });
 
   $$('[data-expertise-image]').forEach(link => {
-    const change = () => { const img = $('#expertise-image'); if (img) img.src = `assets/${link.dataset.expertiseImage}`; };
+    const change = () => { const img = $('#expertise-image'); if (img) img.src = `/assets/${link.dataset.expertiseImage}`; };
     link.addEventListener('mouseenter', change); link.addEventListener('focus', change);
   });
   // The portfolio's search/filter logic lives in experience.js.
@@ -313,7 +334,7 @@
       const sendButton = $('.form-download', form);
       sendButton.disabled = true;
       try {
-        const response = await fetch('api/brief', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: t(form.dataset.docTitle || 'ARKESOFT — PROJE BRİEFİ'), page: location.pathname, items: summaryItems() }) });
+        const response = await fetch('/api/brief', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: t(form.dataset.docTitle || 'ARKESOFT — PROJE BRİEFİ'), page: location.pathname, items: summaryItems() }) });
         if (response.ok) {
           sendButton.disabled = false;
           $('#form-success').textContent = 'Talebiniz bize ulaştı. En geç 24 saat içinde dönüş yapacağız.';

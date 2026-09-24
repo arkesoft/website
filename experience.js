@@ -5,7 +5,7 @@
   const themeButtons = document.querySelectorAll('.theme-toggle');
   function setTheme(theme) {
     root.dataset.theme = theme;
-    try { localStorage.setItem('arkesoft-theme', theme); } catch { /* Optional persistence. */ }
+    window.ARKESOFT_PREFERENCES?.save('theme', theme);
     themeButtons.forEach(button => {
       button.setAttribute('aria-pressed', String(theme === 'light'));
       button.setAttribute('aria-label', t(theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç'));
@@ -15,15 +15,6 @@
   themeButtons.forEach(button => button.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark')));
   setTheme(root.dataset.theme);
   document.addEventListener('arkesoft:language', () => setTheme(root.dataset.theme));
-  document.addEventListener('click', event => {
-    const link = event.target.closest('a[href]');
-    if (!link || link.target === '_blank' || link.getAttribute('href').startsWith('#')) return;
-    const url = new URL(link.href, location.href);
-    if (url.origin !== location.origin || !url.pathname.endsWith('.html')) return;
-    url.searchParams.set('theme', root.dataset.theme);
-    if (window.ARKESOFT_I18N?.explicit) url.searchParams.set('lang', root.lang);
-    link.href = url.href;
-  });
 
   const journey = document.querySelector('.digital-journey');
   const chapters = [...document.querySelectorAll('.journey-chapter')];
