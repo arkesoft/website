@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+const edit=(path,from,to)=>{let s=fs.readFileSync(path,'utf8').replaceAll('\r\n','\n');from=from.replaceAll('\r\n','\n');if(!s.includes(from)){if(s.includes(to))return;throw Error('Missing match '+path+': '+from.slice(0,70));}fs.writeFileSync(path,s.replace(from,to));};
+edit('app/agency.php',"if(!empty($extra['image_id']))echo media_image((int)$extra['image_id'],'',true);else:","if(!empty($extra['image_id'])):echo media_image((int)$extra['image_id'],'',true);else:");
+edit('app/agency.php','<span>®</span>','<span>•</span>');
+edit('app/database.php',"function record(string $table, int $id): ?array { foreach (records($table) as $row) if ((int)$row['id'] === $id) return $row; return null; }",`function record(string $table, int $id): ?array { if(!in_array($table,['services','cities','projects','pages','leads'],true))throw new InvalidArgumentException('Geçersiz tablo'); if(installed()) return query("SELECT * FROM $table WHERE id=?",[$id])->fetch()?:null; foreach(records($table) as $row)if((int)$row['id']===$id)return $row;return null; }`);
+edit('app/database.php',"function by_slug(string $table, string $slug): ?array { foreach(records($table) as $row) if (($row['slug'] ?? '') === $slug) return $row; return null; }",`function by_slug(string $table, string $slug): ?array { if(!in_array($table,['services','cities','pages'],true))throw new InvalidArgumentException('Geçersiz tablo');if(installed())return query("SELECT * FROM $table WHERE slug=?",[$slug])->fetch()?:null;foreach(records($table) as $row)if(($row['slug']??'')===$slug)return $row;return null; }`);
+edit('app/cms.php',"function cms_record(string $table,int $id): ?array { foreach(cms_records($table) as $row) if((int)$row['id']===$id) return $row; return null; }",`function cms_record(string $table,int $id): ?array { if(!in_array($table,cms_tables(),true))throw new InvalidArgumentException('Geçersiz tablo');return cms_ready()?(query("SELECT * FROM $table WHERE id=?",[$id])->fetch()?:null):null; }`);
+edit('app/cms.php',"$raw=query('SELECT payload FROM content_meta WHERE entity=? AND record_id=?',[$entity,$id])->fetchColumn();\n    return $raw?(json_decode($raw,true)?:[]):[];".replaceAll('\n','\r\n'),`global $metaCache;
+    if(!isset($metaCache[$entity])){ $metaCache[$entity]=[];foreach(query('SELECT record_id,payload FROM content_meta WHERE entity=?',[$entity])->fetchAll() as $row)$metaCache[$entity][(int)$row['record_id']]=json_decode($row['payload'],true)?:[]; }
+    return $metaCache[$entity][$id]??[];`);
+edit('app/cms.php',"function meta_save(string $entity,int $id,array $payload): void {","function meta_save(string $entity,int $id,array $payload): void {\n    global $metaCache; unset($metaCache[$entity]);");
+edit('app/cms.php',"setting_write('_cms_version','2');","setting_write('_cms_version','2');\n    require_once __DIR__.'/geography.php'; geo_schema();\n    require_once __DIR__.'/catalog.php'; catalog_seed();");
+edit('app/admin-v2.php',"'cities'=>'Lokasyonlar',","'cities'=>'Aktif lokasyonlar','locations-import'=>'Türkiye kataloğu',");
+edit('app/admin-v2.php',"try{if(!cms_action())admin_action();}","try{if(!geo_action()&&!cms_action())admin_action();}");
+edit('app/admin-v2.php',"require_once __DIR__.'/cms-actions.php';","require_once __DIR__.'/cms-actions.php';\nrequire_once __DIR__.'/geography.php';");
+edit('app/admin-v2.php',"elseif($tab==='branding'):","elseif($tab==='locations-import'): geo_admin(); ?>\n<?php elseif($tab==='branding'):");
+edit('app/cms-actions.php',"'dashboard','services','projects','cities'","'dashboard','locations-import','services','projects','cities'");
+edit('app/cms-actions.php',"if($source===$destination)return;","if($source===$destination)return;\n    query('DELETE FROM redirects WHERE source=?',[$destination]);\n    query('UPDATE redirects SET destination=? WHERE destination=?',[$destination,$source]);");
+edit('app/cms.php',"!str_contains($value,'..')","!str_contains(rawurldecode($value),'..') && !str_starts_with(rawurldecode($value),'//')");
+edit('tools/package.php',"$files[]='storage/.htaccess';","$files[]='storage/.htaccess';\n$files[]='uploads/.htaccess';");

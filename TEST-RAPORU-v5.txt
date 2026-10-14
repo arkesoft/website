@@ -1,0 +1,127 @@
+ARKESOFT CMS 5 — TEST VE TESLİM RAPORU
+14 Ekim 2026
+
+SONUÇ
+Yerel uygulama testleri geçti. Hostinger'a yükleme yapılmadı.
+Bu rapor tam WCAG 2.2 AA uygunluk belgesi, bağımsız sızma testi veya
+arama motoru sıralaması garantisi değildir.
+
+TASARIM VE YÖNETİM
+Altı hizmet şablonu: web, yazılım, mobil, marka, e-ticaret, büyüme.
+Üç proje anlatımı: editoryal, ürün vitrini, ürün arayüzü.
+Portföy: asimetrik/ızgara; blog: dergi/editoryal liste;
+hakkımızda: manifesto/panorama; iletişim: yan yana/form öncelikli.
+Hizmet dizini, kategori, makale, lokasyon dizini, yerel PSEO, gizlilik ve
+404 sayfaları kendi içeriklerine uygun düzenler kullanır.
+Sayfa tasarımları modülü sekiz sayfayı birbirinden bağımsız kaydeder.
+Hizmet ve proje şablonları kendi içerik editörlerinden seçilir.
+26 yönetim bölümü, aranabilir gruplanmış menü, mobil menü, kayıt çubuğu,
+kaydedilmemiş değişiklik uyarısı, parola görünürlüğü ve bölüm açıklamaları.
+
+ORTAM VE İŞLEV TESTLERİ
+Windows; PHP 8.3.31; SQLite; yalıtılmış gerçek MariaDB 10.4.32.
+Gerçek Chrome tarayıcısı, CDP üzerinden E2E. Node.js yalnızca testte.
+Üretim: PHP 8.2+ ve MySQL/MariaDB; VPS, Node.js ve Composer gerekmez.
+Testler kullanıcı veritabanı yerine ayrı geçici veritabanları kullanır.
+
+SQLite regresyon: 117/117 geçti.
+MariaDB regresyon: 117/117 geçti.
+Yeni kapsamlı SQLite ve tarayıcı kontrolleri: 72/72 geçti.
+Yeni MariaDB işlev ve E2E kontrolleri: 57/57 geçti.
+Sayılar farklı ortamlarda tekrarlanan kontrolleri de içerir;
+363 benzersiz senaryo olarak yorumlanmamalıdır.
+
+GÜVENLİK / BACKEND KAPSAMI
+Kurulum kilidi, giriş/çıkış, parola, CSRF, roller, anonim yazma engeli,
+hız sınırı, silinen kullanıcının oturumu, parola değişikliğinde diğer
+oturumların iptali, hatalı/dizi tipinde CSRF, bcrypt uzunluk sınırı,
+SQL enjeksiyon denemesi, kaydedilmiş XSS kaçışı, yönetici/editör GET/POST
+yetkileri, mevcut olmayan içerik/kategori, hatalı ayarların kısmen
+kaydedilmemesi, şablon izin listesi ve bağımsız sayfa tasarımı kaydı.
+
+İçerik/kategori/proje/blog/marka/vitrin/video; taslak/yayın, zamanlanmış yazı,
+sürüm/geri alma, slug/301 döngü kontrolü, WebP dönüşümü, sahte görsel/video
+reddi, kullanılan medyanın korunması, video yükleme/kaydetme/silme,
+CSV/JSON dışa aktarımı ve parola hariç tutma.
+
+PSEO: şehir/ilçe/mahalle hiyerarşisi, toplu taslak üretimi, tekrar koruması,
+yayın öncesi inceleme, gizli taslak, yetkili noindex önizleme, canonical,
+JSON-LD, demo noindex, 1.005 kayıtla sitemap parçalama, 1.000 URL sınırı,
+sayfalama, sunucu araması ve sınırsız sayfalama adreslerinin engellenmesi.
+
+Form: alan doğrulaması, hata özeti, girişlerin korunması, honeypot,
+hız sınırı, talebin veritabanına ve yönetim listesine ulaşması.
+E2E: tarayıcı girişi, yazı oluşturma/yayımlama, sayfa tasarımı değiştirme,
+form gönderimi, panelde talebi bulma, dosya seçiciyle WebP yükleme,
+panel menüsünde arama. E-posta gönderimi uygulamada yoktur.
+
+ERİŞİLEBİLİRLİK
+axe-core 4.12.1; wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa,
+best-practice etiketleri. 72 adres × 2 genişlik = 144 tarama.
+1440 px masaüstü / 390 px mobil: 0 ihlal, 0 sayfa yatay taşması.
+12 hizmet, kategoriler, projeler, yazılar, demo PSEO, 26 yönetim bölümü
+ve içerik düzenleme ekranları kapsamda.
+Ek 15 durum: açık mega menü, video penceresi, mobil site/panel menüsü,
+beş alternatif şablonun iki genişliği, form hata özeti. 15/15: 0 ihlal.
+Toplam 159 otomatik tarama. İlk taramalardaki kontrast, başlık sırası ve
+bölge adlandırma sorunları düzeltildi, ilgili taramalar yeniden geçti.
+
+320 px genişlikte yedi temsilî ekran; bir hizmette metin aralığı artırma;
+gerçek Tab/Enter ile içeriğe atlama; ok tuşuyla mega menü; Escape/odak
+geri dönüşü; video penceresi Escape/odak; azaltılmış hareket tercihinde
+otomatik video indirme/oynatmama doğrulandı.
+
+SINIR: Otomatik 0 ihlal, tam WCAG 2.2 AA uygunluğu anlamına gelmez.
+axe 'incomplete' sonuçları JSON raporlarında durur. Fotoğraf üstündeki
+tüm metinlerin kontrastı, alternatif metinlerin anlam yeterliliği, sessiz
+videonun metinsel eşdeğeri, tüm yakınlaştırma/yeniden akış senaryoları,
+NVDA/VoiceOver ile uçtan uca kullanım ve yardımcı teknoloji incelemesi
+ayrıca yapılmalıdır. Safari/Firefox ve gerçek mobil cihaz matrisi
+çalıştırılmadı. Sertifika iddiası yoktur.
+
+MONKEY TEST
+Seed: 20261014. 300 işlem: masaüstü/mobil, gezinme, menü/akordeon, filtre,
+Türkçe/özel karakterli arama, kaydırma, Tab/Escape. 0 JavaScript istisnası,
+0 HTTP 5xx belge yanıtı. Yük/kapasite testi değildir.
+
+SUNUCU TESTİ SINIRI
+Uygulama güvenlik kontrolleri PHP yerel HTTP sunucusunda doğrulandı.
+Gerçek Apache/.htaccess denemesi ortam hatasıyla başlayamadı:
+AH00532 / APR 20024, yapılandırma yolu reddedildi.
+apache-security.json bu BAŞLATILAMAYAN denemenin kaydıdır; Apache
+kontrolleri geçmiş sayılmadı. Hostinger LiteSpeed/.htaccess, doğrudan dosya
+erişim engelleri, sunucu seviyesinde MIME/range, TLS, DNS, WAF ve canlı
+sunucu ayarları doğrulanmadı. Kurulumdan sonra ayrıca kontrol gerekir.
+Bağımsız dış sızma testi yapılmadı.
+
+DOSYALAR / YENİDEN ÇALIŞTIRMA
+node tests/integration.mjs
+node tests/comprehensive.mjs
+node tests/final-views.mjs
+Tarayıcı testleri 9227 portunda Chrome CDP ve tests/tooling/package/axe.min.js
+gerektirir. MariaDB için ARKESOFT_TEST_MYSQL_PORT test örneğine ayarlanır.
+ARKESOFT_FAST_SUITE=1 yeni işlev/E2E alt kümesini çalıştırır.
+Üretim sitesinde test çalıştırılmaz.
+
+tests/reports/sqlite-regression.txt
+tests/reports/comprehensive.json
+tests/reports/mysql-functional.json
+tests/reports/state-accessibility.json
+tests/reports/apache-security.json
+Son ekran görüntüleri: tests/reports/final-*.png
+Kurulum/şablon yönetimi: KURULUM.md
+Hostinger paketi: ../arkesoft-hostinger.zip
+Paket yerel veritabanı/şifreleri, testleri ve kullanıcı yüklemelerini
+içermez. Yerelde sonradan girilen içerikler ayrıca taşınır.
+
+İZİN KISITI
+Otomatik izin kontrolü çalışma alanı dışındaki geçici Apache test klasörünü
+silme işlemini reddetti. Silme tekrar denenmedi. Kalan klasör:
+C:\Users\metin\AppData\Local\Temp\arkesoft-apache-aURUTT
+
+KAYNAKLAR
+https://www.w3.org/WAI/WCAG22/quickref/
+https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/
+https://owasp.github.io/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/README
+Kaynaklar kapsam rehberidir; tüm WSTG maddelerinin veya tüm WCAG
+başarı ölçütlerinin tamamlandığı anlamına gelmez.

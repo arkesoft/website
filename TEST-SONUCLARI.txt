@@ -1,0 +1,39 @@
+ARŞİV: Bu dosya CMS 3 sonuçlarıdır. Güncel sonuçlar TEST-RAPORU-v5.txt dosyasındadır.
+ARKESOFT CMS 3 — 14 Ekim 2026
+
+Uygulama: PHP 8.3.31, MySQL uyumlu PDO sorguları; bağımlılıksız PHP/CSS/JS.
+Yerel SQLite: 117 / 117 entegrasyon kontrolü geçti.
+Gerçek MariaDB 10.4.32 (yalıtılmış yerel test sunucusu): 117 / 117 geçti.
+Testler: tests/integration.mjs, tests/cms-v2.mjs, tests/studio-v3.mjs, tests/scale-fixture.php.
+
+Doğrulanan akışlar: kurulum kilidi, CSRF, giriş/çıkış, hız sınırı,
+editör yetkileri, silinen kullanıcının oturumu, içerik modülleri,
+ilçe/mahalle hiyerarşisi, toplu taslak üretimi ve tekrar koruması,
+yayın incelemesi, taslak önizlemesi, zamanlanmış yazı, 301 döngü kontrolü,
+slug değişimi ve sürüm geri alma, WebP yükleme/silme, sahte görsel reddi,
+form talepleri, XSS kaçışları, CSV/JSON dışa aktarımları, noindex,
+canonical, sitemap, 1.005 kayıtla sitemap parçalama ve sunucu araması.
+Vitrin ayarlarının ve renkli blokların kaydı, taslak markanın gizlenmesi,
+senaryo metinlerinde XSS kaçışı, aktif videoyu silme engeli, sahte video reddi,
+WebM yükleme/sunma/silme, video kapak kaydı, demo PSEO noindex kontrolü.
+
+Chrome gerçek tarayıcı kontrolleri:
+1440 px masaüstü ve 390 px mobil ana sayfa; mega menü/mobil menü.
+Mobil hizmet, blog, iletişim, proje ve çözüm sayfalarında tek H1 ve taşma kontrolü.
+Masaüstü panel, üretici, Türkiye kataloğu; mobil panel, katalog, içerik editörü.
+Yeni vitrin ayarları ve masaüstü/mobil video kütüphanesi.
+Tüm ana sayfa görselleri tarayıcıda çözümlendi. Tanıtım videosunun açılması,
+oynaması/kapanması ve hero videosunun durdurulması doğrulandı.
+Hareket azaltma tercihinde hero videosu indirilmez ve otomatik oynatılmaz.
+Kontrol edilen ekranlarda yatay sayfa taşması yok.
+Ekran görüntüleri tests klasöründe; dağıtım paketine girmez.
+
+Coğrafi katalog: 81 il, 973 ilçe, 32.279 mahalle.
+Bu sayılar paketlenen veriye aittir; tüm Türkiye için güncellik/tamlık garantisi değildir.
+81 il etkin; ilçe/mahalle kataloğu seçim ve toplu taslak üretimi için hazır.
+
+Dağıtım: ../arkesoft-hostinger.zip, 47 dosya.
+Bağlantı şifreleri, yerel veritabanı, kullanıcı yüklemeleri ve test verisi dahil değil.
+Hostinger hesabına yüklenmedi; canlı alan adı/SSL/Search Console/gerçek trafik
+ölçümü yapılmadı. MySQL uyumluluğu yerel gerçek MariaDB üzerinde doğrulandı.
+Core Web Vitals saha ölçümü veya Google sıralama garantisi verilmez.

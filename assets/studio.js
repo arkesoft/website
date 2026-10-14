@@ -1,0 +1,11 @@
+'use strict';
+(()=>{
+ const video=document.querySelector('[data-hero-video]'),pause=document.querySelector('[data-pause-hero]');let manuallyPaused=false;
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)'),saveData=navigator.connection?.saveData;
+ function pauseLabel(){if(!pause||!video)return;pause.textContent=video.paused?'Videoyu oynat ▶':'Videoyu durdur Ⅱ';pause.setAttribute('aria-pressed',String(!video.paused));}
+ async function startHero(){if(!video||reduced.matches||saveData||manuallyPaused)return;if(!video.src)video.src=video.dataset.src;try{await video.play();video.classList.add('is-playing');}catch{video.classList.remove('is-playing');}pauseLabel();}
+ if(video){video.addEventListener('playing',()=>{video.classList.add('is-playing');pauseLabel();});video.addEventListener('pause',pauseLabel);video.addEventListener('error',()=>{video.classList.remove('is-playing');if(pause)pause.hidden=true;});pause?.addEventListener('click',async()=>{if(video.paused){manuallyPaused=false;if(!video.src)video.src=video.dataset.src;try{await video.play();}catch{} }else{manuallyPaused=true;video.pause();}pauseLabel();});document.addEventListener('visibilitychange',()=>{if(document.hidden)video.pause();else startHero();});reduced.addEventListener('change',()=>{if(reduced.matches)video.pause();else startHero();});window.addEventListener('load',startHero,{once:true});if(document.readyState==='complete')startHero();if(reduced.matches||saveData)pauseLabel();}
+ const dialog=document.querySelector('[data-reel-dialog]'),reel=document.querySelector('[data-reel-video]'),trigger=document.querySelector('[data-open-reel]');
+ trigger?.addEventListener('click',async()=>{if(!reel.src)reel.src=reel.dataset.src;dialog.showModal();video?.pause();try{await reel.play();}catch{} });
+ document.querySelector('[data-close-reel]')?.addEventListener('click',()=>dialog.close());dialog?.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});dialog?.addEventListener('close',()=>{reel.pause();trigger?.focus();startHero();});
+})();

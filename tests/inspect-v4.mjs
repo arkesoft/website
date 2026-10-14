@@ -1,0 +1,6 @@
+import {browser} from './cdp.mjs';import {readFile,writeFile,mkdir} from 'node:fs/promises';
+const b=await browser();await mkdir('tests/reports',{recursive:true});const axe=await readFile('tests/tooling/package/axe.min.js','utf8');
+const results=[];
+try{await b.viewport();for(const [key,route] of [['home','/'],['services','/hizmetler'],['service','/hizmetler/web-tasarim'],['projects','/projeler'],['about','/hakkimizda'],['blog','/blog'],['contact','/iletisim'],['solutions','/cozumler'],['login','/yonetim']]){
+await b.go('http://127.0.0.1:8127'+route);await b.evaluate(axe);const r=await b.evaluate(`axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','best-practice']}}).then(r=>({violations:r.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary,html:n.html}))})),incomplete:r.incomplete.map(v=>({id:v.id,nodes:v.nodes.length}))}))`);results.push({route,...r});console.log(key,JSON.stringify(r.violations.map(v=>({id:v.id,n:v.nodes.length,sample:v.nodes.slice(0,2)}))));if(['services','service','projects','contact'].includes(key))await b.screenshot('tests/reports/v4-'+key+'.png',true);
+}await writeFile('tests/reports/initial-axe.json',JSON.stringify(results,null,2));}finally{await b.close();}
