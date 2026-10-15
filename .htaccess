@@ -1,6 +1,7 @@
 Options -Indexes
 DirectoryIndex index.php
 RewriteEngine On
+RewriteRule ^en(/.*)?$ https://arkesoft.com/ [R=301,L]
 RewriteRule ^(?:app|storage|tests|tools|arkesoft-private)(?:/|$) - [F,L,NC]
 RewriteRule ^(?:env|config(?:\.example)?\.php|README\.md|KURULUM\.md|SEO-ARASTIRMA\.md|\.git.*)$ - [F,L,NC]
 RewriteRule (^|/)\. - [F,L]
