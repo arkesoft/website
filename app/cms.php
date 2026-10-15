@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 function cms_defaults(): array {
-    return studio_defaults()+['hero_kicker'=>'TASARIM. TEKNOLOJİ. BÜYÜME.','hero_line1'=>'Markanızın','hero_line2'=>'dijitaldeki','hero_line3'=>'yeni gücü.','hero_text'=>'İyi bir fikri; güçlü bir markaya, etkileyici bir web deneyimine ve ölçülebilir bir büyüme planına dönüştürüyoruz.','home_intro'=>'Dijitalin her alanında, aynı hedefe birlikte.','home_intro_text'=>'Web tasarımından özel yazılıma, marka kimliğinden arama görünürlüğüne kadar birbirini tamamlayan çözümler. İşinizi dinliyor, ihtiyacınızı netleştiriyor ve her adımı sizinle birlikte planlıyoruz.','cta_title'=>'Bir sonraki başarı hikâyenizi birlikte yazalım.','instagram'=>'','linkedin'=>'','youtube'=>'','search_console'=>'','site_noindex'=>'0','hero_media'=>'','logo_media'=>'','og_media'=>'','footer_note'=>'Stratejiden tasarıma, koddan içeriğe. Markanız için birlikte üretiyoruz.','pseo_title'=>'{{sehir}} {{hizmet}} | {{marka}}','pseo_intro'=>'{{sehir}} hedefli {{hizmet}} projenizi iş hedefleriniz ve müşterilerinizin ihtiyaçları etrafında planlıyoruz. {{ozet}}','pseo_body'=>"{{icerik}}\n\n## Yerel ihtiyaçlar ve çalışma kapsamı\n{{baglam}}\n\n## Hangi işletmeler için?\n{{sektorler}}\n\n## Projeye nasıl başlıyoruz?\nÖnce mevcut durumunuzu, hedeflerinizi ve içerik kaynaklarınızı değerlendiriyoruz. Kapsam, sorumluluklar ve teslimat takvimi bu görüşmeden sonra netleştirilir. Çevrim içi çalışma mümkündür; bu sayfa ilgili şehirde fiziksel ofisimiz olduğu anlamına gelmez."];
+    return growth_defaults()+studio_defaults()+['hero_kicker'=>'TASARIM. TEKNOLOJİ. BÜYÜME.','hero_line1'=>'Markanızın','hero_line2'=>'dijitaldeki','hero_line3'=>'yeni gücü.','hero_text'=>'İyi bir fikri; güçlü bir markaya, etkileyici bir web deneyimine ve ölçülebilir bir büyüme planına dönüştürüyoruz.','home_intro'=>'Dijitalin her alanında, aynı hedefe birlikte.','home_intro_text'=>'Web tasarımından özel yazılıma, marka kimliğinden arama görünürlüğüne kadar birbirini tamamlayan çözümler. İşinizi dinliyor, ihtiyacınızı netleştiriyor ve her adımı sizinle birlikte planlıyoruz.','cta_title'=>'Bir sonraki başarı hikâyenizi birlikte yazalım.','instagram'=>'','linkedin'=>'','youtube'=>'','search_console'=>'','site_noindex'=>'0','hero_media'=>'','logo_media'=>'','og_media'=>'','footer_note'=>'Stratejiden tasarıma, koddan içeriğe. Markanız için birlikte üretiyoruz.','pseo_title'=>'{{sehir}} {{hizmet}} | {{marka}}','pseo_intro'=>'{{sehir}} hedefli {{hizmet}} projenizi iş hedefleriniz ve müşterilerinizin ihtiyaçları etrafında planlıyoruz. {{ozet}}','pseo_body'=>"{{icerik}}\n\n## Yerel ihtiyaçlar ve çalışma kapsamı\n{{baglam}}\n\n## Hangi işletmeler için?\n{{sektorler}}\n\n## Projeye nasıl başlıyoruz?\nÖnce mevcut durumunuzu, hedeflerinizi ve içerik kaynaklarınızı değerlendiriyoruz. Kapsam, sorumluluklar ve teslimat takvimi bu görüşmeden sonra netleştirilir. Çevrim içi çalışma mümkündür; bu sayfa ilgili şehirde fiziksel ofisimiz olduğu anlamına gelmez."];
 }
 function cms_ready(): bool {
     static $ready=null;
@@ -39,12 +39,13 @@ function cms_migrate(): void {
     require_once __DIR__.'/geography.php'; geo_schema();
     require_once __DIR__.'/catalog.php'; catalog_seed();
     studio_migrate();
+    growth_migrate();
 }
 function setting_write(string $key,string $value): void {
     if(query('SELECT setting_key FROM settings WHERE setting_key=?',[$key])->fetchColumn()) query('UPDATE settings SET setting_value=? WHERE setting_key=?',[$value,$key]);
     else query('INSERT INTO settings (setting_key,setting_value) VALUES (?,?)',[$key,$value]);
 }
-function cms_tables(): array { return ['categories','articles','faqs','media','redirects','revisions','audit_log','navigation','lead_notes','showcases','partners','testimonials','films']; }
+function cms_tables(): array { return ['categories','articles','faqs','media','redirects','revisions','audit_log','navigation','lead_notes','showcases','partners','testimonials','films','authors']; }
 function cms_records(string $table): array {
     if(!in_array($table,cms_tables(),true)) throw new InvalidArgumentException('Geçersiz içerik türü.');
     if(!cms_ready()) return [];
@@ -73,11 +74,11 @@ function revision(string $entity,int $id): void {
 }
 function public_services(): array { return array_values(array_filter(records('services'),fn($s)=>(meta('services',(int)$s['id'])['published']??1))); }
 function category_services(int $category): array { return array_values(array_filter(public_services(),fn($s)=>(int)(meta('services',(int)$s['id'])['category_id']??0)===$category)); }
-function published_articles(): array { return array_values(array_filter(cms_records('articles'),fn($a)=>$a['status']==='published' && strtotime($a['published_at'])<=time())); }
+function published_articles(): array { if(!cms_ready())return [];return query("SELECT * FROM articles WHERE status='published' AND published_at<=? ORDER BY published_at DESC,id DESC",[gmdate('c')])->fetchAll(); }
 function media_url(int $id): string { $m=cms_record('media',$id); return $m?bundled_url($m['filename']):''; }
 function media_image(int $id,string $class='',bool $eager=false): string {
     $m=cms_record('media',$id); if(!$m) return '';
-    return '<img class="'.e($class).'" src="'.e(bundled_url($m['filename'])).'" alt="'.e($m['alt']).'" width="'.(int)$m['width'].'" height="'.(int)$m['height'].'" loading="'.($eager?'eager':'lazy').'" decoding="async"'.($eager?' fetchpriority="high"':'').'>';
+    return '<img class="'.e($class).'" src="'.e(bundled_url($m['filename'])).'" alt="'.e($m['alt']).'" width="'.(int)$m['width'].'" height="'.(int)$m['height'].'"'.responsive_media_attributes($m).' loading="'.($eager?'eager':'lazy').'" decoding="async"'.($eager?' fetchpriority="high"':'').'>';
 }
 function internal_path(string $value): bool { return preg_match('~^/(?!/)[a-zA-Z0-9/_?=&.%#-]*$~D',$value)===1 && !str_contains(rawurldecode($value),'..') && !str_starts_with(rawurldecode($value),'//') && !str_contains(rawurldecode($value),'\\') && !preg_match('/[\r\n]/',rawurldecode($value)); }
 function prose(string $text): string {

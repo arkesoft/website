@@ -1,0 +1,268 @@
+{
+  "project": "ARKESOFT",
+  "date": "2026-10-15",
+  "scope": "Genel web standartları ve ajans/hizmet sitesine özel görünürlük, güven ve iletişim ihtiyaçlarının kod ve yerel HTTP yanıtları üzerinden incelenmesi.",
+  "implementation_status": "Uygulandı ve yerelde test edildi; hız ölçüm kütüphanesi ağ erişimi, canlı posta/alan adı ve gerçek işletme içerikleri bekliyor.",
+  "verification": {
+    "origin": "http://127.0.0.1:8127",
+    "sitemap_pages_checked": 31,
+    "non_200_sitemap_pages": 0,
+    "pages_without_exactly_one_h1": 0,
+    "unique_internal_link_targets_checked": 38,
+    "internal_link_targets_returning_4xx_or_5xx": 0,
+    "pages_without_og_image_tag": 0,
+    "pages_with_srcset": 0,
+    "duplicate_meta_description_paths": [
+      "/",
+      "/hizmetler",
+      "/projeler",
+      "/hakkimizda",
+      "/iletisim",
+      "/cozumler",
+      "/blog"
+    ],
+    "home_stylesheet_count": 6,
+    "home_stylesheet_bytes_uncompressed": 127593,
+    "observed_public_page_cache_control": "no-store, no-cache, must-revalidate",
+    "observed_public_session_cookie": true,
+    "limitations": [
+      "Yerel geliştirme sunucusu kontrol edildi; canlı hosting, TLS, DNS, sıkıştırma ve CDN davranışı doğrulanmadı.",
+      "Bu turda gerçek kullanıcı Core Web Vitals, tam tarayıcı matrisi veya tam WCAG/ASVS uygunluk değerlendirmesi yapılmadı.",
+      "HTML taraması temel etiket ve bağlantı kontrolleridir; tam HTML doğrulaması veya sitenin tüm olası URL'lerinin taranması değildir.",
+      "Birden fazla CSS dosyası veya no-store tek başına hata değildir; sayfa ihtiyacına göre optimizasyon fırsatı olarak değerlendirilmiştir.",
+      "Bir H1 kontrolü içerik yapısı kontrolüdür; Google sıralama garantisi veya tek başına standart uygunluk ölçütü değildir."
+    ]
+  },
+  "standards_and_guidance": [
+    {
+      "name": "Google Search teknik gereksinimleri",
+      "url": "https://developers.google.com/search/docs/essentials/technical"
+    },
+    {
+      "name": "Google sayfaya özel meta açıklamaları",
+      "url": "https://developers.google.com/search/docs/appearance/snippet"
+    },
+    {
+      "name": "Organization yapılandırılmış verisi",
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/organization"
+    },
+    {
+      "name": "Article yapılandırılmış verisi",
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/article"
+    },
+    {
+      "name": "WebSite / site adı",
+      "url": "https://developers.google.com/search/docs/appearance/site-names"
+    },
+    {
+      "name": "LocalBusiness",
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/local-business"
+    },
+    {
+      "name": "Core Web Vitals",
+      "url": "https://web.dev/articles/vitals"
+    },
+    {
+      "name": "Responsive görseller",
+      "url": "https://web.dev/articles/serve-responsive-images"
+    },
+    {
+      "name": "HTTP önbellekleme",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching"
+    },
+    {
+      "name": "WCAG 2.2",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/"
+    },
+    {
+      "name": "OWASP ASVS",
+      "url": "https://owasp.org/projects/asvs"
+    },
+    {
+      "name": "İşletmenin kendisi hakkındaki yorumlarda yıldız sınırlamaları",
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/review-snippet"
+    }
+  ],
+  "findings": [
+    {
+      "id": "page_specific_metadata",
+      "priority": "high",
+      "status": "partial",
+      "kind": "search_guidance",
+      "evidence": "7 ana URL aynı meta açıklamasını kullanıyor; app/agency.php:21 ve app/routes.php içindeki liste sayfası verileri.",
+      "action": "Ana sayfa, hizmetler, projeler, hakkımızda, iletişim, çözümler ve blog için ayrı SEO başlığı/açıklaması; panelden yönetim ve tekrar kontrolü.",
+      "acceptance": "Her ana URL kendi amacına uygun açıklama üretir. Canonical, robots, sitemap ve paylaşım etiketleri birbiriyle tutarlıdır.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "business_identity",
+      "priority": "high",
+      "status": "partial",
+      "kind": "search_guidance",
+      "evidence": "Organization şeması ad, URL ve varsa e-posta/telefon içeriyor; logo, sameAs, contactPoint ve WebSite yok. Yerel çıktıda örnek .example e-posta var.",
+      "action": "Gerçek işletme bilgilerini tek merkezden yönetip görünür iletişim alanları ve şemaya yansıtmak; logo, resmi profil bağlantıları, WebSite ve uygun işletme modelinde adres/saat bilgileri.",
+      "acceptance": "Şema görünür içerikle eşleşir; örnek iletişim bilgileri canlı yayın kontrolünde işaretlenir. LocalBusiness yalnızca uygun gerçek işletme bilgileriyle kullanılır.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "article_authorship",
+      "priority": "medium",
+      "status": "partial",
+      "kind": "search_guidance",
+      "evidence": "BlogPosting başlık, tarih ve yazar adı içeriyor; article image ve yazar profil URL'si yok. app/agency.php:32.",
+      "action": "Yazar modeli/profil sayfası, görünür uzmanlık bilgisi, yazar URL'si ve ilgili kapak görselini şemaya eklemek.",
+      "acceptance": "Yazar türü gerçek yazarlığa uyar; kişi/kurum doğru seçilir. Yazı görseli ve tarihler görünür içerikle tutarlıdır. Önerilen alanlar zorunlu alan diye sunulmaz.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "breadcrumbs",
+      "priority": "medium",
+      "status": "partial",
+      "kind": "information_architecture",
+      "evidence": "JSON-LD yolu Ana sayfa > mevcut sayfa olarak iki seviyeli; blog/hizmet ara dizinleri atlanıyor. app/agency.php:30.",
+      "action": "Görünür gezinme yolu ve JSON-LD için ortak yol modeli; örneğin Ana sayfa > Blog > Yazı.",
+      "acceptance": "Gezinme yolu anlamlı içerik hiyerarşisini yansıtır ve ara bağlantılar çalışır. Mevcut iki seviyeli yapı otomatik olarak geçersiz sayılmaz.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "responsive_media",
+      "priority": "high",
+      "status": "partial",
+      "kind": "performance",
+      "evidence": "31 sayfada srcset yok; medya yüklemesi tek WebP üretir. app/cms.php:78 ve app/cms-actions.php yükleme işlemi.",
+      "action": "Görseller için birden fazla boyut üretmek; srcset/sizes, doğru en-boy bilgisi, görünür kapakta öncelik, aşağıdaki görsellerde lazy loading.",
+      "acceptance": "Mobil tarayıcı uygun küçük dosyayı seçer; görsel yüklenirken yerleşim kaymaz; ana görsel gereksiz yere geç yüklenmez.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "public_cache",
+      "priority": "high",
+      "status": "improvement",
+      "kind": "http_performance",
+      "evidence": "İncelenen herkese açık HTML yanıtları no-store döndürüyor. bootstrap.php:20 her istekte session_start çağırıyor.",
+      "action": "Oturum ihtiyacını sayfa bazında ele almak; uygun anonim içerik için cache ve yayın değişiminde geçersizleştirme tasarlamak.",
+      "acceptance": "Yönetim, önizleme, kişisel mesajlar ve CSRF içeren yanıtlar ortak önbelleğe girmez; yayın değişiklikleri gecikmeden görünür; anonim içerik tekrarlarında gereksiz iş azalır.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "performance_budget",
+      "priority": "high",
+      "status": "not_measured_in_field",
+      "kind": "performance",
+      "evidence": "Tüm incelenen sayfalarda altı CSS dosyası var; ana sayfada sıkıştırılmamış toplam 127593 bayt. Gerçek kullanıcı CWV ölçümü bulunamadı.",
+      "action": "Gerekli stilleri sayfa bazında yüklemek, video maliyetini kontrol etmek, gerçek kullanıcı performans ölçümü eklemek.",
+      "acceptance": "Mobil ve masaüstünde gerçek ziyaretlerin 75. yüzdeliğinde hedefler LCP <= 2500 ms, INP <= 200 ms, CLS <= 0.1; yerel hızlı yanıt bu hedeflerin sağlandığının kanıtı sayılmaz.",
+      "implementation": "implemented_with_external_verification_pending",
+      "remaining": "web-vitals paketini indir; gerçek trafik ve p75 hedeflerini canlıda doğrula."
+    },
+    {
+      "id": "accessible_contact",
+      "priority": "high",
+      "status": "partial",
+      "kind": "wcag_and_product",
+      "evidence": "Klavye menüsü, skip link, odak stilleri, hata özeti ve azaltılmış hareket desteği mevcut. Sabit çok kanallı iletişim çubuğu yok.",
+      "action": "WCAG 2.2 AA hedefiyle odak görünürlüğü, hedef boyutları, mobil yakınlaştırma ve form akışını kontrol etmek; iletişim çubuğunu bu kurallarla eklemek.",
+      "acceptance": "Klavye ve ekran okuyucu ile form tamamlanır; sabit çubuk odaktaki alanı örtmez; hatalar anlaşılır ve değerler korunur. Otomatik test başarısı tek başına tam uygunluk sayılmaz.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "service_evidence_links",
+      "priority": "high",
+      "status": "partial",
+      "kind": "agency_product_recommendation",
+      "evidence": "Hizmet, blog, proje ve yorum modülleri var; hizmete bağlı proje/yorum/yazı ilişkilendirmesi için açık model yok.",
+      "action": "Hizmet > ilgili vaka çalışması > ilgili rehber > hizmet seçilmiş iletişim akışını panelden ilişkilendirmek.",
+      "acceptance": "Müşteri ilgili iş kanıtını aynı hizmet bağlamında görür; ulaşırken ilgilendiği hizmet korunur. Bu bir ürün önerisidir, zorunlu web standardı değildir.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "trust_content_model",
+      "priority": "high",
+      "status": "partial",
+      "kind": "agency_product_recommendation",
+      "evidence": "Proje ihtiyaç/çözüm/sonuç alanları var; galeri, doğrulanabilir sonuç kaynağı ve referans bağlantıları geliştirilebilir.",
+      "action": "Proje galerisi, müşteri izni, yayın bağlantısı, gerçek sonuç bilgisi, ekip ve referans kaynaklarını yönetmek.",
+      "acceptance": "Konsept ve gerçek işler ayrılır; gerçek olmayan yorum, sonuç veya müşteri iddiası üretilmez. Kendi işletmemiz için yorum şemasıyla Google yıldızı vaat edilmez.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "lead_reliability_and_attribution",
+      "priority": "high",
+      "status": "partial",
+      "kind": "agency_product_recommendation",
+      "evidence": "CSRF, hız sınırı, honeypot ve veritabanına kayıt var; e-posta bildirimi, kaynak alanları ve olay ölçümü yok.",
+      "action": "Kısa form, tekrar gönderim kontrolü, güvenilir bildirim, sayfa/hizmet/kampanya kaynağı ve ayrı CTA/başarılı talep olayları.",
+      "acceptance": "Çift tıklama aynı talebi çoğaltmaz; bildirim hatası talebi kaybettirmez; telefon/WhatsApp tıklaması görüşme veya satış diye raporlanmaz.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "content_discovery",
+      "priority": "medium",
+      "status": "partial",
+      "kind": "information_architecture",
+      "evidence": "Blog tüm kayıtları alır, yayın tarihine göre sıralamaz ve ziyaretçi sayfalaması yok. routes.php:42 ve cms.php:48/76.",
+      "action": "SQL üzerinden yayın tarihi sıralaması, arama, kategori/etiket arşivleri ve sayfalama; ilgili içerik bağlantıları.",
+      "acceptance": "Eski içerikler bağlantılarla bulunabilir; geçersiz sayfa numaraları uygun yanıt verir; arama/filtre URL'lerinin indeks politikası açıkça tanımlanır.",
+      "implementation": "implemented_locally"
+    },
+    {
+      "id": "publication_health",
+      "priority": "high",
+      "status": "partial",
+      "kind": "operational_reliability",
+      "evidence": "Mevcut SEO denetimi var; canlı dağıtıma bağlı kontroller ve düzenli HTTP taraması geliştirilmemiş.",
+      "action": "Yanlış alan adı, localhost/.example bilgileri, istemsiz noindex, canonical/sitemap tutarsızlığı, bozuk bağlantılar ve iletişim ayarlarını denetlemek; yayın öncesi ve sonrası otomatik kontrol.",
+      "acceptance": "Yerel ortam ile canlı ortam ayrılır; yayında indekslenecek URL'ler erişilebilir olur; 404/5xx ve form sorunları görünür biçimde raporlanır. HTTPS ve alan adı yönlendirmeleri canlı sunucuda doğrulanır.",
+      "implementation": "implemented_with_external_verification_pending",
+      "remaining": "Gerçek alan adı/HTTPS ve Search Console kontrolleri."
+    },
+    {
+      "id": "security_baseline",
+      "priority": "high",
+      "status": "partial_unverified_full_standard",
+      "kind": "owasp_asvs",
+      "evidence": "Çıktı kaçışı, hazırlanmış SQL sorguları, CSRF, roller, dosya tipi doğrulaması ve güvenlik başlıkları mevcut; tam ASVS değerlendirmesi yapılmadı.",
+      "action": "Uygulanabilir ASVS kontrollerini doğrulamak; oturum, erişim, yükleme, hata kaydı ve canlı TLS yapılandırmasını test etmek.",
+      "acceptance": "Güvenlik standartlarına tam uyum veya bağımsız sızma testi yapıldığı iddia edilmez. Harita/analitik eklenirse CSP yalnızca gerekli kaynaklar için güncellenir.",
+      "implementation": "implemented_with_external_verification_pending",
+      "remaining": "Canlı TLS ve bağımsız güvenlik değerlendirmesi; tam ASVS uygunluğu iddia edilmez."
+    }
+  ],
+  "recommended_sequence": [
+    "Sayfaya özel SEO bilgileri, işletme kimliği ve yayın hazırlık denetimi",
+    "Mobil iletişim, hizmete bağlı güven kanıtları ve güvenilir talep akışı",
+    "Responsive medya, güvenli önbellek ve performans ölçümü",
+    "İçerik keşfi, yazar profilleri ve dönüşüm raporları"
+  ],
+  "conditional_or_low_priority": [
+    "Hreflang: gerçek çok dilli sayfalar olduğunda",
+    "Video yapılandırılmış verisi/sitemap: ana içeriği gerçek bir video olan uygun sayfalar olduğunda; dekoratif hero videosuna otomatik uygulanmaz",
+    "RSS: blog aboneliği veya dağıtım ihtiyacı olduğunda",
+    "PWA manifest/service worker: kurulabilir veya çevrimdışı kullanım ihtiyacı olduğunda",
+    "Ek metin/XML dosyaları tek başına sıralama avantajı olarak değerlendirilmez"
+  ],
+  "implementation_verification": {
+    "date": "2026-10-15",
+    "integration_checks": 117,
+    "growth_checks": 78,
+    "functional_rerun_checks": 57,
+    "accessibility_scans": 177,
+    "automated_accessibility_violations": 0,
+    "reflow_overflows": 0,
+    "sitemap_pages": 32,
+    "internal_links": 82,
+    "broken_links": 0,
+    "duplicate_main_descriptions": 0,
+    "email": "arkesoft.info@gmail.com",
+    "phone": "+90 538 641 59 37",
+    "secondary_phone": "Panelde hazır; kullanıcı daha sonra paylaşacak.",
+    "web_vitals_dependency": "Network EACCES; tools/install-vitals.mjs hazır, henüz indirilemedi.",
+    "live_mail": "Gönderilmedi; kuyruk ve yeniden deneme sahte test aktarımıyla sınandı.",
+    "sources": [
+      "KURULUM.md",
+      "tests/growth.mjs",
+      "tests/integration.mjs",
+      "tests/comprehensive.mjs"
+    ]
+  }
+}

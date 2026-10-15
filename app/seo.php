@@ -15,7 +15,8 @@ function sitemap_output(string $path): bool {
     $emit=static function(string $route,string $date=''):void{echo '<url><loc>'.e(url($route)).'</loc>'.($date?'<lastmod>'.e($date).'</lastmod>':'').'</url>';};
     if($enabled){
         if($part===''||$part==='base'){
-            foreach(['','hizmetler','projeler','hakkimizda','iletisim','cozumler','blog'] as $route)$emit($route);
+            foreach(['','hizmetler','projeler','hakkimizda','iletisim','cozumler','blog','ihtiyacini-belirle'] as $route)$emit($route);
+            if(growth_ready())foreach(query("SELECT slug FROM authors WHERE status='published'")->fetchAll() as $a)$emit('yazar/'.$a['slug']);
             foreach(public_services() as $s)if(empty(meta('services',(int)$s['id'])['noindex']))$emit('hizmetler/'.$s['slug']);
             foreach(cms_records('categories') as $c)$emit('uzmanlik/'.$c['slug']);
             foreach(published_articles() as $a)if(empty(meta('articles',(int)$a['id'])['noindex']))$emit('blog/'.$a['slug'],$a['updated_at']);
@@ -26,16 +27,17 @@ function sitemap_output(string $path): bool {
     echo '</urlset>';return true;
 }
 function admin_page_rows(string $table,int $size=100): array {
-    if(!in_array($table,['cities','pages'],true))throw new InvalidArgumentException('Geçersiz tablo');
+    if(!in_array($table,['cities','pages','leads'],true))throw new InvalidArgumentException('Geçersiz tablo');
     $q=is_string($_GET['q']??null)?mb_substr($_GET['q'],0,100):'';$state=is_string($_GET['state']??null)?$_GET['state']:'';$params=[];$where='1=1';
-    if($q!==''){$column=$table==='pages'?'heading':'name';$where.=" AND ($column LIKE ? OR slug LIKE ?)";$params=['%'.$q.'%','%'.$q.'%'];}
-    if($table==='pages'&&in_array($state,['draft','published'],true)){$where.=' AND status=?';$params[]=$state;}
+    if($q!==''){$column=$table==='pages'?'heading':'name';$secondary=$table==='leads'?'email':'slug';$where.=" AND ($column LIKE ? OR $secondary LIKE ?)";$params=['%'.$q.'%','%'.$q.'%'];}
+    if(in_array($table,['pages','leads'],true)&&in_array($state,$table==='pages'?['draft','published']:['new','contacted','won','lost','closed'],true)){$where.=' AND status=?';$params[]=$state;}
     $total=(int)query("SELECT COUNT(*) FROM $table WHERE $where",$params)->fetchColumn();$max=max(1,(int)ceil($total/$size));$page=min($max,max(1,(int)($_GET['page']??1)));$offset=($page-1)*$size;
     $GLOBALS['adminPager']=['total'=>$total,'page'=>$page,'max'=>$max,'q'=>$q,'state'=>$state];return query("SELECT * FROM $table WHERE $where ORDER BY id DESC LIMIT $size OFFSET $offset",$params)->fetchAll();
 }
 function admin_pager(string $tab): void {
     $p=$GLOBALS['adminPager']??null;if(!$p)return;
     echo '<form method="get" class="server-search"><input type="hidden" name="tab" value="'.e($tab).'"><label>Tüm kayıtlarda ara<input type="search" name="q" value="'.e($p['q']).'" placeholder="Lokasyon, başlık veya URL"></label>';
+    if($tab==='leads')ui_select('Talep durumu','state',[''=>'Tümü','new'=>'Yeni','contacted'=>'İletişime geçildi','won'=>'Müşteri oldu','lost'=>'Olumsuz sonuçlandı','closed'=>'Kapandı'],$p['state']);
     if($tab==='pages')ui_select('Yayın durumu','state',[''=>'Tümü','draft'=>'Taslak','published'=>'Yayında'],$p['state']);
     echo '<button class="button dark">Ara / filtrele</button></form><div class="table-pagination"><span>'.$p['total'].' sonuç · '.$p['page'].' / '.$p['max'].'</span>';
     foreach(['← Önceki'=>max(1,$p['page']-1),'Sonraki →'=>min($p['max'],$p['page']+1)] as $label=>$page)echo '<a href="/yonetim?'.e(http_build_query(['tab'=>$tab,'q'=>$p['q'],'state'=>$p['state'],'page'=>$page])).'">'.$label.'</a>';

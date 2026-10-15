@@ -1,8 +1,8 @@
 Options -Indexes
 DirectoryIndex index.php
 RewriteEngine On
-RewriteRule ^(?:app|storage|tests|tools)(?:/|$) - [F,L,NC]
-RewriteRule ^(?:config(?:\.example)?\.php|README\.md|KURULUM\.md|SEO-ARASTIRMA\.md|\.git.*)$ - [F,L,NC]
+RewriteRule ^(?:app|storage|tests|tools|arkesoft-private)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:env|config(?:\.example)?\.php|README\.md|KURULUM\.md|SEO-ARASTIRMA\.md|\.git.*)$ - [F,L,NC]
 RewriteRule (^|/)\. - [F,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

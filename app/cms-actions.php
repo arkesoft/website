@@ -5,7 +5,7 @@ function admin_role(): string {
     return meta('admins',(int)$_SESSION['admin_id'])['role']??((int)$_SESSION['admin_id']===(int)query('SELECT MIN(id) FROM admins')->fetchColumn()?'owner':'editor');
 }
 function can_manage(string $area): bool {
-    return admin_role()==='owner' || (admin_role()==='editor' && in_array($area,['dashboard','locations-import','services','projects','cities','pages','generate','articles','categories','faqs','media','films','showcases','partners','testimonials','revisions','seo'],true));
+    return admin_role()==='owner' || (admin_role()==='editor' && in_array($area,['dashboard','locations-import','services','projects','cities','pages','generate','articles','categories','faqs','media','films','showcases','partners','testimonials','revisions','seo','authors'],true));
 }
 function authorize_area(string $area): void { require_admin(); if(!can_manage($area)) { http_response_code(403); exit('Bu işlem için yetkiniz yok.'); } }
 function protect_action(): void {
@@ -60,14 +60,17 @@ function cms_action(): bool {
         for($i=0;$i<50;$i++){if(in_array($cursor,$seen,true))throw new InvalidArgumentException('Yönlendirme döngüsü oluşuyor.');$seen[]=$cursor;$next=query('SELECT destination FROM redirects WHERE source=? AND id<>?',[$cursor,$id])->fetchColumn();if(!$next)break;$cursor=$next;}
         $row['created_at']=gmdate('c');
       }
-      $old=$id?cms_record($table,$id):null;revision($table,$id);
+      $growthExtra=growth_content_extra($table,$id);
+      $old=$id?cms_record($table,$id):null;db()->beginTransaction();try {revision($table,$id);
       if($id){if(!$old)throw new InvalidArgumentException('Kayıt bulunamadı.');$sets=implode(',',array_map(fn($f)=>$f.'=?',array_keys($row)));query("UPDATE $table SET $sets WHERE id=?",[...array_values($row),$id]);}
       else{$cols=implode(',',array_keys($row));$marks=implode(',',array_fill(0,count($row),'?'));query("INSERT INTO $table ($cols) VALUES ($marks)",array_values($row));$id=(int)db()->lastInsertId();}
       if($table==='articles') {
         $extra=meta('articles',$id);$extra['noindex']=isset($_POST['noindex'])?1:0;meta_save('articles',$id,$extra);
         if($old && $old['slug']!==$row['slug'])auto_redirect('/blog/'.$old['slug'],'/blog/'.$row['slug']);
       }
-      audit('İçerik kaydedildi',"$table #$id");flash('İçerik kaydedildi.');redirect('/yonetim?tab='.$table);
+      growth_save_extra($table,$id,$growthExtra);audit('İçerik kaydedildi',"$table #$id");db()->commit();
+      }catch(Throwable $error){if(db()->inTransaction())db()->rollBack();throw $error;}
+      flash('İçerik kaydedildi.');redirect('/yonetim?tab='.$table);
     }
     if($action==='cms_delete') {
       $table=post('table');authorize_area($table);cms_schema($table);$id=(int)post('id');
@@ -84,21 +87,22 @@ function cms_action(): bool {
       $image=imagecreatefromstring(file_get_contents($file['tmp_name']));if(!$image)throw new InvalidArgumentException('Görsel okunamadı.');
       $ratio=min(1,2400/max($size[0],$size[1]));$width=max(1,(int)round($size[0]*$ratio));$height=max(1,(int)round($size[1]*$ratio));
       $canvas=imagecreatetruecolor($width,$height);imagealphablending($canvas,false);imagesavealpha($canvas,true);imagecopyresampled($canvas,$image,0,0,0,0,$width,$height,$size[0],$size[1]);
-      $name=bin2hex(random_bytes(16)).'.webp';$target=ROOT.'/uploads/'.$name;
-      if(!is_dir(ROOT.'/uploads'))mkdir(ROOT.'/uploads',0755,true);
+      $name=bin2hex(random_bytes(16)).'.webp';$target=PUBLIC_ROOT.'/uploads/'.$name;
+      if(!is_dir(PUBLIC_ROOT.'/uploads'))mkdir(PUBLIC_ROOT.'/uploads',0755,true);
       if(!imagewebp($canvas,$target,84))throw new RuntimeException('Görsel yazılamadı.');imagedestroy($image);imagedestroy($canvas);
-      query('INSERT INTO media (filename,original_name,alt,width,height,bytes,created_at) VALUES (?,?,?,?,?,?,?)',[$name,mb_substr(basename($file['name']),0,190),post('alt',255),$width,$height,filesize($target),gmdate('c')]);audit('Görsel yüklendi',$name);flash('Görsel optimize edilip WebP olarak kaydedildi.');redirect('/yonetim?tab=media');
+      query('INSERT INTO media (filename,original_name,alt,width,height,bytes,created_at) VALUES (?,?,?,?,?,?,?)',[$name,mb_substr(basename($file['name']),0,190),post('alt',255),$width,$height,filesize($target),gmdate('c')]);responsive_media_generate((int)db()->lastInsertId());audit('Görsel yüklendi',$name);flash('Görsel optimize edilip WebP olarak kaydedildi.');redirect('/yonetim?tab=media');
     }
     if($action==='media_save'){authorize_area('media');query('UPDATE media SET alt=? WHERE id=?',[post('alt',255),(int)post('id')]);audit('Görsel alt metni güncellendi',post('id'));flash('Alt metin kaydedildi.');redirect('/yonetim?tab=media');}
     if($action==='media_delete') {
       authorize_area('media');$id=(int)post('id');$m=cms_record('media',$id);if(!$m)throw new InvalidArgumentException('Görsel bulunamadı.');
+      if(growth_media_referenced($id))throw new InvalidArgumentException('Görsel bir galeri, yazar veya SEO alanında kullanılıyor.');
       foreach(['hero_media','logo_media','og_media','home_about_media'] as $key)if((int)(settings()[$key]??0)===$id)throw new InvalidArgumentException('Görsel site ayarlarında kullanılıyor.');
       foreach(array_keys(page_design_catalog()) as $key)if((int)page_design((string)$key)['image_id']===$id)throw new InvalidArgumentException('Görsel bir sayfa tasarımında kullanılıyor. Önce sayfadan kaldırın.');
       foreach(['showcases','partners','testimonials','films'] as $source)foreach(cms_records($source) as $r)if((int)($r['image_id']??$r['poster_id']??0)===$id)throw new InvalidArgumentException('Görsel bir vitrin içeriğinde veya videoda kullanılıyor.');
       foreach(cms_records('articles') as $a)if((int)$a['image_id']===$id)throw new InvalidArgumentException('Görsel bir yazıda kullanılıyor.');
       foreach(query('SELECT payload FROM content_meta')->fetchAll() as $mrow)if((int)((json_decode($mrow['payload'],true)?:[])['image_id']??0)===$id)throw new InvalidArgumentException('Görsel içerikte kullanılıyor.');
-      if(preg_match('/^[a-f0-9]+\.webp$/',$m['filename'])){ $file=ROOT.'/uploads/'.$m['filename'];if(is_file($file))unlink($file); }
-      query('DELETE FROM media WHERE id=?',[$id]);audit('Görsel silindi',$m['original_name']);flash('Görsel silindi.');redirect('/yonetim?tab=media');
+      if(preg_match('/^[a-f0-9]+\.webp$/',$m['filename'])){ $file=PUBLIC_ROOT.'/uploads/'.$m['filename'];if(is_file($file))unlink($file); }
+      responsive_media_delete($id);query('DELETE FROM media WHERE id=?',[$id]);audit('Görsel silindi',$m['original_name']);flash('Görsel silindi.');redirect('/yonetim?tab=media');
     }
     if(in_array($action,['templates','branding','seo_settings'],true)) {
       authorize_area($action==='templates'?'generate':'settings');
@@ -131,8 +135,9 @@ function cms_action(): bool {
       if(!query("SELECT id FROM $table WHERE id=?",[$id])->fetchColumn())throw new InvalidArgumentException('Silinen kayıt geri yüklenemez. Bu ekran mevcut kaydın eski sürümüne döner.');
       if(isset($row['status']))$row['status']='draft';if(isset($row['reviewed']))$row['reviewed']=0;if(isset($row['updated_at']))$row['updated_at']=gmdate('c');
       $current=query("SELECT * FROM $table WHERE id=?",[$id])->fetch();
-      revision($table,$id);$sets=implode(',',array_map(fn($f)=>$f.'=?',array_keys($row)));query("UPDATE $table SET $sets WHERE id=?",[...array_values($row),$id]);meta_save($table,$id,$data['meta']??[]);
+      db()->beginTransaction();try {revision($table,$id);$sets=implode(',',array_map(fn($f)=>$f.'=?',array_keys($row)));query("UPDATE $table SET $sets WHERE id=?",[...array_values($row),$id]);meta_save($table,$id,$data['meta']??[]);
       if(in_array($table,['services','articles'],true)&&$current['slug']!==$row['slug']){$prefix=$table==='services'?'/hizmetler/':'/blog/';auto_redirect($prefix.$current['slug'],$prefix.$row['slug']);}
+      growth_save_extra($table,$id,$data['meta']??[]);db()->commit();}catch(Throwable $error){if(db()->inTransaction())db()->rollBack();throw $error;}
       audit('Sürüm geri alındı',"$table #$id");flash('Önceki içerik geri alındı. Yayın durumunu kontrol edin.');redirect('/yonetim?tab='.$table.'&edit='.$id);
     }
     if($action==='user_save') {

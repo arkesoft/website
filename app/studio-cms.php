@@ -40,13 +40,13 @@ function studio_action(): bool {
    $webm=in_array($mime,['video/webm','application/octet-stream'],true)&&substr($head,0,4)==="\x1a\x45\xdf\xa3";
    $mp4=in_array($mime,['video/mp4','application/mp4'],true)&&substr($head,4,4)==='ftyp';
    if(!$webm&&!$mp4)throw new InvalidArgumentException('Geçerli MP4 veya WebM video seçin.');$ext=$webm?'webm':'mp4';$name=bin2hex(random_bytes(16)).'.'.$ext;
-   if(!move_uploaded_file($f['tmp_name'],ROOT.'/uploads/'.$name))throw new RuntimeException('Video kaydedilemedi.');
+   if(!move_uploaded_file($f['tmp_name'],PUBLIC_ROOT.'/uploads/'.$name))throw new RuntimeException('Video kaydedilemedi.');
    query('INSERT INTO films (name,filename,mime,description,poster_id,bytes,created_at) VALUES (?,?,?,?,?,?,?)',[mb_substr(post('name')?:pathinfo($f['name'],PATHINFO_FILENAME),0,150),$name,'video/'.$ext,post('description',3000),0,(int)$f['size'],gmdate('c')]);
    audit('Video yüklendi',$name);flash('Video yüklendi. Vitrin ayarlarından seçebilirsiniz.');redirect('/yonetim?tab=films');
  }
  $id=(int)post('id');$film=cms_record('films',$id);if(!$film)throw new InvalidArgumentException('Video bulunamadı.');
  if($action==='film_save'){$poster=(int)post('poster_id');if($poster&&!cms_record('media',$poster))throw new InvalidArgumentException('Kapak görseli bulunamadı.');query('UPDATE films SET name=?,description=?,poster_id=? WHERE id=?',[post('name',150),post('description',3000),$poster,$id]);audit('Video bilgileri güncellendi',(string)$id);flash('Video bilgileri kaydedildi.');redirect('/yonetim?tab=films');}
- if($action==='film_delete'){foreach(['hero_film','showreel_film'] as $key)if((int)settings()[$key]===$id)throw new InvalidArgumentException('Video vitrinde kullanılıyor. Önce vitrin ayarından kaldırın.');if(preg_match('/^[a-f0-9]+\.(webm|mp4)$/D',$film['filename'])&&is_file(ROOT.'/uploads/'.$film['filename']))unlink(ROOT.'/uploads/'.$film['filename']);query('DELETE FROM films WHERE id=?',[$id]);audit('Video silindi',(string)$id);flash('Video silindi.');redirect('/yonetim?tab=films');}
+ if($action==='film_delete'){foreach(['hero_film','showreel_film'] as $key)if((int)settings()[$key]===$id)throw new InvalidArgumentException('Video vitrinde kullanılıyor. Önce vitrin ayarından kaldırın.');if(preg_match('/^[a-f0-9]+\.(webm|mp4)$/D',$film['filename'])&&is_file(PUBLIC_ROOT.'/uploads/'.$film['filename']))unlink(PUBLIC_ROOT.'/uploads/'.$film['filename']);query('DELETE FROM films WHERE id=?',[$id]);audit('Video silindi',(string)$id);flash('Video silindi.');redirect('/yonetim?tab=films');}
  return true;
 }
 function studio_admin(string $tab): void {

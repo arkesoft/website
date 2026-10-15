@@ -9,5 +9,9 @@ return [
     'db_pass' => '',
     // Kendiniz en az 32 karakterli rastgele bir değer yazın. Kurulum ekranında sorulur.
     'setup_token' => '',
+    // İsteğe bağlı eski PHP mail göndericisi; .env BRIEF_FROM doluysa onu kullanır.
+    // Güvenli sunucu ağacında SMTP .env dosyası arkesoft-private içinde tutulur.
+    // Veritabanı bilgileri burada kalır. Posta bilgileri tamamlanınca bildirimler otomatik çalışır.
+    'mail_from' => '',
     'debug' => false,
 ];

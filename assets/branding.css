@@ -1,0 +1,18 @@
+.brand-logo{display:inline-grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:7px;width:202px;padding:7px 9px;background:transparent;border-radius:2px;vertical-align:middle;flex-shrink:0;box-sizing:border-box;line-height:1}
+.brand-window{position:relative;display:block;overflow:hidden}
+.brand-window>img{position:absolute;display:block;max-width:none!important;height:auto!important;margin:0!important;object-fit:initial!important;pointer-events:none}
+.brand-monogram{aspect-ratio:570/410}
+.brand-monogram>img{width:280.701755%!important;left:-90.350878%;top:-114.634147%}
+.brand-name{aspect-ratio:1250/210}
+.brand-name>img{width:128%!important;left:-14%;top:-447.619048%}
+.brand-logo-full{display:block;width:280px;max-width:100%;padding:14px}
+.brand-full{aspect-ratio:1280/680}
+.brand-full>img{width:125%!important;left:-12.5%;top:-67.647059%}
+.agency-footer .footer-wordmark{line-height:1;letter-spacing:normal;display:inline-block;max-width:100%}
+.admin-sidebar .brand-logo{width:186px;grid-template-columns:38px minmax(0,1fr)}
+.admin-sidebar .logo{flex-wrap:wrap}
+.auth-box .brand-logo{width:230px;grid-template-columns:48px minmax(0,1fr)}
+@media(max-width:700px){.agency-header .brand-logo{width:180px;grid-template-columns:33px minmax(0,1fr);gap:5px;padding:6px}.brand-logo-full{width:240px}}
+@media(max-width:390px){.agency-header .brand-logo{width:170px;grid-template-columns:36px minmax(0,1fr);padding:5px;gap:4px}.studio-site .agency-header{gap:8px}}
+
+.studio-site .agency-header .brand-logo,.admin-sidebar .brand-logo,.agency-footer .brand-logo{filter:brightness(0) invert(1)}

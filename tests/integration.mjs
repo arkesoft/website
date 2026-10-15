@@ -20,7 +20,7 @@ if(mysqlPort){
   execFileSync('php',['-r',`$db=new PDO('mysql:host=127.0.0.1;port=${mysqlPort}','root','');$db->exec('CREATE DATABASE ${dbName} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');`]);
   dbConfig=`'db_host'=>'127.0.0.1','db_port'=>${mysqlPort},'db_name'=>'${dbName}','db_user'=>'root','db_pass'=>''`;
 }
-await writeFile(configFile,`<?php return ['site_url'=>${phpQuote(base)},${dbConfig},'setup_token'=>${phpQuote(token)}];`);
+await writeFile(configFile,`<?php return ['env_file'=>${phpQuote(path.join(runtime,'.env'))},'site_url'=>${phpQuote(base)},${dbConfig},'setup_token'=>${phpQuote(token)}];`);
 let errors='';
 const server=spawn('php',['-d','extension=pdo_sqlite','-S',`127.0.0.1:${port}`,'router.php'],{cwd:root,env:{...process.env,ARKESOFT_CONFIG:configFile},stdio:['ignore','pipe','pipe']});
 server.stderr.on('data',d=>{errors+=d.toString();});
@@ -40,7 +40,7 @@ class Client {
 }
 const owner=new Client(),visitor=new Client();
 try {
-  for(let i=0;i<40;i++){try{await fetch(base);break;}catch{await new Promise(r=>setTimeout(r,100));}}
+  for(let i=0;i<40;i++){try{await (await fetch(base)).arrayBuffer();break;}catch{await new Promise(r=>setTimeout(r,100));}}
   ok((await visitor.request('/')).status===200,'Uninstalled homepage renders');
   const setupCsrf=await owner.csrf('/kurulum');
   let r=await owner.request('/kurulum',{csrf:setupCsrf,token:'wrong',email:'owner@example.test',password,password_confirm:password});

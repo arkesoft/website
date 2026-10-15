@@ -1,0 +1,32 @@
+import {fixture} from './harness.mjs';
+import {writeFile} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const f=await fixture(8137);let checks=0;
+const ok=(condition,label)=>{assert.ok(condition,label);checks++;console.log('PASS '+label);};
+const php=code=>execFileSync('php',['-d','extension=pdo_sqlite','-r',`require 'app/bootstrap.php';${code}`],{cwd:f.root,env:{...process.env,ARKESOFT_CONFIG:f.config},encoding:'utf8'});
+try{
+ await writeFile(path.join(f.runtime,'.env'),'SMTP_HOST=smtp.hostinger.com\nSMTP_USER=private-user-marker\nSMTP_PASS=\nBRIEF_FROM=sender@example.test\nBRIEF_TO=override@example.test\nPUBLIC_ORIGIN=https://arkesoft.com,https://www.arkesoft.com\n');
+ const admin=await f.owner.request('/yonetim?tab=identity');
+ ok(admin.status===200&&admin.body.includes('SMTP_PASS')&&admin.body.includes('SMTP (TLS)'),'Admin identifies incomplete SMTP configuration');
+ ok(!admin.body.includes('private-user-marker'),'Admin never renders SMTP credentials');
+ for(const route of ['/.env','/.env.example','/env','/ENV','/tools/check-environment.php'])ok((await f.visitor.request(route)).status===403,'Private route denied: '+route);
+ const contact=await f.visitor.request('/iletisim');
+ const token=name=>contact.body.match(new RegExp('name="'+name+'" value="([a-f0-9]+)"'))?.[1];
+ const posted=await f.visitor.request('/iletisim',{csrf:token('csrf'),submission_id:token('submission_id'),short_form:'1',name:'Env test',email:'visitor@example.test',phone:'',consent:'1',website:'',message:''});
+ ok(posted.status===303,'Contact form works with missing SMTP credentials');
+ const rows=JSON.parse(php(`echo json_encode(query('SELECT recipient,attempts,status FROM notification_queue')->fetchAll());`));
+ ok(rows.length===1&&rows[0].recipient==='override@example.test','BRIEF_TO controls new queued recipients');
+ const result=php(`setting_write('mail_enabled','1');try{growth_mail_worker();echo 'unexpected';}catch(RuntimeException $e){echo $e->getMessage();}`);
+ ok(result.includes('SMTP_PASS')&&!result.includes('private-user-marker'),'Worker refuses incomplete SMTP before connecting');
+ const queue=JSON.parse(php(`echo json_encode(query('SELECT attempts,status FROM notification_queue')->fetch());`));
+ ok(queue.attempts===0&&queue.status==='pending','Missing configuration preserves queued lead and attempt budget');
+ const home=await f.visitor.request('/');ok(home.status===200&&home.body.includes('href="'+f.base+'/"'),'Env production domain does not override local preview canonical');
+ const setupEnv=path.join(f.runtime,'setup.env');await writeFile(setupEnv,'PUBLIC_ORIGIN=https://arkesoft.com\nSMTP_HOST=smtp.hostinger.com');
+ const setup=execFileSync('php',['-r',`require 'app/bootstrap.php';$_SERVER['REQUEST_METHOD']='GET';require 'app/setup.php';`],{cwd:f.root,env:{...process.env,ARKESOFT_CONFIG:path.join(f.runtime,'missing.php'),ARKESOFT_ENV:setupEnv},encoding:'utf8'});
+ ok(setup.includes('Önce config.example.php')&&!setup.includes('<form'),'Env-only installation still requires database config');
+ await writeFile(path.join(f.runtime,'.env'),'SMTP_PASS="private-secret-marker');
+ const broken=await f.visitor.request('/');ok(broken.status===500&&!broken.body.includes('private-secret-marker'),'Invalid env fails safely without exposing its contents');
+ console.log(checks+' env-site checks passed.');
+}finally{f.stop();}

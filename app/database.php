@@ -4,7 +4,7 @@ function db(): ?PDO {
     global $config;
     static $connection = null;
     if ($connection) return $connection;
-    if (!$config) return null;
+    if (!$config || !empty($config['database_unconfigured'])) return null;
     if (isset($config['test_sqlite']) && in_array(PHP_SAPI,['cli','cli-server'],true)) {
         $connection = new PDO('sqlite:'.$config['test_sqlite']);
     } else {
@@ -20,11 +20,12 @@ function installed(): bool {
     try { return (int)db()->query('SELECT COUNT(*) FROM admins')->fetchColumn() > 0; }
     catch (PDOException $error) { if (in_array((string)$error->getCode(),['42S02','HY000'],true) && (str_contains($error->getMessage(),'no such table') || str_contains($error->getMessage(),"doesn't exist"))) return false; throw $error; }
 }
-function query(string $sql, array $params = []): PDOStatement { $stmt = db()->prepare($sql); $stmt->execute($params); return $stmt; }
+function query(string $sql, array $params = []): PDOStatement { $stmt = db()->prepare($sql); $stmt->execute($params); if(function_exists('growth_content_changed'))growth_content_changed($sql); return $stmt; }
 function settings(): array {
-    if (!installed()) return seed_settings();
+    if (!installed()) return array_merge(seed_settings(),function_exists('cms_defaults')?cms_defaults():[]);
+    if(isset($GLOBALS['settingsCache']))return $GLOBALS['settingsCache'];
     $rows = query('SELECT setting_key, setting_value FROM settings')->fetchAll(PDO::FETCH_KEY_PAIR);
-    return array_merge(seed_settings(), function_exists('cms_defaults')?cms_defaults():[], $rows);
+    return $GLOBALS['settingsCache']=array_merge(seed_settings(), function_exists('cms_defaults')?cms_defaults():[], $rows);
 }
 function records(string $table): array {
     if (!in_array($table,['services','cities','projects','pages','leads'],true)) throw new InvalidArgumentException('Geçersiz tablo');

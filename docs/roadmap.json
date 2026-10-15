@@ -1,0 +1,148 @@
+{
+  "project": "ARKESOFT",
+  "updated_at": "2026-10-15",
+  "purpose": "Kullanıcının ileride değerlendirilmek üzere hatırlanmasını istediği öneriler ve öncelikler.",
+  "status": "Öneriler kaydedildi; uygulama veya dış hizmetlerde işlem başlatılmadı.",
+  "user_priorities": [
+    "Müşterinin karşısına çıkmak ve görünür olmak",
+    "Müşteriye güven vermek",
+    "Müşterinin gördüğü anda kolayca ulaşabilmesi",
+    "İlk sırada kodla çözülebilen işleri değerlendirmek"
+  ],
+  "proposed_first_package": [
+    "mobile_contact_bar",
+    "contextual_whatsapp",
+    "location_card",
+    "short_quote_form",
+    "service_trust_section"
+  ],
+  "customer_facing_backlog": [
+    {
+      "id": "mobile_contact_bar",
+      "priority": 1,
+      "title": "Mobil sabit iletişim çubuğu",
+      "scope": "Ara, WhatsApp ve teklif al bağlantıları; mobil içerikleri örtmeyen erişilebilir yerleşim."
+    },
+    {
+      "id": "contextual_whatsapp",
+      "priority": 2,
+      "title": "Sayfaya özel WhatsApp mesajı",
+      "scope": "İncelenen hizmeti veya projeyi hazır mesaja eklemek."
+    },
+    {
+      "id": "location_card",
+      "priority": 3,
+      "title": "Konum kartı",
+      "scope": "Harita, adresi kopyalama, haritalarda açma, yol tarifi ve çalışma saatleri; panelden yönetim.",
+      "dependency": "Doğru işletme adresi veya çalışma şekli kullanıcıdan alınmalı; Google İşletme Profili oluşturma/doğrulama ayrı bir işlemdir."
+    },
+    {
+      "id": "short_quote_form",
+      "priority": 4,
+      "title": "Kısa teklif formu",
+      "scope": "İhtiyaç, ad ve tercih edilen iletişim bilgisiyle görüşme başlatma; doğrulama ve açık başarı mesajı."
+    },
+    {
+      "id": "service_trust_section",
+      "priority": 5,
+      "title": "Hizmete özel güven alanı",
+      "scope": "İlgili projeler, gerçek müşteri yorumları, çalışma süreci ve teslim sonrası destek; panelden ilişkilendirme.",
+      "dependency": "Gerçek proje ve yorum içerikleri kullanıcı tarafından sağlanmalı; konsept içerikler gerçek referans gibi sunulmamalı."
+    },
+    {
+      "id": "project_details",
+      "priority": 6,
+      "title": "Gelişmiş proje detayları",
+      "scope": "Ekran galerisi, mobil/masaüstü görüntüleri, ihtiyaç, çözüm, doğrulanabilir sonuç ve canlı site bağlantısı."
+    },
+    {
+      "id": "service_faq_scope",
+      "priority": 7,
+      "title": "Hizmete özel SSS ve kapsam karşılaştırması",
+      "scope": "Fiyatı belirleyen unsurlar, süre, teslimatlar, domain sahipliği, içerik hazırlığı ve destek bilgilerinin açıklanması."
+    },
+    {
+      "id": "meeting_request",
+      "priority": 8,
+      "title": "Görüşme talebi",
+      "scope": "Gün/saat tercihi ve onay bildirimi; talep ile kesinleşmiş randevuyu açıkça ayırmak."
+    },
+    {
+      "id": "sharing_previews",
+      "priority": 9,
+      "title": "Paylaşım önizlemeleri",
+      "scope": "Sayfaya özel başlık, açıklama ve görselle mevcut sosyal paylaşım etiketlerini geliştirmek."
+    },
+    {
+      "id": "mobile_performance",
+      "priority": 10,
+      "title": "Mobil hız iyileştirmeleri",
+      "scope": "Ekrana uygun görseller, hafif video yükleme ve sayfaya göre CSS."
+    },
+    {
+      "id": "business_structured_data",
+      "priority": 11,
+      "title": "İşletme yapılandırılmış verileri",
+      "scope": "İşletme modeline uygun şema ile gerçek iletişim, adres ve profil bağlantılarını tutarlı sunmak; sıralama garantisi vermemek."
+    },
+    {
+      "id": "contact_measurement",
+      "priority": 12,
+      "title": "İletişim ve dönüşüm ölçümü",
+      "scope": "Hizmet/sayfa bazında telefon ve WhatsApp tıklamaları, başarılı form gönderimleri ve kampanya kaynakları; tıklamaları gerçekleşmiş görüşme veya satış olarak saymamak."
+    }
+  ],
+  "later_operations_backlog": [
+    "SMTP bildirimleri, müşteriye alındı mesajı, başarısız gönderimlerde yeniden deneme ve gönderim kaydı",
+    "Müşteri listesinde son 500 kayıt sınırının giderilmesi; sunucu tarafında arama, filtre ve sayfalama",
+    "Gelişmiş müşteri takibi: sorumlu kişi, görüşme tarihi, hatırlatma, bütçe, teklif ve kazanıldı/kaybedildi aşamaları",
+    "İçerik ve medya taşıma, içe aktarma önizlemesi, çakışma kontrolü ve doğrulanabilir geri yükleme",
+    "Teklif yönetimi: kapsam, hizmet kalemleri, fiyat, teslim süresi, PDF ve kabul/ret takibi",
+    "Blog araması, kategori/etiket arşivleri, sayfalama, ilgili yazılar, içindekiler ve gelişmiş editör",
+    "Müşteri portalı: proje aşamaları, dosyalar, geri bildirim ve onaylar; ihtiyaç oluşunca",
+    "Güvenli şifre sıfırlama ve iki aşamalı doğrulama"
+  ],
+  "technical_backlog": [
+    "Ekran, doğrulama ve veritabanı işlemlerini daha küçük birimlere ayırmak",
+    "Çok adımlı içerik kayıtlarında işlem bütünlüğünü sağlamak",
+    "Sorgulara uygun indeksler, SQL üzerinden filtreleme ve sayfalama",
+    "Blog detayını slug ile doğrudan sorgulamak; listeyi yayın tarihine göre sıralamak",
+    "PSEO toplu yayın/taslak işlemlerine sürüm ve işlem kaydı eklemek",
+    "Sürümlü veritabanı güncellemeleri ve otomatik test çalıştırma",
+    "Canlı hosting üzerinde erişim, yapılandırma ve dağıtım kontrolleri",
+    "PSEO benzer içerik denetimi ve sayfa bazında sonuç takibi"
+  ],
+  "business_content_dependencies": [
+    "Gerçek işletme kimliği, çalışma şekli, telefon, e-posta, adres ve saatler",
+    "Gerçek ekip bilgileri, fotoğraflar ve profesyonel profil bağlantıları",
+    "Paylaşım izni olan gerçek müşteri işleri, yorumlar ve doğrulanabilir sonuçlar",
+    "Gerçekte sunulabilen kapsam, destek ve dönüş süresi bilgileri",
+    "Google İşletme Profili uygunluğunun değerlendirilmesi ve gerekiyorsa doğrulama"
+  ],
+  "related_audits": [
+    "docs/standards-audit.json"
+  ],
+  "implementation_notes": [
+    "Mevcut telefon/e-posta bağlantıları, WhatsApp, form, SSS, proje, yorum ve paylaşım altyapıları geliştirilerek kullanılmalı.",
+    "Bu listeyi kaydetme talebi, bütün önerileri hemen uygulama veya harici hesaplarda işlem yapma talebi değildir.",
+    "Öncelik müşteriye görünen deneyimdir; operasyon modülleri sonraki aşamada değerlendirilir."
+  ],
+  "latest_implementation": {
+    "date": "2026-10-15",
+    "scope": "standards-audit.json bulgularına yönelik görünürlük, güven, kolay iletişim, içerik keşfi, önbellek ve ölçüm altyapısı",
+    "business_contact": {
+      "email": "arkesoft.info@gmail.com",
+      "phone": "+90 538 641 59 37",
+      "whatsapp": "905386415937",
+      "secondary_phone_pending": true,
+      "all_editable_in_admin": true
+    },
+    "details": "KURULUM.md; docs/standards-audit.json",
+    "pending": [
+      "İkinci numara, gerçek adres ve çalışma saatleri",
+      "Web Vitals bağımlılığının internet erişimli ortamda kurulumu",
+      "Canlı posta sunucusu ve zamanlanmış görev",
+      "Gerçek yazar, referans ve proje ilişkilerinin panelden doldurulması"
+    ]
+  }
+}

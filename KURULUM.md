@@ -18,13 +18,28 @@ Yerel kayıtlar storage/local.sqlite içinde, yerel bağlantı storage/local-con
 1. hPanel'de PHP 8.2 veya üzerini seç. pdo_mysql, mbstring, session, fileinfo ve WebP destekli gd açık olmalı. Video yüklemek için upload_max_filesize en az 32 MB, post_max_size en az 40 MB olmalı.
 2. Alan adını bağla, SSL'i etkinleştir ve HTTPS zorlamasını aç.
 3. Boş bir MySQL veritabanı ve kullanıcı oluştur. hPanel'deki tam adları, sunucuyu ve şifreyi not et.
-4. arkesoft-hostinger.zip dosyasını public_html içine yükleyip çıkar. index.php, .htaccess, app, assets, storage ve uploads doğrudan bu klasörde olmalı.
-5. config.example.php dosyasını config.php adıyla kopyala. site_url alanına gerçek HTTPS alan adını, diğer alanlara MySQL bağlantısını yaz. Site kök alan adına kurulur; alt klasöre kurulmaz.
-6. setup_token için en az 32 karakterlik rastgele özel bir değer belirle.
+4. `php tools/build-server-tree.php` ile çalışma alanındaki `arkesoft-sunucu` klasörünü oluştur/güncelle. ZIP oluşturulmaz. İçindeki `public_html` ve `arkesoft-private` klasörlerini sunucuda yan yana yerleştir. Alan adının belge kökü yalnızca `public_html` olmalı. Özel klasörü public_html içine taşıma.
+5. `arkesoft-private/config.php` içindeki site_url ve MySQL bağlantısını doldur. `arkesoft-private/.env` içindeki posta bilgilerini doldur. Gerçek config ilk üretimde hazırlanır; tekrar üretimde config ve env dosyaları korunur. Site kök alan adına kurulur; alt klasöre kurulmaz.
+6. `config.php` içindeki `setup_token` ilk üretimde güvenli rastgele değerle doldurulur. Kurulum ekranında bunu kullan; paylaşma.
 7. https://alanadiniz.com/kurulum adresini aç. Kurulum anahtarı, yönetici e-postası ve en az 12 karakterlik şifreyle kurulumu tamamla.
 8. https://alanadiniz.com/yonetim adresinden giriş yap. Ana sitede giriş bağlantısı yoktur. Kurulum ilk hesaptan sonra kilitlenir. setup_token değerini boşaltabilirsin; config.php dosyasını silme.
 
-Paket uygulama kodu ve başlangıç içeriklerini içerir; bilgisayarındaki veritabanını, şifreleri, test dosyalarını veya yüklediğin kişisel görselleri içermez. Yerelde sonradan girilen içerikleri canlıya taşımak ayrı veri taşıma işlemidir. Mevcut canlı siteyi güncellerken önce dosya ve MySQL yedeği al; config.php ve uploads içeriğini koru.
+Sunucu ağacı uygulama kodu ve başlangıç içeriklerini içerir; yerel SQLite veritabanı, test dosyaları veya yüklediğin kişisel görseller kopyalanmaz. İlk üretimde mevcut `.env` özel klasöre kopyalanır ve rastgele kurulum anahtarı oluşturulur: bu ağacın tamamı özel kabul edilmeli, Git'e veya herkese açık arşive eklenmemelidir. Yerelde sonradan girilen içerikleri canlıya taşımak ayrı veri taşıma işlemidir. Mevcut canlı siteyi güncellerken önce dosya ve MySQL yedeği al; sunucudaki config.php, .env ve uploads içeriğini koru.
+
+```text
+arkesoft-sunucu/
+├── arkesoft-private/
+│   ├── config.php, .env, deployment.php
+│   ├── app/
+│   ├── storage/
+│   └── tools/
+└── public_html/
+    ├── index.php, .htaccess
+    ├── assets/
+    └── uploads/
+```
+
+Uygulama `ROOT` ile özel dosyaları, `PUBLIC_ROOT` ile açık medya ve stil dosyalarını bulur. Eski geliştirme klasörü ve yerel 8127 adresi çalışmaya devam eder. Sunucuda .htaccess desteği gereklidir; Nginx için eşdeğer kurallar gerekir. Yüklemeden sonra `/config.php`, `/.env`, `/arkesoft-private/config.php` ve `/storage/error.log` 403/404 vermeli. `uploads` içinde PHP/betik çalıştırılması engellenmelidir. Özel dosyaların dışarıda olması sunucu hesabının ve yönetici şifrelerinin güvenliğini ayrıca gerektirir.
 
 ## Yönetim modülleri
 
@@ -107,3 +122,58 @@ app, storage, tests, tools ve bağlantı dosyaları dış erişime kapalıdır. 
 Alt sayfalar 404 ise .htaccess; 500 için PHP uzantıları, MySQL bağlantısı ve storage/error.log; yükleme sorunu için GD/fileinfo ve PHP yükleme sınırlarını kontrol et.
 
 Tasarım, CSS/SVG arayüzleri ve uygulama kodu bu proje için hazırlanmıştır. Üç konsept fotoğraf yerleşik imagegen ile üretildi; yerel proje içindeki docs/image-prompts-v3.txt üretim yönergelerini içerir. Ücretli tema, eklenti, stok görsel, harici font, lisans anahtarı veya abonelik yoktur. Yalnızca coğrafi ad/ilişki verisi açık MIT kaynaklıdır; kaynak bildirimi korunmuştur. Çalışma zamanında harici API gerekmez.
+
+
+## Görünürlük, güven ve iletişim güncellemesi (2026-10-15)
+
+Mevcut kurulumda önce veritabanı ve uploads yedeğini alın. `php tools/growth-upgrade.php` yeni tabloları ve görsel boyutlarını oluşturur; iletişim ayarlarını veya içerikleri sıfırlamaz. Komut satırı yoksa panelde **Yayın hazırlığı** bölümündeki altyapı güncellemesini çalıştırın. Bu panel işlemi tabloları kurar; eski görsellerin boyutlarını topluca üretmek için CLI komutu gerekir. Yeni yüklenen görsellerin boyutları otomatik üretilir. Paket içindeki konsept görsellerin küçük sürümleri yeni kurulumda hazırdır.
+
+- **İşletme & iletişim:** e-posta, telefon, ikinci telefon, WhatsApp, gerçek adres, harita bağlantısı, koordinatlar, çalışma saatleri ve destek kapsamı. İlk kurulumda kullanıcının verdiği arkesoft.info@gmail.com / +90 538 641 59 37 bilgileri kullanılır; tümü panelden değişir. İkinci telefon boş bırakılmıştır. Fiziksel işletme şeması yalnızca bu model seçilip adres ve şehir girildiğinde üretilir. Harita gömüsü ziyaretçi düğmeye basmadan yüklenmez.
+- **Sayfa SEO:** sekiz ana sayfa için ayrı başlık, açıklama ve paylaşım görseli. Detay sayfaları kendi içerik editöründeki SEO alanlarını kullanır. WebSite, işletme, Service, BlogPosting ve ortak gezinme yolu şemaları sunucuda oluşturulur.
+- **Yazarlar & ekip:** gerçek kişi/kurum profili, uzmanlık, biyografi ve resmî bağlantı. Blog editöründen yazar, etiketler ve ilgili hizmetler seçilir. Yazarın URL değişikliği 301 oluşturur. Blog araması, kategori ve etiket filtreleri noindex/follow; normal sayfalamanın kendi canonical adresi vardır. Taslak ve gelecekteki yazılar listelerden/sitemapten çıkarılır.
+- **İçerik ilişkileri:** proje galerisi, yayın izni, sonuç/kaynak bağlantısı; hizmete bağlı proje, rehber ve yorumlar. Gerçek müşteri veya sonuç verisi otomatik üretilmez. Kendi işletmesi hakkında yıldız şeması oluşturulmaz. Örnek içerik uyarısı gerçek içeriklerle değişim tamamlanana kadar kalmalıdır.
+- **İletişim:** sabit mobil iletişim çubuğu, hizmet bağlamını taşıyan WhatsApp/iletişim bağlantıları ve `/ihtiyacini-belirle`. Kısa form ad + telefon veya e-posta + aydınlatma onayı ile çalışır. Form tokeniyle tekrar gönderim tek talep oluşturur; doğrulama hatasında alanlar ve kaynak özeti korunur. UTM alanları ve kaynak sayfası panelde görünür. Talepler SQL üzerinden aranır, durumla filtrelenir ve sayfalanır; müşteri oldu/olumsuz sonuçlandı durumları tıklamalardan ayrıdır.
+- **Performans:** anonim içerik 60 saniyelik dosya önbelleği ve ETag kullanır. İçerik değişiklikleri önbellek sürümünü değiştirir; planlı yazının yayına girmesi de anahtarı değiştirir. Oturumlu, yönetim, önizleme ve form yanıtları paylaşılmaz. Ana sayfa yalnızca gerekli stil dosyalarını yükler. Küçük ekranda açılış videosu otomatik indirilmez; oynatma düğmesiyle açılabilir.
+
+### Talep bildirimi
+
+Talepler ve bildirim kuyruğu aynı veritabanı işlemiyle kaydedilir. Bildirim varsayılanı **bilgiler tamamlanınca otomatik gönder** seçeneğidir. `.env` içindeki posta alanlarını doldurmanız yeterlidir; ek kod değişikliği, gönderimi ayrıca açma veya zorunlu zamanlanmış görev kurulumu gerekmez. Bilgiler eksikken form talepleri ve bildirim kuyruğu korunur, gönderim denenmez. Panelden gönderim duraklatılabilir; daha önce açıkça kapatılmış ayarlar güncellemeyle kendiliğinden açılmaz. SMTP tanımlanmazsa eski PHP mail aktarımı ve `config.php` içindeki `mail_from` kullanılabilir. Alıcı ayrı tanımlanabilir; boşsa iletişim e-postası kullanılır.
+
+Güvenli sunucu ağacında `.env` ve `config.php` **arkesoft-private** içindedir. Uygulama açıkça belirtilen env yolunu, yoksa özel uygulama kökündeki `.env` dosyasını kullanır; bu dosya yoksa eski geliştirme düzeni için üst klasöre bakar. Gerçek dosyayı Git'e veya herkese açık ZIP'e eklemeyin. Örnek dosyada parola yoktur. `config.php` MySQL ve kurulum bilgileri için gereklidir; `.env` bunun yerine geçmez.
+
+| Alan | Kullanımı |
+| --- | --- |
+| `PUBLIC_ORIGIN` | Virgülle ayrılmış site kökleri. İlk adres canonical, sitemap ve mutlak bağlantılarda kullanılır; diğerleri ölçümün aynı site kontrolüne kabul edilir. Yerel `site_url` korunur. |
+| `BRIEF_TO` | Yeni taleplerin bildirim alıcısı. Doluysa paneldeki bildirim alıcısından önceliklidir; boşsa panel ayarı kullanılır. Kuyruktaki mevcut kayıtların alıcısı değişmez. |
+| `BRIEF_FROM` | SMTP hesabında gönderimine izin verilen e-posta adresi. Boşsa `config.php` içindeki `mail_from` kullanılır. |
+| `BRIEF_FROM_NAME` | İsteğe bağlı gönderici görünen adı. |
+| `SMTP_HOST` | Örneğin `smtp.hostinger.com`; tanımlanınca SMTP aktarımı seçilir. |
+| `SMTP_PORT` | Boşsa 465. 587 için STARTTLS kullanılır. |
+| `SMTP_USER`, `SMTP_PASS` | Posta hesabı ve parolası; panelde veya tanılama çıktısında gösterilmez. |
+| `SMTP_ENCRYPTION` | İsteğe bağlı `ssl` (465) veya `tls` (587). Belirtilmezse porta göre seçilir. Sertifika doğrulaması zorunludur. |
+
+Boş alanlar mevcut config değerlerini silmez. Sistem ortam değişkenleri dosyadan önceliklidir. Boşluk veya `#` içeren parolaları tırnaklayın; değişken genişletme ve komut çalıştırma yapılmaz. Özel bir dosya yolu gerekiyorsa `ARKESOFT_ENV` ortam değişkeni veya config içindeki `env_file` kullanılabilir. Eksik SMTP alanları panelde gösterilir; form kayıtları çalışmaya devam eder. PHP `openssl` ve `mbstring` eklentileri gerekir. SMTP yalnızca TLS üzerinden çalışır; sertifika doğrulaması kapatılmaz.
+
+`php tools/check-environment.php` yapılandırmayı sırları göstermeden denetler; bağlantı kurmaz veya posta göndermez. Posta alanları eksikse çıkış kodu 1 olur. Yerelde `ARKESOFT_CONFIG=storage/local-config.php` ortam değişkenini kullanın. Dosya değişiklikleri sonraki PHP isteğinde okunur; yeniden derleme gerekmez.
+
+Env güncellemesi için `php tests/environment.php`, `node tests/smtp.mjs` ve `node tests/env-site.mjs` çalıştırılır. SMTP testi geçici yerel sertifika ve sunucu kullanır; gerçek posta göndermez. TLS/STARTTLS, güvenilmeyen sertifika, kimlik doğrulama ve alıcı hataları, UTF-8 ileti, env önceliği, panelde sırların gizlenmesi ve yapılandırma eksikken talebin korunması denetlenir. SMTP testi OpenSSL komutu gerektirir; yolu `ARKESOFT_TEST_OPENSSL` ile verilebilir.
+
+Yeni talep kaydedildikten sonra o talebin bildirimi otomatik denenir. Site/panel ziyaretleri zamanı gelen bekleyen bildirimlerden en fazla birini, arka plan kuyruğu için dakikada en fazla bir kez işler; yeni talepler bu süreyi beklemez. Dosya kilidi ve veritabanındaki kayıt sahiplenme işlemi eşzamanlı denemeleri sınırlar. FastCGI destekleniyorsa HTTP yanıtı SMTP işleminden önce tamamlanır; diğer ortamlarda yavaş posta sunucusu yanıt süresini uzatabilir. SMTP işlemi toplam 20 saniyelik zaman bütçesiyle ve okuma/yazma başına en fazla 5 saniyelik beklemeyle sınırlıdır.
+
+Trafik yokken de kuyruk düzenli işlensin isterseniz isteğe bağlı olarak dakikada bir `php /tam/yol/tools/mail-worker.php 10` zamanlanmış görevi eklenebilir. Hata halinde artan aralıklarla en fazla beş deneme yapılır; başarısız kayıt panelden yeniden sıraya alınabilir. Ziyaret olmadığında otomatik yeniden deneme bir sonraki ziyareti bekler. Posta sunucusunun kabul etmesi gelen kutusuna teslim kanıtı değildir. İşlem gönderimden hemen sonra kesilirse yeniden denemede tekrar posta ihtimali vardır; aynı Message-ID kullanılır. Canlı posta teslimi yerel testte yapılmadı.
+
+Otomatik akış `node tests/auto-mail.mjs` ile izole veritabanında denetlenir: bilgiler eksikken kayıtların korunması, hazır olunca gönderim, duraklatma, tekrar gönderimin önlenmesi, süreli yeniden deneme ve kilit davranışı. Bu test gerçek posta göndermez.
+
+### Ölçüm ve kalan kurulum adımı
+
+Ölçüm varsayılan olarak kapalıdır. Panelden açıldığında telefon/WhatsApp/görüşme/harita tıklamaları ve başarılı form kayıtları ayrı toplu sayaçlara yazılır; telefon, e-posta ve mesaj metni ölçüm tablosuna aktarılmaz. DNT/GPC tercihleri gözetilir. Tıklama bir görüşme veya satış değildir. Form kaynak bilgisi müşterinin talebiyle saklanır. Gizlilik sayfasındaki teknik ölçüm açıklaması ölçüm açıldığında gösterilir; işletmeye özgü veri sorumlusu ve saklama politikası yine tamamlanmalıdır.
+
+Core Web Vitals toplama kodu, API ve p75 ekranı hazırdır; **resmî web-vitals paketi bu ortamın ağ kısıtı nedeniyle indirilemedi**. İnternet erişimli ortamda `node tools/install-vitals.mjs` çalıştırın. Komut sabit 5.1.0 sürümünün npm arşivini SHA-512 bütünlük kontrolüyle indirip JS ve Apache-2.0 lisansını assets içine koyar; npm kurulum betiği çalıştırmaz. Ardından paketi yeniden oluşturun. Kütüphane yokken panel açıkça uyarır ve hız ölçümü isteği gönderilmez; iletişim sayaçları çalışabilir. Gerçek kullanıcı hedeflerinin sağlandığı iddia edilmez.
+
+Performans örnekleri sayfa görünürlüğünün ilk sonlanışında, BFCache dönüşlerinde yeni ölçüm kimliğiyle raporlanır; süreler 50 ms, CLS 0,01 aralıklarında toplulaştırılır. Panel son 30 günün cihaz gruplarına göre yaklaşık p75 değerini ve örnek sayısını gösterir. 90 günden eski toplu ölçümleri silmek için günlük `php /tam/yol/tools/measurement-prune.php` görevi eklenebilir. Müşteri talepleri bu komutla silinmez.
+
+### Yayın kontrolü ve doğrulama
+
+`php tools/site-audit.php https://alanadiniz.com` sitemap indeksini, ilk 500 sayfanın HTTP durumunu, canonical/H1/meta/JSON-LD yapısını ve ilk 1.000 site içi bağlantıyı denetleyip JSON üretir; sorun varsa çıkış kodu 1 olur. Bu, tam HTML doğrulaması veya sınırsız tarama değildir. Canlı HTTPS, DNS, gerçek e-posta teslimi, Search Console ve Google İşletme Profili doğrulaması hosting/hesap ortamında ayrıca yapılır.
+
+Yerel doğrulama: mevcut 117 entegrasyon kontrolü; yeni modüllerde 78 kontrol ve 33 ekran/boyut erişilebilirlik taraması; mevcut yüzeylerde 144 erişilebilirlik taramasında sıfır otomatik ihlal/taşma; 300 sabit tohumlu arayüz etkileşiminde JS hatası/HTTP 5xx yok. Güncellenen form doğrulama beklentisiyle işlevsel tekrar koşusu 57/57 geçti. Yerel sitemap 32 sayfa ve 82 iç bağlantı: hata ve tekrar eden açıklama yok. Testler SQLite ve Chromium ortamında çalıştırıldı; bu sonuçlar tam WCAG/ASVS uyumu veya bağımsız güvenlik testi iddiası değildir.

@@ -1,21 +1,7 @@
 <?php
 declare(strict_types=1);
-function contact_action(): void {
-    check_csrf();
-    if (!installed()) { flash('İletişim formu site kurulumu tamamlandıktan sonra kullanılabilir.','error'); redirect('/iletisim'); }
-    if (!rate_limit('contact_attempt',25,3600)) { flash('Çok fazla talep gönderdiniz. Lütfen daha sonra tekrar deneyin.','error'); redirect('/iletisim'); }
-    if (post('website') !== '') { flash('Talebiniz alındı.'); redirect('/iletisim'); }
-    $name=post('name',120); $email=post('email',190); $message=post('message',5000);
-    $errors=[];
-    if(mb_strlen($name)<2)$errors['name']='Adınızı veya şirket adınızı en az 2 karakterle yazın.';
-    if(!filter_var($email,FILTER_VALIDATE_EMAIL))$errors['email']='Geçerli bir e-posta adresi yazın; örneğin ad@sirket.com.';
-    if(mb_strlen($message)<20)$errors['message']='Projenizi en az 20 karakterle anlatın.';
-    if(!isset($_POST['consent']))$errors['consent']='Devam etmek için aydınlatma metnini okuduğunuzu belirtin.';
-    if($errors){$_SESSION['contact_errors']=$errors;$_SESSION['contact_old']=['name'=>$name,'email'=>$email,'phone'=>post('phone',40),'message'=>$message,'service'=>post('service',150),'consent'=>isset($_POST['consent'])];redirect('/iletisim');}
-    if (!rate_limit('contact',5,3600)) { flash('Çok fazla talep gönderdiniz. Lütfen daha sonra tekrar deneyin.','error'); redirect('/iletisim'); }
-    query('INSERT INTO leads (name,email,phone,service,message,status,created_at) VALUES (?,?,?,?,?,?,?)',[$name,$email,post('phone',40),post('service',150),$message,'new',gmdate('c')]);
-    unset($_SESSION['contact_old'],$_SESSION['contact_errors']); flash('Proje talebiniz kaydedildi. Teşekkürler!'); redirect('/iletisim');
-}
+function contact_action(): void { growth_contact_action(); }
+
 function admin_action(): void {
     check_csrf(); $action=post('action',40);
     if ($action==='login') {
@@ -84,6 +70,8 @@ function admin_action(): void {
             if ($data['status']==='published' && ($issues=page_issues($data+['id'=>$id,'_unique_value'=>$extra['unique_value']??'']))) throw new InvalidArgumentException(implode(' ',$issues));
             $data['updated_at']=gmdate('c');
         }
+        $growthExtra=growth_content_extra($table,$id);
+        db()->beginTransaction();try {
         revision($table,$id);
         if ($id) {
             $sets=implode(',',array_map(fn($field)=>$field.'=?',array_keys($data)));
@@ -98,6 +86,8 @@ function admin_action(): void {
             if($table==='services' && $old && $old['slug']!==$data['slug']) auto_redirect('/hizmetler/'.$old['slug'],'/hizmetler/'.$data['slug']);
             audit('İçerik kaydedildi',"$table #$id");
         }
+        growth_save_extra($table,$id,$growthExtra);db()->commit();
+        }catch(Throwable $error){if(db()->inTransaction())db()->rollBack();throw $error;}
         flash('İçerik kaydedildi.'); redirect('/yonetim?tab='.$table);
     }
     if ($action==='delete') {
@@ -113,7 +103,7 @@ function admin_action(): void {
         query('DELETE FROM content_meta WHERE entity=? AND record_id=?',[$table,$id]);
         if($table==='cities')query('DELETE FROM geo_links WHERE city_id=?',[$id]);
         if($table==='services')query('DELETE FROM faqs WHERE service_id=?',[$id]);
-        if($table==='leads')query('DELETE FROM lead_notes WHERE lead_id=?',[$id]);
+        if($table==='leads'){query('DELETE FROM lead_notes WHERE lead_id=?',[$id]);if(growth_ready()){query('DELETE FROM notification_queue WHERE lead_id=?',[$id]);query('DELETE FROM lead_submissions WHERE lead_id=?',[$id]);}}
         audit('Kayıt silindi',"$table #$id"); flash('Kayıt silindi.'); redirect('/yonetim?tab='.$table);
     }
     if ($action==='generate') {
@@ -135,11 +125,11 @@ function admin_action(): void {
         $ids=array_slice(array_map('intval',is_array($_POST['ids']??null)?$_POST['ids']:[]),0,300); $status=post('status');
         if (!in_array($status,['published','draft'],true) || !$ids) throw new InvalidArgumentException('Sayfa ve yayın işlemi seçin.');
         $done=0; $skip=0;
-        foreach($ids as $id) { $page=record('pages',$id); if (!$page || ($status==='published' && page_issues($page))) { $skip++; continue; } query('UPDATE pages SET status=?,updated_at=? WHERE id=?',[$status,gmdate('c'),$id]); $done++; }
+        foreach($ids as $id) { $page=record('pages',$id); if (!$page || ($status==='published' && page_issues($page))) { $skip++; continue; } growth_transaction(function()use($status,$id):void{revision('pages',$id);query('UPDATE pages SET status=?,updated_at=? WHERE id=?',[$status,gmdate('c'),$id]);audit('Toplu yayın durumu değişti','pages #'.$id.' / '.$status);}); $done++; }
         flash("$done sayfa güncellendi. $skip sayfa inceleme veya içerik eksiği nedeniyle atlandı."); redirect('/yonetim?tab=pages');
     }
     if ($action==='lead_status') {
-        $status=post('status'); if (!in_array($status,['new','contacted','closed'],true)) throw new InvalidArgumentException('Geçersiz durum.');
+        $status=post('status'); if (!in_array($status,['new','contacted','won','lost','closed'],true)) throw new InvalidArgumentException('Geçersiz durum.');
         query('UPDATE leads SET status=? WHERE id=?',[$status,(int)post('id')]); flash('Talep durumu güncellendi.'); redirect('/yonetim?tab=leads');
     }
     throw new InvalidArgumentException('İşlem bulunamadı.');

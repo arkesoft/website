@@ -1,33 +1,48 @@
 <?php
 declare(strict_types=1);
 define('ROOT', dirname(__DIR__));
+define('PUBLIC_ROOT',is_file(ROOT.'/deployment.php')?require ROOT.'/deployment.php':ROOT);
 date_default_timezone_set('Europe/Istanbul');
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 ini_set('error_log', ROOT . '/storage/error.log');
 $configFile = (PHP_SAPI === 'cli' || PHP_SAPI === 'cli-server') && getenv('ARKESOFT_CONFIG') ? getenv('ARKESOFT_CONFIG') : ROOT . '/config.php';
 $config = is_file($configFile) ? require $configFile : [];
+require __DIR__ . '/environment.php';
+try {
+    $config=environment_config($config,ROOT,getenv('ARKESOFT_ENV')?:($config['env_file']??(is_file(ROOT.'/.env')?ROOT.'/.env':null)));
+} catch (Throwable $error) {
+    error_log('Ortam yapılandırması okunamadı. Dosya biçimini kontrol edin.');
+    if(PHP_SAPI==='cli'){fwrite(STDERR,'Ortam yapılandırması okunamadı. .env dosyasının biçimini kontrol edin.'.PHP_EOL);exit(1);}
+    http_response_code(500);
+    exit('Ortam yapılandırması okunamadı. .env dosyasının biçimini kontrol edin.');
+}
+require __DIR__ . '/smtp.php';
 if (PHP_SAPI !== 'cli') {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
-    header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+    header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-src https://www.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
     header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
 }
 session_name('arkesoft_session');
 session_set_cookie_params(['lifetime'=>0,'path'=>'/','secure'=>!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off','httponly'=>true,'samesite'=>'Lax']);
 ini_set('session.use_strict_mode', '1');
-session_start();
+$_SESSION = [];
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+if (PHP_SAPI !== 'cli' && (isset($_COOKIE[session_name()]) || str_starts_with($requestPath, '/yonetim') || in_array($requestPath, ['/iletisim','/kurulum'], true) || (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && $requestPath !== '/olcum'))) session_start();
 require __DIR__ . '/seed.php';
 require __DIR__ . '/database.php';
 require __DIR__ . '/cms.php';
 require __DIR__ . '/studio-cms.php';
 require __DIR__ . '/page-designs.php';
+require __DIR__ . '/growth.php';
+require __DIR__ . '/branding.php';
 function e(mixed $v): string { return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function origin(): string { global $config; return rtrim($config['site_url'] ?? 'http://127.0.0.1:8127', '/'); }
 function url(string $path = ''): string { return origin() . '/' . ltrim($path, '/'); }
 function redirect(string $path): never { header('Location: ' . $path, true, 303); exit; }
-function csrf(): string { return $_SESSION['csrf'] ??= bin2hex(random_bytes(32)); }
+function csrf(): string { if(PHP_SAPI!=='cli' && session_status()!==PHP_SESSION_ACTIVE)session_start(); return $_SESSION['csrf'] ??= bin2hex(random_bytes(32)); }
 function csrf_field(): string { return '<input type="hidden" name="csrf" value="'.e(csrf()).'">'; }
 function check_csrf(): void { $value=$_POST['csrf']??'';if (!is_string($value)||!hash_equals(csrf(),$value)) { http_response_code(419); exit('Oturum doğrulanamadı. Sayfayı yenileyip tekrar deneyin.'); } }
 function flash(string $text, string $type = 'success'): void { $_SESSION['flash'] = [$text, $type]; }
@@ -46,4 +61,5 @@ function lines(string $text): array { return array_values(array_filter(array_map
 function arrow(): string { return '<span aria-hidden="true">↗</span>'; }
 function safe_web_url(string $url): bool { return $url === '' || (filter_var($url,FILTER_VALIDATE_URL) && in_array(parse_url($url,PHP_URL_SCHEME),['https','http'],true)); }
 function not_found(): never { http_response_code(404); render_public('404', ['title'=>'Sayfa bulunamadı']); exit; }
+growth_mail_schedule();
 set_exception_handler(function(Throwable $error): void { error_log((string)$error); http_response_code(500); echo '<!doctype html><html lang="tr"><meta charset="utf-8"><title>Geçici bağlantı sorunu</title><body><h1>Bir bağlantı sorunu oluştu.</h1><p>Lütfen daha sonra yeniden deneyin. Kurulum yapıyorsanız config.php içindeki veritabanı bilgilerini kontrol edin.</p><a href="/">Ana sayfaya dön</a></body></html>'; });

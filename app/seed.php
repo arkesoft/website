@@ -8,7 +8,7 @@ function seed_settings(): array {
         'meta_title' => 'ARKESOFT — Web Tasarım, Yazılım ve Dijital Büyüme',
         'meta_description' => 'Markanıza özel web tasarım, yazılım, marka kimliği ve SEO çözümleri. ARKESOFT ile fikrinizi güçlü bir dijital deneyime dönüştürün.',
         'about' => 'Her markanın anlatmaya değer bir hikâyesi olduğuna inanıyoruz. Önce sizi dinliyor, sonra doğru soruları soruyoruz. Stratejiden son satır koda kadar, her kararı markanızın hedefleri etrafında şekillendiriyoruz.',
-        'email' => '', 'phone' => '', 'whatsapp' => '', 'address' => '',
+        'email' => 'arkesoft.info@gmail.com', 'phone' => '+90 538 641 59 37', 'whatsapp' => '905386415937', 'address' => '',
         'privacy' => 'İletişim formunda paylaştığınız ad, e-posta, telefon ve proje açıklaması, talebinizi değerlendirmek ve sizinle iletişime geçmek amacıyla site veritabanında saklanır. Formu kullanırken özel nitelikli kişisel veri paylaşmayın. Veri sorumlusu, iletişim bilgileri, saklama süreleri ve başvuru yöntemi site işletmecisi tarafından yayına alınmadan önce bu metne eklenmelidir.',
     ];
 }
