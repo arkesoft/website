@@ -41,6 +41,35 @@ arkesoft-sunucu/
 
 Uygulama `ROOT` ile özel dosyaları, `PUBLIC_ROOT` ile açık medya ve stil dosyalarını bulur. Eski geliştirme klasörü ve yerel 8127 adresi çalışmaya devam eder. Sunucuda .htaccess desteği gereklidir; Nginx için eşdeğer kurallar gerekir. Yüklemeden sonra `/config.php`, `/.env`, `/arkesoft-private/config.php` ve `/storage/error.log` 403/404 vermeli. `uploads` içinde PHP/betik çalıştırılması engellenmelidir. Özel dosyaların dışarıda olması sunucu hesabının ve yönetici şifrelerinin güvenliğini ayrıca gerektirir.
 
+## Kurulu siteyi güncelleme
+
+Yeni sürümlerde `/kurulum` tekrar çalıştırılmaz ve yeni veritabanı oluşturulmaz.
+`php tools/package-update.php`, çalışma alanında tarihli `arkesoft-guncelleme-*.zip`
+hazırlar. Bu paket yalnızca uygulama kodunu, bakım araçlarını ve açık statik
+dosyaları içerir; canlı `config.php`, `.env`, `deployment.php`, `storage` ve
+`uploads` dosyalarını içermez. İlk kurulum ZIP'ini mevcut sitenin üzerine yüklemeyin.
+
+Önce hosting dosya ve MySQL yedeğini alın. Güncelleme ZIP'inin içindeki iki klasörü
+sunucudaki aynı adlı klasörlerle birleştirin; eski klasörleri silmeyin. Dosya
+aktarımı bitince siteyi açın. Bekleyen veritabanı adımları ilk istekte otomatik
+uygulanır. **Yayın hazırlığı → Veritabanı güncellemeleri** bölümünde sürüm görünür.
+Bu bölümdeki **Güncellemeleri kontrol et** düğmesiyle de kontrol yapılabilir;
+bekleyen adımlar uygulanır, yoksa veritabanının zaten güncel olduğu bildirilir.
+Bu işlem yalnızca ayarları yönetme yetkisi olan hesaplara açıktır.
+Bu mekanizma uzaktan ZIP indirmez; yeni sürüm dosyalarını yüklemek hâlâ gerekir.
+
+Geliştirici yeni veritabanı değişikliklerini `app/migrations.php` içindeki listeye
+artan sürüm numarasıyla ekler. Yayınlanmış adımlar değiştirilmez. Her adım MySQL
+üzerinde yarıda kalıp yeniden çalışmaya uygun yazılmalıdır; MySQL DDL işlemleri
+topluca geri alınamaz. Tablo/sütun silme veya veri dönüştürme ayrıca yedek ve
+uyumluluk planı gerektirir. Sistem gelecekteki şema değişikliklerini kendisi tahmin etmez.
+
+Tamamlanan adımlar veritabanında kaydedilir; tekrar çalıştırılmaz. Kilit eşzamanlı
+çalışmayı önler. Başarısız adım tamamlandı sayılmaz; ziyaretçi sırları göstermeyen
+503 bakım yanıtı alır, yeniden deneme 60 saniye ertelenir. Hata özel
+`storage/error.log` dosyasına yazılır. Sorun sürüyorsa hata düzeltilir; yeniden
+kurulum yapılmaz. Canlı sunucu yedeği alma işlemi bu mekanizmadan ayrıdır.
+
 ## Yönetim modülleri
 
 | Bölüm | İşlev |

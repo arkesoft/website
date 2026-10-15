@@ -38,6 +38,7 @@ require __DIR__ . '/studio-cms.php';
 require __DIR__ . '/page-designs.php';
 require __DIR__ . '/growth.php';
 require __DIR__ . '/branding.php';
+require __DIR__ . '/migrations.php';
 function e(mixed $v): string { return htmlspecialchars((string)$v, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 function origin(): string { global $config; return rtrim($config['site_url'] ?? 'http://127.0.0.1:8127', '/'); }
 function url(string $path = ''): string { return origin() . '/' . ltrim($path, '/'); }
@@ -61,5 +62,13 @@ function lines(string $text): array { return array_values(array_filter(array_map
 function arrow(): string { return '<span aria-hidden="true">↗</span>'; }
 function safe_web_url(string $url): bool { return $url === '' || (filter_var($url,FILTER_VALIDATE_URL) && in_array(parse_url($url,PHP_URL_SCHEME),['https','http'],true)); }
 function not_found(): never { http_response_code(404); render_public('404', ['title'=>'Sayfa bulunamadı']); exit; }
+set_exception_handler(function(Throwable $error): void {
+    error_log((string)$error);
+    if($error instanceof SchemaUpdateUnavailable){
+        http_response_code(503);header('Retry-After: 60');header('Cache-Control: no-store');
+        echo '<!doctype html><html lang="tr"><meta charset="utf-8"><title>Kısa süreli bakım</title><h1>Site kısa süreli bakımda.</h1><p>Lütfen bir dakika sonra yeniden deneyin.</p></html>';return;
+    }
+    http_response_code(500);echo '<!doctype html><html lang="tr"><meta charset="utf-8"><title>Geçici bağlantı sorunu</title><body><h1>Bir bağlantı sorunu oluştu.</h1><p>Lütfen daha sonra yeniden deneyin. Kurulum yapıyorsanız config.php içindeki veritabanı bilgilerini kontrol edin.</p><a href="/">Ana sayfaya dön</a></body></html>';
+});
+if(PHP_SAPI!=='cli') schema_update_if_needed();
 growth_mail_schedule();
-set_exception_handler(function(Throwable $error): void { error_log((string)$error); http_response_code(500); echo '<!doctype html><html lang="tr"><meta charset="utf-8"><title>Geçici bağlantı sorunu</title><body><h1>Bir bağlantı sorunu oluştu.</h1><p>Lütfen daha sonra yeniden deneyin. Kurulum yapıyorsanız config.php içindeki veritabanı bilgilerini kontrol edin.</p><a href="/">Ana sayfaya dön</a></body></html>'; });

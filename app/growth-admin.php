@@ -67,8 +67,16 @@ function growth_editor_fields(string $table,array $extra): void {
 }
 
 function growth_admin_action(): bool {
-    $action=post('action');if(!in_array($action,['identity_save','page_seo_save','author_save','notification_retry','growth_upgrade'],true))return false;
+    $action=post('action');if(!in_array($action,['identity_save','page_seo_save','author_save','notification_retry','growth_upgrade','schema_check'],true))return false;
     check_csrf();require_admin();
+    if($action==='schema_check'){
+        authorize_area('settings');
+        $before=count(schema_history(db()));
+        schema_update_if_needed();
+        $applied=count(schema_history(db()))-$before;
+        flash($applied>0?$applied.' veritabanı güncellemesi uygulandı. Veritabanı güncel.':'Veritabanı zaten güncel. Bekleyen güncelleme yok.');
+        redirect('/yonetim?tab=health');
+    }
     if($action==='growth_upgrade'){authorize_area('settings');growth_migrate();flash('Görünürlük ve iletişim altyapısı güncellendi.');redirect('/yonetim');}
     if($action==='identity_save'){
         authorize_area('identity');$values=[];
@@ -147,6 +155,13 @@ function growth_admin_view(string $tab): void {
             ui_select('Profil türü','kind',['Person'=>'Kişi','Organization'=>'Kurum'],$item['kind']??'Person');media_select('image_id',(int)($item['image_id']??0));ui_select('Yayın durumu','status',['draft'=>'Taslak','published'=>'Yayında'],$item['status']??'draft');echo '<button class="button dark">Profili kaydet</button></form>';}return;
     }
     if($tab==='health'){
+        $history=schema_history(db());$latest=$history?end($history):null;
+        echo '<section class="panel"><h2>Veritabanı güncellemeleri</h2><p>Veritabanı güncel. Yeni sürüm dosyaları yüklendiğinde gerekli güncellemeler otomatik uygulanır. Yeniden kurulum gerekmez.</p>';
+        if($latest)echo '<p>Veritabanı sürümü: '.(int)$latest['version'].' · Son güncelleme: '.e($latest['applied_at']).'</p>';
+        if(can_manage('settings')){
+            echo '<form method="post">';action_fields('schema_check');echo '<button class="button dark">Güncellemeleri kontrol et</button></form><p class="help">Yüklediğiniz sürümde bekleyen veritabanı adımları varsa uygulanır; tamamlanan adımlar tekrar çalıştırılmaz.</p>';
+        }
+        echo '</section>';
         echo '<section class="panel"><h2>Yayın hazırlığı</h2><p>Yerel ortamda alan adı kontrolü geçmez. Bu liste sıralama puanı değildir.</p>';
         foreach(growth_health_checks() as $check)echo '<div class="growth-check"><strong>'.($check['ok']?'✓ ':'! ').e($check['label']).'</strong><p>'.e($check['hint']).'</p></div>';
         echo '<p>HTTP taraması için: <code>php tools/site-audit.php https://alanadiniz.com</code></p></section>';return;

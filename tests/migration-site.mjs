@@ -1,0 +1,45 @@
+import {fixture} from './harness.mjs';
+import {execFileSync} from 'node:child_process';
+import assert from 'node:assert/strict';
+const f=await fixture(8144);let checks=0;
+const ok=(v,label)=>{assert.ok(v,label);checks++;console.log('PASS '+label);};
+const php=code=>execFileSync('php',['-d','extension=pdo_sqlite','-r',`require 'app/bootstrap.php'; ${code}`],{cwd:f.root,env:{...process.env,ARKESOFT_CONFIG:f.config},encoding:'utf8'});
+try{
+ ok((await f.owner.request('/yonetim?tab=health')).body.includes('Veritabanı güncel'),'Fresh install shows current schema in admin');
+ const health=await f.owner.request('/yonetim?tab=health');
+ ok(health.body.includes('name="action" value="schema_check"')&&health.body.includes('Güncellemeleri kontrol et'),'Owner has a permanent update check button');
+ const csrf=await f.owner.csrf('/yonetim?tab=health');
+ const initialHistory=php(`echo json_encode(schema_history(db()));`);
+ const checked=await f.owner.request('/yonetim?tab=health',{csrf,action:'schema_check'});
+ ok(checked.status===303&&checked.headers.get('location')==='/yonetim?tab=health','Update check returns to status page');
+ ok((await f.owner.request('/yonetim?tab=health')).body.includes('Veritabanı zaten güncel. Bekleyen güncelleme yok.'),'Current database gets explicit no-update feedback');
+ ok(php(`echo json_encode(schema_history(db()));`)===initialHistory,'Manual check does not reapply completed migrations');
+ ok((await f.owner.request('/yonetim?tab=health',{csrf:'invalid',action:'schema_check'})).status===419,'Manual update check rejects invalid CSRF');
+ ok(!(await f.visitor.request('/yonetim?tab=health')).body.includes('name="action" value="schema_check"'),'Update button is not exposed to anonymous visitors');
+ php(`query("INSERT INTO admins(email,password) VALUES (?,?)",['migration-editor@example.test',password_hash('Test-editor-password-123',PASSWORD_DEFAULT)]);meta_save('admins',(int)db()->lastInsertId(),['role'=>'editor']);`);
+ const editor=new f.Client();await editor.login('migration-editor@example.test','Test-editor-password-123');
+ ok((await editor.request('/yonetim',{csrf:await editor.csrf(),action:'schema_check'})).status===403,'Editor cannot trigger owner-only update check');
+ php(`setting_write('email','preserve@example.test');query("INSERT INTO leads(name,email,phone,service,message,status,created_at) VALUES ('Existing customer','customer@example.test','','Web','Keep this request','new','2026-10-15')");`);
+ const snapshot=()=>php(`echo json_encode([query('SELECT * FROM admins')->fetchAll(),query('SELECT * FROM leads')->fetchAll(),query("SELECT * FROM settings WHERE setting_key='email'")->fetchAll()]);`);
+ const before=snapshot();
+ // Emulate a live installation from before the migration runner existed.
+ php(`db()->exec('DROP TABLE schema_migrations');`);
+ ok((await f.owner.request('/yonetim?tab=health',{csrf,action:'schema_check'})).status===303,'Check button request supports installation with pending migration');
+ ok(snapshot()===before,'Upgrade preserves admin credentials, customer requests and business settings');
+ const history=php(`echo json_encode(schema_history(db()));`);
+ ok(JSON.parse(history).length===1,'Automatic upgrade records completion');
+ await f.visitor.request('/');await f.visitor.request('/blog');
+ ok(php(`echo json_encode(schema_history(db()));`)===history,'Later requests leave completed migration unchanged');
+ ok((await f.owner.request('/yonetim?tab=health')).body.includes('Veritabanı sürümü: 1'),'Owner sees installed schema version');
+ const lock=`ROOT.'/storage/schema-'.substr(hash('sha256',$config['test_sqlite']),0,24).'.lock'`;
+ php(`db()->exec('DROP TABLE schema_migrations');file_put_contents(${lock},(string)(time()+60));`);
+ const maintenance=await f.visitor.request('/');
+ ok(maintenance.status===503&&maintenance.headers.get('retry-after')==='60','Incomplete upgrade returns temporary maintenance with retry instruction');
+ ok(maintenance.headers.get('cache-control')==='no-store'&&!maintenance.body.includes(f.runtime),'Maintenance is uncached and hides private diagnostic paths');
+ php(`file_put_contents(${lock},'0');`);
+ ok((await f.visitor.request('/')).status===200,'Site recovers after retry period');
+ ok(snapshot()===before,'Retry also preserves all existing records');
+ ok((await f.owner.request('/kurulum')).status===303,'Automatic migration does not reopen initial installation');
+ ok(!/Fatal error|Uncaught|Warning:|Notice:/.test(f.logs()),'No PHP runtime warnings');
+ console.log(checks+' migration-site checks passed.');
+}finally{f.stop();}
